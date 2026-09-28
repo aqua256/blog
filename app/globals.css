@@ -24,3 +24,125 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/*
+ * Blog design tokens — Catppuccin Latte (light) / Mocha (dark).
+ * Follows the system by default; data-theme="light" | "dark" on <html> overrides it.
+ */
+:root {
+  --ctp-base: #eff1f5;
+  --ctp-mantle: #e6e9ef;
+  --ctp-crust: #dce0e8;
+  --ctp-text: #4c4f69;
+  --ctp-subtext0: #6c6f85;
+  --ctp-overlay2: #7c7f93;
+  --ctp-surface1: #bcc0cc;
+  --ctp-mauve: #8839ef;
+  --ctp-blue: #1e66f5;
+  --ctp-rosewater: #dc8a78;
+
+  /* Syntax roles. Light stays restrained: Latte's other accents are too low-contrast for small text. */
+  --role-cmd: var(--ctp-blue);
+  --role-arg: var(--ctp-text);
+  --role-str: var(--ctp-text);
+  --role-tag: var(--ctp-mauve);
+  --role-mark-list: var(--ctp-mauve);
+  --role-mark-quote: var(--ctp-mauve);
+  --role-code: var(--ctp-mauve);
+  --role-quote-hl: color-mix(in srgb, var(--ctp-blue) 16%, transparent);
+
+  /* Type scale: title / section / lede+quote / body / interface / secondary / keycap */
+  --fs-title: clamp(30px, 5vw, 48px);
+  --fs-h2: clamp(20px, 2.6vw, 24px);
+  --fs-lede: 21px;
+  --fs-body: 18px;
+  --fs-ui: 15px;
+  --fs-small: 14px;
+  --fs-key: 11px;
+}
+
+@media (max-width: 560px) {
+  :root {
+    --fs-lede: 19px;
+    --fs-body: 17px;
+    --fs-ui: 14px;
+    --fs-small: 13px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ctp-base: #1e1e2e;
+    --ctp-mantle: #181825;
+    --ctp-crust: #11111b;
+    --ctp-text: #cdd6f4;
+    --ctp-subtext0: #a6adc8;
+    --ctp-overlay2: #9399b2;
+    --ctp-surface1: #45475a;
+    --ctp-mauve: #cba6f7;
+    --ctp-blue: #89b4fa;
+    --ctp-rosewater: #f5e0dc;
+
+    /* Mocha gets more color */
+    --role-cmd: #a6e3a1;
+    --role-arg: #fab387;
+    --role-str: #f9e2af;
+    --role-tag: #f5c2e7;
+    --role-mark-list: #94e2d5;
+    --role-mark-quote: #89dceb;
+    --role-code: #fab387;
+    --role-quote-hl: color-mix(in srgb, #f9e2af 20%, transparent);
+  }
+}
+
+:root[data-theme="dark"] {
+  --ctp-base: #1e1e2e;
+  --ctp-mantle: #181825;
+  --ctp-crust: #11111b;
+  --ctp-text: #cdd6f4;
+  --ctp-subtext0: #a6adc8;
+  --ctp-overlay2: #9399b2;
+  --ctp-surface1: #45475a;
+  --ctp-mauve: #cba6f7;
+  --ctp-blue: #89b4fa;
+  --ctp-rosewater: #f5e0dc;
+
+  --role-cmd: #a6e3a1;
+  --role-arg: #fab387;
+  --role-str: #f9e2af;
+  --role-tag: #f5c2e7;
+  --role-mark-list: #94e2d5;
+  --role-mark-quote: #89dceb;
+  --role-code: #fab387;
+  --role-quote-hl: color-mix(in srgb, #f9e2af 20%, transparent);
+}
+
+@theme inline {
+  --font-term: var(--font-recursive);
+
+  --color-paper: var(--ctp-base);
+  --color-paper-2: var(--ctp-mantle);
+  --color-crust: var(--ctp-crust);
+  --color-ink: var(--ctp-text);
+  --color-dim: var(--ctp-subtext0);
+  --color-faint: var(--ctp-surface1);
+  --color-prompt: var(--ctp-mauve);
+  --color-link: var(--ctp-blue);
+  --color-cursor: var(--ctp-rosewater);
+  --color-cmd: var(--role-cmd);
+  --color-arg: var(--role-arg);
+  --color-str: var(--role-str);
+  --color-tag: var(--role-tag);
+  --color-mark-list: var(--role-mark-list);
+  --color-mark-quote: var(--role-mark-quote);
+  --color-code: var(--role-code);
+  --color-quote-hl: var(--role-quote-hl);
+
+  --text-title: var(--fs-title);
+  --text-h2: var(--fs-h2);
+  --text-lede: var(--fs-lede);
+  --text-body: var(--fs-body);
+  --text-ui: var(--fs-ui);
+  --text-small: var(--fs-small);
+  --text-key: var(--fs-key);
+}
