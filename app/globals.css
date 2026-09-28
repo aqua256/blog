@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/*
+ * Dark mode is driven by data-theme on <html> (Tailwind's documented data-attribute setup).
+ * next-themes (app/providers.tsx) always sets it before first paint: the saved choice, or the system preference.
+ * The prefers-color-scheme blocks below are only a no-JavaScript fallback.
+ */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -13,10 +20,15 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+}
+
+:root[data-theme="dark"] {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 body {
@@ -26,10 +38,10 @@ body {
 }
 
 /*
- * Blog design tokens — Catppuccin Latte (light) / Mocha (dark).
- * Follows the system by default; data-theme="light" | "dark" on <html> overrides it.
+ * Blog design tokens — Catppuccin Latte (light) / Mocha (dark), switched by data-theme.
  */
 :root {
+  color-scheme: light;
   --ctp-base: #eff1f5;
   --ctp-mantle: #e6e9ef;
   --ctp-crust: #dce0e8;
@@ -72,6 +84,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    color-scheme: dark;
     --ctp-base: #1e1e2e;
     --ctp-mantle: #181825;
     --ctp-crust: #11111b;
@@ -96,6 +109,7 @@ body {
 }
 
 :root[data-theme="dark"] {
+  color-scheme: dark;
   --ctp-base: #1e1e2e;
   --ctp-mantle: #181825;
   --ctp-crust: #11111b;
@@ -122,18 +136,6 @@ body {
   --gutter: clamp(16px, 6vw, 88px);
   --col: 680px;
   --page: calc(var(--col) + 72px + 220px);
-}
-
-/* `theme-dark:` matches the effective dark theme, whether it comes from the system or data-theme */
-@custom-variant theme-dark {
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) & {
-      @slot;
-    }
-  }
-  :root[data-theme="dark"] & {
-    @slot;
-  }
 }
 
 @utility page-width {
