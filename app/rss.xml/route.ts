@@ -10,15 +10,15 @@ export async function GET() {
   const posts = await getPosts();
 
   const feed = new Feed({
-    title: `${site.user}@${site.host}`,
+    title: site.name,
     description: site.intro,
     id: `${siteUrl}/`,
     link: `${siteUrl}/`,
     language: "zh-CN",
-    copyright: `© ${site.user}`,
+    copyright: `© ${site.name}`,
     updated: posts[0] ? new Date(posts[0].date) : undefined,
     feedLinks: { rss: `${siteUrl}/rss.xml` },
-    author: { name: site.user, link: `${siteUrl}/` },
+    author: { name: site.name, link: `${siteUrl}/` },
   });
 
   for (const post of posts) {

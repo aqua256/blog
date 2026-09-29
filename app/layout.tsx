@@ -30,10 +30,10 @@ const LXGW_WENKAI_CSS =
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  // "aqua256@blog" on the home page, "Hello, world · aqua256@blog" elsewhere
+  // "Aqua256" on the home page, "Hello, world · Aqua256" elsewhere
   title: {
-    default: `${site.user}@${site.host}`,
-    template: `%s · ${site.user}@${site.host}`,
+    default: site.name,
+    template: `%s · ${site.name}`,
   },
   description: site.intro,
   // Lets browsers and feed readers find the RSS feed from any page

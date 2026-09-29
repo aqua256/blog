@@ -1,4 +1,4 @@
-# aqua256@blog
+# Aqua256's blog
 
 A personal blog that reads like a friendly terminal: every page is a shell command and its output
 (`cd ~/posts`, `ls -t`, `cat hello-world.mdx`), with a drop-down agent console you can ask about the site.
