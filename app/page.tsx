@@ -2,16 +2,29 @@ import Link from "next/link";
 import { getPosts } from "@/lib/posts";
 import { site } from "@/lib/site";
 import { AskHint } from "./_components/ask-button";
+import { AvatarArt } from "./_components/avatar-art";
 import { PostList } from "./_components/post-list";
 import { PromptLine } from "./_components/prompt-line";
 
 const RECENT_POSTS = 5;
+/** The color swatches fastfetch prints last, in Catppuccin's accents */
+const SWATCHES = ["red", "peach", "yellow", "green", "teal", "blue", "mauve", "pink"];
+
+/** Style for the nth line of output, so lines print in turn (see .print-line in globals.css) */
+const nth = (line: number) => ({ "--line": line }) as React.CSSProperties;
+
+const link = "text-link underline-offset-3 hover:underline";
 
 /**
  * The home directory:
  *
- *   ~ $ whoami
- *      aqua256
+ *   ~ $ fastfetch
+ *      ▀▀▀▀▀▀▀▀   aqua256@blog
+ *      ▀▀▀▀▀▀▀▀   ────────────
+ *      ▀▀▀▀▀▀▀▀   Role     后端开发工程师 · 学生
+ *      ▀▀▀▀▀▀▀▀   Posts    1 · latest Hello, world
+ *      (avatar)   …
+ *                 ███ ███ ███ ███ ███ ███ ███ ███
  *      <a few lines about Aqua256>
  *
  *   ~ $ ls -t ~/posts | head -5
@@ -23,6 +36,49 @@ const RECENT_POSTS = 5;
  */
 export default async function HomePage() {
   const posts = await getPosts();
+  const latest = posts.at(0);
+  const first = posts.at(-1);
+  const login = `${site.user}@${site.host}`;
+
+  const info: { key: string; value: React.ReactNode }[] = [
+    ...site.profile,
+    ...(latest && first
+      ? [
+          {
+            key: "Posts",
+            value: (
+              <>
+                {posts.length} · latest{" "}
+                <Link href={`/posts/${latest.slug}`} className={link}>
+                  {latest.title}
+                </Link>
+              </>
+            ),
+          },
+          { key: "Uptime", value: `since ${first.date}` },
+        ]
+      : []),
+    {
+      key: "Theme",
+      value: (
+        <>
+          Catppuccin <span className="dark:hidden">Latte</span>
+          <span className="hidden dark:inline">Mocha</span>
+        </>
+      ),
+    },
+    {
+      key: "Links",
+      value: site.social.map(({ label, href }, i) => (
+        <span key={label}>
+          {i > 0 && <span className="text-dim"> · </span>}
+          <a href={href} className={link}>
+            {label}
+          </a>
+        </span>
+      )),
+    },
+  ];
 
   return (
     <main className="px-(--gutter) pt-12 pb-18">
@@ -30,10 +86,37 @@ export default async function HomePage() {
         <div className="flex max-w-(--col) flex-col gap-12">
           {/* Command output is indented one gutter, like the post page */}
           <section aria-label="About">
-            <PromptLine cwd="~" command="whoami" />
+            <PromptLine cwd="~" command="fastfetch" />
             <div className="ml-12 max-[560px]:ml-6.5">
-              <h1 className="font-bold">{site.user}</h1>
-              <p className="mt-1.5 font-[380] text-body leading-[1.7] [font-variation-settings:'MONO'_0,'CASL'_0.3]">
+              <div className="flex items-start gap-8 max-[560px]:flex-col max-[560px]:gap-5">
+                <AvatarArt label={`${site.name} 的头像`} />
+                <div className="min-w-0">
+                  <h1 className="print-line" style={nth(0)}>
+                    <span className="font-bold text-prompt">{site.user}</span>
+                    <span className="text-dim">@</span>
+                    <span className="font-bold text-prompt">{site.host}</span>
+                  </h1>
+                  <p aria-hidden className="print-line text-dim" style={nth(1)}>
+                    {"─".repeat(login.length)}
+                  </p>
+                  <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4">
+                    {info.map(({ key, value }, i) => (
+                      <div key={key} className="print-line col-span-2 grid grid-cols-subgrid" style={nth(i + 2)}>
+                        <dt className="font-semibold text-prompt">{key}</dt>
+                        <dd>{value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                  <p aria-hidden className="print-line mt-3 flex" style={nth(info.length + 2)}>
+                    {SWATCHES.map((name) => (
+                      <span key={name} style={{ color: `var(--ctp-${name})` }}>
+                        ███
+                      </span>
+                    ))}
+                  </p>
+                </div>
+              </div>
+              <p className="mt-8 font-[380] text-body leading-[1.7] [font-variation-settings:'MONO'_0,'CASL'_0.3]">
                 {site.intro}
               </p>
             </div>

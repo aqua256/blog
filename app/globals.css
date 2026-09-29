@@ -44,6 +44,11 @@
   --ctp-blue: #1e66f5;
   --ctp-rosewater: #dc8a78;
   --ctp-red: #d20f39;
+  --ctp-peach: #fe640b;
+  --ctp-yellow: #df8e1d;
+  --ctp-green: #40a02b;
+  --ctp-teal: #179299;
+  --ctp-pink: #ea76cb;
 
   /*
    * Text colors. Latte's subtext0, blue, mauve and red fall just short of WCAG AA (4.5:1) for small text
@@ -97,6 +102,11 @@
   --ctp-blue: #89b4fa;
   --ctp-rosewater: #f5e0dc;
   --ctp-red: #f38ba8;
+  --ctp-peach: #fab387;
+  --ctp-yellow: #f9e2af;
+  --ctp-green: #a6e3a1;
+  --ctp-teal: #94e2d5;
+  --ctp-pink: #f5c2e7;
 
   /* Mocha's text colors are all well above 4.5:1 as they are */
   --role-dim: var(--ctp-subtext0);
@@ -491,6 +501,39 @@
 
     .post-body .code-block::before {
       font-size: var(--fs-key);
+    }
+  }
+}
+
+/*
+ * Home page: `fastfetch` output — the avatar drawn in character cells beside key/value lines.
+ * On first paint each line appears in turn, like a terminal printing it.
+ */
+@layer components {
+  /* Character cells of 4 × 8 px (two 4 px pixels each); 3 × 6 px on phones */
+  .avatar-art {
+    --px: 4px;
+    flex: none;
+    @media (max-width: 560px) {
+      --px: 3px;
+    }
+
+    span {
+      width: var(--px);
+      height: calc(var(--px) * 2);
+      border-top: var(--px) solid;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .print-line {
+      animation: print-line 0s calc(var(--line) * 25ms) both;
+    }
+  }
+
+  @keyframes print-line {
+    from {
+      visibility: hidden;
     }
   }
 }

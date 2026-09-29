@@ -52,7 +52,7 @@ The first paragraph is shown larger, as the lede.
 | Projects shown in `~/projects` | `lib/projects.ts` |
 | The agent's scripted replies | `lib/agent-replies.ts` |
 
-The introduction in `lib/site.ts` is shared by the home page (`whoami`), the agent, the RSS feed and
+The introduction in `lib/site.ts` is shared by the home page (`fastfetch`), the agent, the RSS feed and
 the page description.
 
 ## Deployment
