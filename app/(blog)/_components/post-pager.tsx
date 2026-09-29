@@ -7,7 +7,7 @@ export function PostPager({ older, newer }: { older?: PostSummary; newer?: PostS
 
   return (
     <nav
-      aria-label="More writing"
+      aria-label="More posts"
       className="mt-5 grid grid-cols-2 gap-x-8 gap-y-4 border-t border-dashed border-faint pt-4.5 text-small max-[560px]:grid-cols-1"
     >
       {older ? (

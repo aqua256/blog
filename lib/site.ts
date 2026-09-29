@@ -4,7 +4,7 @@ export const site = {
   nav: [
     { path: "~", href: "/" },
     { path: "~/projects", href: "/projects" },
-    { path: "~/writing", href: "/posts" },
+    { path: "~/posts", href: "/posts" },
   ],
   // TODO: fill in real profile URLs
   social: [

@@ -1,4 +1,4 @@
-/** A shell line such as `~/writing $ cat hello-world.mdx`. */
+/** A shell line such as `~/posts $ cat hello-world.mdx`. */
 export function PromptLine({ cwd, command, args }: { cwd: string; command: string; args?: string }) {
   return (
     <p className="mb-3.5 font-semibold [overflow-wrap:anywhere]">

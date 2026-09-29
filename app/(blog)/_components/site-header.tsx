@@ -3,7 +3,7 @@ import { site } from "@/lib/site";
 import { NavLinks } from "./nav-links";
 import { ThemeToggle } from "./theme-toggle";
 
-/** `aqua256@blog  cd ~ ~/projects ~/writing          THEME=dark` */
+/** `aqua256@blog  cd ~ ~/projects ~/posts          THEME=dark` */
 export function SiteHeader() {
   return (
     <header className="sticky top-[env(safe-area-inset-top,0px)] z-10 bg-paper/90 px-(--gutter) backdrop-blur-sm max-[560px]:static">

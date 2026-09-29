@@ -20,7 +20,7 @@ export async function generateMetadata(props: PageProps<"/posts/[slug]">): Promi
 /**
  * The post as a `cat` of its .mdx file:
  *
- *   ~/writing $ cat hello-world.mdx
+ *   ~/posts $ cat hello-world.mdx
  *      # Title
  *        2026-09-29 · 2 min read · #tag
  *        body…
@@ -40,7 +40,7 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
       {/* Same width as the header; the second column is kept free for the outline on wide screens. */}
       <div className="page-width mx-auto grid grid-cols-[minmax(0,var(--col))] gap-x-18 min-[1180px]:grid-cols-[minmax(0,var(--col))_220px]">
         <article>
-          <PromptLine cwd="~/writing" command="cat" args={`${slug}.mdx`} />
+          <PromptLine cwd="~/posts" command="cat" args={`${slug}.mdx`} />
 
           <div className="post-file">
             <h1 className="post-title">{post.title}</h1>

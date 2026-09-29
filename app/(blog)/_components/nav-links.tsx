@@ -8,7 +8,7 @@ function isCurrent(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 }
 
-/** `cd ~ ~/projects ~/writing` — one `cd` for every path, the current one in the prompt color. */
+/** `cd ~ ~/projects ~/posts` — one `cd` for every path, the current one in the prompt color. */
 export function NavLinks() {
   const pathname = usePathname();
 
