@@ -29,7 +29,7 @@ const link = "text-link underline-offset-3 hover:underline";
  *      <a few lines about Aqua256>
  *
  *   ~ $ ls -t ~/posts | head -5
- *      2026-09-29   Hello, world   2 min
+ *      2026-09-29   Hello, world
  *      cd ~/posts                        (only when there are more)
  *
  *   ~ $ ask

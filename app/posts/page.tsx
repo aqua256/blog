@@ -11,8 +11,8 @@ export const metadata: Metadata = {
  * The posts section as an `ls -t` of ~/posts:
  *
  *   ~/posts $ ls -t
- *      2026-09-29   Hello, world                          2 min
- *      2026-09-01   Designing APIs That Read Like Prose   6 min
+ *      2026-09-29   Hello, world
+ *      2026-09-01   Designing APIs That Read Like Prose
  */
 export default async function PostsPage() {
   const posts = await getPosts();
