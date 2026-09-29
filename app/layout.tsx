@@ -8,11 +8,23 @@ import { SiteHeader } from "./_components/site-header";
 import "./globals.css";
 import { Providers } from "./providers";
 
+/**
+ * Latin text: Recursive, self-hosted by next/font. It has no Chinese glyphs, so Chinese characters fall
+ * through to LXGW WenKai (loaded below), then to the usual system fonts while it downloads.
+ */
 const recursive = Recursive({
   variable: "--font-recursive",
   subsets: ["latin"],
   axes: ["CASL", "MONO", "slnt"],
+  fallback: ["LXGW WenKai", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "sans-serif"],
 });
+
+/**
+ * Chinese text: LXGW WenKai (simplified), cut into ~220 unicode-range slices so a page only downloads
+ * the characters it uses. Pinned version; globals.css points at the same version for punctuation.
+ */
+const LXGW_WENKAI_CSS =
+  "https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -39,6 +51,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       className={`${recursive.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <link rel="stylesheet" href={LXGW_WENKAI_CSS} />
+      </head>
       <body className="term flex min-h-full flex-col bg-paper font-term text-ui text-ink selection:bg-faint">
         <Providers>
           <AgentConsole posts={posts}>

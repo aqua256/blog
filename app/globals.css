@@ -8,6 +8,25 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 /*
+ * Chinese punctuation in prose. Recursive has its own “ ” ‘ ’ … —, drawn at Latin width, so in Chinese
+ * sentences they look cramped. This face takes just those characters from LXGW WenKai (the same pinned
+ * version as the stylesheet in app/layout.tsx) and is listed first for post text.
+ */
+@font-face {
+  font-family: "LXGW WenKai Punctuation";
+  src: url("https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/219.woff2") format("woff2");
+  font-display: swap;
+  unicode-range: U+2018-2019, U+201C-201D, U+2026;
+}
+
+@font-face {
+  font-family: "LXGW WenKai Punctuation";
+  src: url("https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/3.woff2") format("woff2");
+  font-display: swap;
+  unicode-range: U+2014;
+}
+
+/*
  * Blog design tokens — Catppuccin Latte (light) / Mocha (dark), switched by data-theme.
  */
 :root {
@@ -204,6 +223,7 @@
   }
 
   .post-body {
+    font-family: "LXGW WenKai Punctuation", var(--font-recursive);
     font-size: var(--fs-body);
     line-height: 1.78;
     font-weight: 380;
@@ -230,7 +250,9 @@
     text-underline-offset: 3px;
   }
 
+  /* Code keeps Latin punctuation */
   .post-body code {
+    font-family: var(--font-recursive);
     font-variation-settings: "MONO" 1, "CASL" 1;
     font-size: 0.92em;
     color: var(--color-code);
