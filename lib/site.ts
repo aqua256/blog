@@ -21,8 +21,9 @@ export const site = {
  * The site's public address, for absolute links (RSS, metadata). Read at build time on the server:
  * SITE_URL if set, else Vercel's production domain, else the local dev server.
  */
-export const siteUrl =
+export const siteUrl = (
   process.env.SITE_URL ??
   (process.env.VERCEL_PROJECT_PRODUCTION_URL
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : "http://localhost:3000");
+    : "http://localhost:3000")
+).replace(/\/+$/, ""); // "https://example.com/" → "https://example.com", so paths can be appended
