@@ -10,10 +10,9 @@ export const site = {
     { path: "~/posts", href: "/posts" },
   ],
   social: [
-    // TODO: fill in real profile URLs
-    { label: "linkedin", href: "#" },
+    { label: "linkedin", href: "https://www.linkedin.com/in/sheng-xiao-b20846367" },
+    // TODO: the GitHub profile URL
     { label: "github", href: "#" },
-    { label: "twitter", href: "#" },
     { label: "rss", href: "/rss.xml" },
   ],
 } as const;
