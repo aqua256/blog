@@ -49,10 +49,10 @@ const CHIPS = [
 /**
  * The conversation inside the agent console:
  *
- *   visitor $ ask "who is Aqua256?"
+ *   $ ask "who is Aqua256?"
  *   <answer, typed out word by word>
  *   [ask "who is Aqua256?"] [ask "summarize this post"] …
- *   visitor $ _
+ *   $ _
  */
 export function AgentChat({
   posts,
@@ -128,7 +128,7 @@ export function AgentChat({
           return (
             <div key={i}>
               <p className="mb-1.5 font-semibold [overflow-wrap:anywhere]">
-                <span className="font-normal text-dim">visitor $ </span>
+                <span className="font-normal text-dim">$ </span>
                 <span className="text-cmd">ask</span> <span className="text-str">&quot;{question}&quot;</span>
               </p>
               <p className="font-[380] text-body leading-[1.7] whitespace-pre-line [font-variation-settings:'MONO'_0,'CASL'_0.3]">
@@ -162,13 +162,13 @@ export function AgentChat({
         aria-busy={typing}
         className="flex items-center gap-x-2.5 border-y border-faint py-2.5 font-semibold focus-within:border-prompt"
       >
-        <label htmlFor="agent-input" className="whitespace-nowrap text-dim">
-          visitor $
-        </label>
+        <span aria-hidden className="text-dim">
+          $
+        </span>
         <input
           ref={inputRef}
-          id="agent-input"
           type="text"
+          aria-label={`Ask ${site.givenName}'s agent`}
           maxLength={200}
           enterKeyHint="send"
           placeholder={`ask anything about ${site.givenName}`}
