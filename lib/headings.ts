@@ -20,7 +20,7 @@ export function nodeText(node: ReactNode): string {
 }
 
 /** Markdown inline syntax → the text it renders as. */
-function stripInline(markdown: string): string {
+export function stripInline(markdown: string): string {
   return markdown
     .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1") // links and images → their text
     .replace(/`([^`]*)`/g, "$1") // inline code
