@@ -73,8 +73,7 @@ At least one published (non-draft) post is needed: a static export can't build `
 posts.
 
 Set `SITE_URL` to the site's public address, e.g. `https://example.com`. It is used for absolute links in
-the RSS feed, the sitemap and page metadata. Without it the build falls back to Vercel's production domain
-(`VERCEL_PROJECT_PRODUCTION_URL`), then to `http://localhost:3000`.
+the RSS feed, the sitemap and page metadata. Without it the build falls back to `http://localhost:3000`.
 
 These are generated at build time, so changing `SITE_URL` needs a rebuild:
 
