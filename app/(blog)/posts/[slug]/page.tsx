@@ -15,7 +15,7 @@ export async function generateMetadata(props: PageProps<"/posts/[slug]">): Promi
   return post ? { title: post.title } : {};
 }
 
-// Page chrome (command line, title, meta, end-of-post navigation) comes in the next step.
+// Page chrome (command line, meta, end-of-post navigation) comes in the next step.
 export default async function PostPage(props: PageProps<"/posts/[slug]">) {
   const { slug } = await props.params;
   const post = await getPost(slug);
@@ -25,9 +25,11 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
   return (
     <main className="px-(--gutter) py-12">
       <article className="page-width mx-auto">
-        <h1>{post.title}</h1>
-        <div className="post-body">
-          <Content />
+        <div className="post-file">
+          <h1 className="post-title">{post.title}</h1>
+          <div className="post-body">
+            <Content />
+          </div>
         </div>
       </article>
     </main>
