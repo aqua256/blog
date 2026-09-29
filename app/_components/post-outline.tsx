@@ -14,8 +14,18 @@ function subscribe(onChange: () => void) {
   };
 }
 
-/** The last section whose heading has scrolled above 35% of the viewport; "top" before the first one. */
+/** Scrolled all the way down (and the page does scroll). */
+function atBottom() {
+  const { scrollHeight } = document.documentElement;
+  return window.scrollY > 0 && window.scrollY + window.innerHeight >= scrollHeight - 2;
+}
+
+/**
+ * The last section whose heading has scrolled above 35% of the viewport; "top" before the first one.
+ * At the bottom of the page it's the last section, whose heading may never reach that line if it's short.
+ */
 function activeSection(headings: Heading[]): string {
+  if (headings.length > 0 && atBottom()) return headings[headings.length - 1].id;
   let active = TOP;
   for (const { id } of headings) {
     const el = document.getElementById(id);
