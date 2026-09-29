@@ -21,9 +21,10 @@ const link = "text-link underline-offset-3 hover:underline";
  *   ~ $ fastfetch
  *      ▀▀▀▀▀▀▀▀   aqua256@blog
  *      ▀▀▀▀▀▀▀▀   ────────────
- *      ▀▀▀▀▀▀▀▀   Role     后端开发工程师 · 学生
- *      ▀▀▀▀▀▀▀▀   Uptime   since 2026-09-29
- *      (avatar)   Links    linkedin · github · rss
+ *      ▀▀▀▀▀▀▀▀   Role     学生
+ *      ▀▀▀▀▀▀▀▀   Skills   TypeScript
+ *      (avatar)   Uptime   since 2026-09-29
+ *                 Links    linkedin · github · rss
  *                 ███ ███ ███ ███ ███ ███ ███ ███
  *      <a few lines about Aqua256>
  *
