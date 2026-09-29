@@ -8,12 +8,12 @@ export const site = {
     { path: "~/projects", href: "/projects" },
     { path: "~/posts", href: "/posts" },
   ],
-  // TODO: fill in real profile URLs
   social: [
+    // TODO: fill in real profile URLs
     { label: "linkedin", href: "#" },
     { label: "github", href: "#" },
     { label: "twitter", href: "#" },
-    { label: "rss", href: "#" },
+    { label: "rss", href: "/rss.xml" },
   ],
 } as const;
 

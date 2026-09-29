@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Recursive } from "next/font/google";
-import { site } from "@/lib/site";
+import { site, siteUrl } from "@/lib/site";
 import "./globals.css";
 import { Providers } from "./providers";
 
@@ -21,12 +21,17 @@ const recursive = Recursive({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   // "aqua256@blog" on the home page, "Hello, world · aqua256@blog" elsewhere
   title: {
     default: `${site.user}@${site.host}`,
     template: `%s · ${site.user}@${site.host}`,
   },
   description: site.intro,
+  // Lets browsers and feed readers find the RSS feed from any page
+  alternates: {
+    types: { "application/rss+xml": "/rss.xml" },
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
