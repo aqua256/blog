@@ -52,6 +52,7 @@ body {
   --ctp-mauve: #8839ef;
   --ctp-blue: #1e66f5;
   --ctp-rosewater: #dc8a78;
+  --ctp-red: #d20f39;
 
   /* Syntax roles. Light stays restrained: Latte's other accents are too low-contrast for small text. */
   --role-cmd: var(--ctp-blue);
@@ -95,6 +96,7 @@ body {
     --ctp-mauve: #cba6f7;
     --ctp-blue: #89b4fa;
     --ctp-rosewater: #f5e0dc;
+    --ctp-red: #f38ba8;
 
     /* Mocha gets more color */
     --role-cmd: #a6e3a1;
@@ -120,6 +122,7 @@ body {
   --ctp-mauve: #cba6f7;
   --ctp-blue: #89b4fa;
   --ctp-rosewater: #f5e0dc;
+  --ctp-red: #f38ba8;
 
   --role-cmd: #a6e3a1;
   --role-arg: #fab387;
@@ -162,6 +165,7 @@ body {
   --color-prompt: var(--ctp-mauve);
   --color-link: var(--ctp-blue);
   --color-cursor: var(--ctp-rosewater);
+  --color-err: var(--ctp-red); /* error messages, e.g. on the 404 page */
   --color-cmd: var(--role-cmd);
   --color-arg: var(--role-arg);
   --color-str: var(--role-str);

@@ -22,3 +22,18 @@ export function Key({ children }: { children: React.ReactNode }) {
     <kbd className="rounded-[3px] border border-b-2 border-faint px-1.25 text-key leading-normal text-dim">{children}</kbd>
   );
 }
+
+/**
+ * `press / to ask …` as a button that opens the console, e.g. <AskHint>about this post</AskHint>.
+ * Touch screens have no / key, so they read `tap to ask …` (switched in CSS, same markup everywhere).
+ */
+export function AskHint({ children }: { children: React.ReactNode }) {
+  return (
+    <AskButton className="text-left">
+      <span className="pointer-coarse:hidden">
+        press <Key>/</Key> to
+      </span>
+      <span className="hidden pointer-coarse:inline">tap to</span> <AskCommand /> {children}
+    </AskButton>
+  );
+}

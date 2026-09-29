@@ -1,5 +1,5 @@
 /** A shell line such as `~/posts $ cat hello-world.mdx`. */
-export function PromptLine({ cwd, command, args }: { cwd: string; command: string; args?: string }) {
+export function PromptLine({ cwd, command, args }: { cwd: string; command: string; args?: React.ReactNode }) {
   return (
     <p className="mb-3.5 font-semibold [overflow-wrap:anywhere]">
       <span className="select-none font-normal text-dim">

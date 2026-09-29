@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getPosts } from "@/lib/posts";
 import { site } from "@/lib/site";
-import { AskButton, AskCommand, Key } from "./_components/ask-button";
+import { AskHint } from "./_components/ask-button";
 import { PostList } from "./_components/post-list";
 import { PromptLine } from "./_components/prompt-line";
 
@@ -55,13 +55,7 @@ export default async function HomePage() {
           <section aria-label="Ask">
             <PromptLine cwd="~" command="ask" />
             <div className="ml-12 max-[560px]:ml-6.5">
-              <AskButton className="text-left">
-                {/* Phones and tablets have no / key */}
-                <span className="pointer-coarse:hidden">
-                  press <Key>/</Key> to
-                </span>
-                <span className="hidden pointer-coarse:inline">tap to</span> <AskCommand /> anything about Aqua256
-              </AskButton>
+              <AskHint>anything about Aqua256</AskHint>
             </div>
           </section>
         </div>

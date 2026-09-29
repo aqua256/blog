@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAdjacentPosts, getPost, getPosts } from "@/lib/posts";
-import { AskButton, AskCommand, Key } from "../../_components/ask-button";
+import { AskButton, AskCommand, AskHint, Key } from "../../_components/ask-button";
 import { PostOutline } from "../../_components/post-outline";
 import { PostPager } from "../../_components/post-pager";
 import { PromptLine } from "../../_components/prompt-line";
@@ -66,13 +66,7 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
 
           <p className="mt-12 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-small text-dim">
             (END)
-            <AskButton className="text-left">
-              {/* Phones and tablets have no / key */}
-              <span className="pointer-coarse:hidden">
-                press <Key>/</Key> to
-              </span>
-              <span className="hidden pointer-coarse:inline">tap to</span> <AskCommand /> about this post
-            </AskButton>
+            <AskHint>about this post</AskHint>
           </p>
           <PostPager older={older} newer={newer} />
         </article>
