@@ -7,7 +7,11 @@ const nextConfig: NextConfig = {
 };
 
 const withMDX = createMDX({
-  // Add markdown plugins here, as desired
+  // Turbopack takes plugins by package name, with JSON-serializable options only
+  options: {
+    // GitHub Flavored Markdown: tables, ~~strikethrough~~, task lists, footnotes, bare URLs as links
+    remarkPlugins: ["remark-gfm"],
+  },
 });
 
 export default withMDX(nextConfig);

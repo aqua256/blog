@@ -352,6 +352,76 @@ body {
     -webkit-box-decoration-break: clone;
   }
 
+  /* GitHub Flavored Markdown (remark-gfm) */
+
+  .post-body del {
+    color: var(--color-dim);
+  }
+
+  /* Wide tables scroll sideways instead of widening the page */
+  .post-body table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: var(--fs-ui);
+    line-height: 1.6;
+  }
+
+  .post-body th,
+  .post-body td {
+    padding: 6px 20px 6px 0;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px dashed var(--color-faint);
+  }
+
+  .post-body th {
+    font-weight: 700;
+    border-bottom-style: solid;
+  }
+
+  /* Task lists show [ ] / [x] where the - would be, instead of a checkbox */
+  .post-body li.task-list-item > input {
+    display: none;
+  }
+
+  .post-body ul > li.task-list-item::before {
+    content: "[ ]";
+  }
+
+  .post-body ul > li.task-list-item:has(> input:checked)::before {
+    content: "[x]";
+  }
+
+  .post-body sup a {
+    text-decoration: none;
+  }
+
+  /* Footnotes: small print after a dashed rule */
+  .post-body .footnotes {
+    margin-top: 48px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--color-faint);
+    font-size: var(--fs-small);
+    line-height: 1.7;
+    color: var(--color-dim);
+  }
+
+  .post-body .footnotes p {
+    margin: 0;
+  }
+
+  /* The "Footnotes" heading is for screen readers only */
+  .post-body .footnotes h2 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
   @media (max-width: 560px) {
     .post-file {
       --md-gutter: 26px;
