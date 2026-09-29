@@ -14,7 +14,11 @@ export function SiteHeader() {
         </Link>
         <NavLinks />
         <div className="ml-auto flex items-center gap-x-5">
-          <AskButton aria-label="Ask Aqua256's agent" title="Ask Aqua256's agent (press /)" className="py-1">
+          <AskButton
+            aria-label={`Ask ${site.givenName}'s agent`}
+            title={`Ask ${site.givenName}'s agent (press /)`}
+            className="py-1"
+          >
             <AskCommand />
           </AskButton>
           <ThemeToggle />

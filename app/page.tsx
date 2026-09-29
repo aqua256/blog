@@ -55,7 +55,7 @@ export default async function HomePage() {
           <section aria-label="Ask">
             <PromptLine cwd="~" command="ask" />
             <div className="ml-12 max-[560px]:ml-6.5">
-              <AskHint>anything about Aqua256</AskHint>
+              <AskHint>anything about {site.givenName}</AskHint>
             </div>
           </section>
         </div>

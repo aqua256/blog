@@ -22,6 +22,9 @@ type Context = {
 
 type Topic = "help" | "summary" | "building" | "writing" | "contact" | "about" | "fallback";
 
+/** The console's command name, e.g. `aqua256-agent`. */
+export const AGENT_COMMAND = `${site.user}-agent`;
+
 /** Checked in order; the first match wins. */
 const TOPICS: [Topic, RegExp][] = [
   ["help", /^(help|\?|man|帮助)$/],
@@ -29,7 +32,7 @@ const TOPICS: [Topic, RegExp][] = [
   ["building", /build|project|working on|making|work on|portfolio|项目|作品|在做/],
   ["writing", /writ|post|article|blog|read next|what else|文章|博客/],
   ["contact", /contact|touch|reach|email|linkedin|github|hire|联系|邮箱/],
-  ["about", /who|about|introduce|yourself|aqua256|关于|介绍|你是谁|是谁/],
+  ["about", new RegExp(`who|about|introduce|yourself|${site.givenName.toLowerCase()}|关于|介绍|你是谁|是谁`)],
 ];
 
 function topicOf(question: string): Topic {
@@ -63,7 +66,7 @@ function writing({ posts, current }: Context): Segment[] {
 function building(): Segment[] {
   if (projects.length === 0) return ["Nothing in ", { code: "~/projects" }, " yet."];
   return lines([
-    ["What Aqua256 is building:"],
+    [`What ${site.givenName} is building:`],
     ...projects.map(({ name, description, href }): Segment[] => [
       href ? { href, text: `${name}/` } : { code: `${name}/` },
       ` ${description}`,
@@ -73,7 +76,7 @@ function building(): Segment[] {
 }
 
 function contact(): Segment[] {
-  return lines([["The best places to reach Aqua256:"], ...site.social.map(({ label, href }) => [{ href, text: label }])]);
+  return lines([[`The best places to reach ${site.givenName}:`], ...site.social.map(({ label, href }) => [{ href, text: label }])]);
 }
 
 const REPLIES: Record<Topic, (context: Context) => Segment[]> = {
@@ -85,7 +88,7 @@ const REPLIES: Record<Topic, (context: Context) => Segment[]> = {
   help: () =>
     lines([
       ["Things I can answer:"],
-      [{ code: 'ask "who is Aqua256?"' }],
+      [{ code: `ask "who is ${site.givenName}?"` }],
       [{ code: 'ask "what are you building?"' }],
       [{ code: 'ask "summarize this post"' }],
       [{ code: 'ask "recent writing"' }],
@@ -93,7 +96,7 @@ const REPLIES: Record<Topic, (context: Context) => Segment[]> = {
       ["Type ", { code: "clear" }, " to wipe the log, or ", { code: "exit" }, " to close."],
     ]),
   fallback: () => [
-    "I only know a few things so far. Try asking who Aqua256 is, what Aqua256 is building, for a summary of this post, for recent writing, or how to get in touch. 你也可以用中文问：介绍、项目、总结、文章、联系。",
+    `I only know a few things so far. Try asking who ${site.givenName} is, what ${site.givenName} is building, for a summary of this post, for recent writing, or how to get in touch. 你也可以用中文问：介绍、项目、总结、文章、联系。`,
   ],
 };
 
@@ -101,11 +104,13 @@ export function reply(question: string, context: Context): Segment[] {
   return REPLIES[topicOf(question)](context);
 }
 
+const COMMAND_PREFIX = new RegExp(`^(\\$\\s*)?(ask|${AGENT_COMMAND})\\s+`, "i");
+
 /** `$ ask "who is Aqua256?"` → `who is Aqua256?`, so visitors can type the command the chips show. */
 export function cleanQuestion(raw: string): string {
   return raw
     .trim()
-    .replace(/^(\$\s*)?(ask|aqua256-agent)\s+/i, "")
+    .replace(COMMAND_PREFIX, "")
     .replace(/^["'“”‘’]+|["'“”‘’]+$/g, "")
     .trim();
 }

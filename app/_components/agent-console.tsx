@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { createContext, useContext, useEffect, useEffectEvent, useRef } from "react";
-import type { AgentPost } from "@/lib/agent-replies";
+import { AGENT_COMMAND, type AgentPost } from "@/lib/agent-replies";
 import { AgentChat } from "./agent-chat";
 
 const OpenAgentContext = createContext<(() => void) | null>(null);
@@ -78,7 +78,7 @@ export function AgentConsole({ posts, children }: { posts: AgentPost[]; children
                   <span className="font-normal text-dim">
                     <span className="text-prompt">{cwd}</span> ${" "}
                   </span>
-                  <span className="text-cmd">aqua256-agent</span>
+                  <span className="text-cmd">{AGENT_COMMAND}</span>
                 </p>
                 <button
                   type="button"

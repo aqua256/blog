@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { cleanQuestion, reply, type AgentPost, type Segment } from "@/lib/agent-replies";
+import { site } from "@/lib/site";
 
 /** Delay between words while an answer is being typed out. */
 const WORD_DELAY_MS = 34;
@@ -39,7 +40,7 @@ function SegmentView({ segment }: { segment: Segment }) {
 }
 
 const CHIPS = [
-  { label: "who is Aqua256?", question: "who is Aqua256?" },
+  { label: `who is ${site.givenName}?`, question: `who is ${site.givenName}?` },
   { label: "summarize this post", question: "summarize this post", onPostOnly: true },
   { label: "what else?", question: "what else have you written?" },
   { label: "get in touch", question: "how do I get in touch?" },
@@ -170,7 +171,7 @@ export function AgentChat({
           type="text"
           maxLength={200}
           enterKeyHint="send"
-          placeholder="ask anything about Aqua256"
+          placeholder={`ask anything about ${site.givenName}`}
           onKeyDown={onKeyDown}
           className="min-w-[10ch] flex-1 bg-transparent py-1 font-medium text-ink caret-cursor outline-none placeholder:font-normal placeholder:text-dim/80"
         />
