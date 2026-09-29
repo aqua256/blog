@@ -2,6 +2,9 @@ import type { MetadataRoute } from "next";
 import { getPosts } from "@/lib/posts";
 import { siteUrl } from "@/lib/site";
 
+// Built once at build time; required with output: "export"
+export const dynamic = "force-static";
+
 /**
  * /sitemap.xml: the section pages and every published post, built at build time.
  * Only url and lastModified; search engines ignore changeFrequency and priority.
