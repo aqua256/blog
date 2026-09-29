@@ -56,6 +56,21 @@ the page description.
 
 ## Deployment
 
+The site is a static export (`output: "export"`): `pnpm build` writes every page to `out/`, and Cloudflare
+Workers serves those files as static assets (`wrangler.jsonc`), with `out/404.html` for unknown URLs.
+There is no server code.
+
+On Cloudflare, the Worker is connected to this GitHub repository and deploys on every push to `main`:
+
+- Build command: `pnpm build`
+- Deploy command: `npx wrangler deploy`
+- Build variable: `SITE_URL`
+
+To try the production build locally: `pnpm build && npx wrangler dev`.
+
+At least one published (non-draft) post is needed: a static export can't build `/posts/[slug]` with no
+posts.
+
 Set `SITE_URL` to the site's public address, e.g. `https://example.com`. It is used for absolute links in
 the RSS feed, the sitemap and page metadata. Without it the build falls back to Vercel's production domain
 (`VERCEL_PROJECT_PRODUCTION_URL`), then to `http://localhost:3000`.
@@ -79,6 +94,7 @@ app/
   projects/           ~/projects
   not-found.tsx       404, shown as a failed cd
   rss.xml/, sitemap.ts, robots.ts
+wrangler.jsonc        Cloudflare: serve out/ as static assets
   _components/        shared components
 content/posts/        the posts (MDX)
 lib/                  site data, posts, headings, agent replies

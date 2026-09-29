@@ -1,0 +1,12 @@
+// Cloudflare Workers: serve the static export in out/ (built by `pnpm build`). No server code.
+{
+  "name": "blog",
+  "compatibility_date": "2026-09-29",
+  "assets": {
+    "directory": "./out",
+    // Unknown URLs get out/404.html (the "failed cd" page) with a 404 status
+    "not_found_handling": "404-page",
+    // /posts/hello-world serves posts/hello-world.html
+    "html_handling": "auto-trailing-slash"
+  }
+}
