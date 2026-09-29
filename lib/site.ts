@@ -8,7 +8,7 @@ export const site = {
   host: "blog",
   // Shown under `fastfetch` on the home page, by the agent, in the RSS feed and as the page description
   intro:
-    "一块自留地，放些做过的东西，和一些技术笔记。",
+    "一块自留地，放些做过的东西和碎碎念。",
   // Lines of `fastfetch` on the home page, before Uptime and Links
   profile: [
     { key: "Role", value: "学生" },
