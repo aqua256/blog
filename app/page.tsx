@@ -19,8 +19,8 @@ const link = "text-link underline-offset-3 hover:underline";
  * The home directory:
  *
  *   ~ $ fastfetch
- *      ▀▀▀▀▀▀▀▀   aqua256@blog
- *      ▀▀▀▀▀▀▀▀   ────────────
+ *      ▀▀▀▀▀▀▀▀   aqua256
+ *      ▀▀▀▀▀▀▀▀   ───────
  *      ▀▀▀▀▀▀▀▀   Role     学生
  *      ▀▀▀▀▀▀▀▀   Skills   TypeScript
  *      (avatar)   Uptime   since 2026-09-29
@@ -38,7 +38,6 @@ const link = "text-link underline-offset-3 hover:underline";
 export default async function HomePage() {
   const posts = await getPosts();
   const first = posts.at(-1);
-  const login = `${site.user}@${site.host}`;
 
   const info: { key: string; value: React.ReactNode }[] = [
     ...site.profile,
@@ -67,13 +66,11 @@ export default async function HomePage() {
               <div className="flex items-start gap-8 max-[560px]:flex-col max-[560px]:gap-5">
                 <AvatarArt label={`${site.name} 的头像`} />
                 <div className="min-w-0">
-                  <h1 className="print-line" style={nth(0)}>
-                    <span className="font-bold text-prompt">{site.user}</span>
-                    <span className="text-dim">@</span>
-                    <span className="font-bold text-prompt">{site.host}</span>
+                  <h1 className="print-line font-bold text-prompt" style={nth(0)}>
+                    {site.user}
                   </h1>
                   <p aria-hidden className="print-line text-dim" style={nth(1)}>
-                    {"─".repeat(login.length)}
+                    {"─".repeat(site.user.length)}
                   </p>
                   <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4">
                     {info.map(({ key, value }, i) => (
