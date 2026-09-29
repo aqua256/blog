@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Recursive } from "next/font/google";
+import { getPosts } from "@/lib/posts";
 import { site, siteUrl } from "@/lib/site";
+import { AgentConsole } from "./_components/agent-console";
+import { SiteFooter } from "./_components/site-footer";
+import { SiteHeader } from "./_components/site-header";
 import "./globals.css";
 import { Providers } from "./providers";
 
@@ -34,7 +38,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+/** Terminal-style chrome for every page of the site, including the 404 page. */
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // What the agent needs to know about the posts: enough to list them and summarize the current one
+  const posts = (await getPosts()).map(({ slug, title, headings }) => ({ slug, title, headings }));
+
   return (
     <html
       lang="zh-CN"
@@ -42,7 +50,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <Providers>{children}</Providers>
+        <Providers>
+          {/* On a wrapper rather than <body>, where the scaffold's unlayered body styles would win */}
+          <div className="term flex flex-1 flex-col bg-paper font-term text-ui text-ink selection:bg-faint">
+            <AgentConsole posts={posts}>
+              <SiteHeader />
+              <div className="flex-1">{children}</div>
+              <SiteFooter />
+            </AgentConsole>
+          </div>
+        </Providers>
       </body>
     </html>
   );
