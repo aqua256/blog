@@ -22,8 +22,8 @@ const link = "text-link underline-offset-3 hover:underline";
  *      ▀▀▀▀▀▀▀▀   aqua256@blog
  *      ▀▀▀▀▀▀▀▀   ────────────
  *      ▀▀▀▀▀▀▀▀   Role     后端开发工程师 · 学生
- *      ▀▀▀▀▀▀▀▀   Posts    1 · latest Hello, world
- *      (avatar)   …
+ *      ▀▀▀▀▀▀▀▀   Uptime   since 2026-09-29
+ *      (avatar)   Links    linkedin · github · rss
  *                 ███ ███ ███ ███ ███ ███ ███ ███
  *      <a few lines about Aqua256>
  *
@@ -36,37 +36,12 @@ const link = "text-link underline-offset-3 hover:underline";
  */
 export default async function HomePage() {
   const posts = await getPosts();
-  const latest = posts.at(0);
   const first = posts.at(-1);
   const login = `${site.user}@${site.host}`;
 
   const info: { key: string; value: React.ReactNode }[] = [
     ...site.profile,
-    ...(latest && first
-      ? [
-          {
-            key: "Posts",
-            value: (
-              <>
-                {posts.length} · latest{" "}
-                <Link href={`/posts/${latest.slug}`} className={link}>
-                  {latest.title}
-                </Link>
-              </>
-            ),
-          },
-          { key: "Uptime", value: `since ${first.date}` },
-        ]
-      : []),
-    {
-      key: "Theme",
-      value: (
-        <>
-          Catppuccin <span className="dark:hidden">Latte</span>
-          <span className="hidden dark:inline">Mocha</span>
-        </>
-      ),
-    },
+    ...(first ? [{ key: "Uptime", value: `since ${first.date}` }] : []),
     {
       key: "Links",
       value: site.social.map(({ label, href }, i) => (
