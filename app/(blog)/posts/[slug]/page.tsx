@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAdjacentPosts, getPost, getPosts } from "@/lib/posts";
+import { PostOutline } from "../../_components/post-outline";
 import { PostPager } from "../../_components/post-pager";
 import { PromptLine } from "../../_components/prompt-line";
 
@@ -39,7 +40,7 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
     <main className="px-(--gutter) pt-12 pb-18">
       {/* Same width as the header; the second column is kept free for the outline on wide screens. */}
       <div className="page-width mx-auto grid grid-cols-[minmax(0,var(--col))] gap-x-18 min-[1180px]:grid-cols-[minmax(0,var(--col))_220px]">
-        <article>
+        <article id="top" className="scroll-mt-20">
           <PromptLine cwd="~/posts" command="cat" args={`${slug}.mdx`} />
 
           <div className="post-file">
@@ -65,6 +66,12 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
           <p className="mt-12 text-small text-dim">(END)</p>
           <PostPager older={older} newer={newer} />
         </article>
+
+        {post.headings.length > 0 && (
+          <aside className="hidden min-[1180px]:block">
+            <PostOutline headings={post.headings} />
+          </aside>
+        )}
       </div>
     </main>
   );

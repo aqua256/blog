@@ -276,6 +276,7 @@ body {
   }
 
   .post-body h2 {
+    scroll-margin-top: 80px; /* clear the sticky header when jumped to */
     margin-top: 56px;
     margin-bottom: 14px;
     font-size: var(--fs-h2);

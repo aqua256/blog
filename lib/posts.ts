@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { MDXContent } from "mdx/types";
+import { extractHeadings, type Heading } from "./headings";
 
 /** What each post declares with `export const metadata = { ... }` at the top of its .mdx file. */
 export type PostMetadata = {
@@ -19,6 +20,8 @@ export type PostSummary = PostMetadata & {
 
 export type Post = PostSummary & {
   Content: MDXContent;
+  /** The `##` sections, for the outline */
+  headings: Heading[];
 };
 
 const POSTS_DIR = path.join(process.cwd(), "content", "posts");
@@ -37,8 +40,7 @@ async function listSlugs(): Promise<string[]> {
  * Rough reading time from the raw source, skipping the metadata export and import/export lines.
  * CJK characters and English words are counted separately, then added up.
  */
-async function readingMinutes(slug: string): Promise<number> {
-  const source = await fs.readFile(path.join(POSTS_DIR, `${slug}.mdx`), "utf8");
+function readingMinutes(source: string): number {
   const prose = source
     .replace(/^export const metadata = \{[\s\S]*?\};?\s*$/m, "")
     .replace(/^(import|export) .*$/gm, "");
@@ -53,11 +55,13 @@ async function loadPost(slug: string): Promise<Post> {
     default: MDXContent;
     metadata: PostMetadata;
   };
+  const source = await fs.readFile(path.join(POSTS_DIR, `${slug}.mdx`), "utf8");
   return {
     ...mod.metadata,
     slug,
-    readingMinutes: await readingMinutes(slug),
+    readingMinutes: readingMinutes(source),
     Content: mod.default,
+    headings: extractHeadings(source),
   };
 }
 
