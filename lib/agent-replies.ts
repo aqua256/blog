@@ -80,7 +80,9 @@ function contact(): Segment[] {
 }
 
 const REPLIES: Record<Topic, (context: Context) => Segment[]> = {
-  about: () => [site.intro],
+  // The same facts as `fastfetch` on the home page, then the introduction
+  about: () =>
+    lines([[`${site.givenName}:`], ...site.profile.map(({ key, value }) => [`${key}: ${value}`]), [site.intro]]),
   building,
   summary,
   writing,
