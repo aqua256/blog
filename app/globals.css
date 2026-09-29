@@ -36,6 +36,7 @@
   --ctp-mantle: #e6e9ef;
   --ctp-crust: #dce0e8;
   --ctp-text: #4c4f69;
+  --ctp-subtext1: #5c5f77;
   --ctp-subtext0: #6c6f85;
   --ctp-overlay2: #7c7f93;
   --ctp-surface1: #bcc0cc;
@@ -44,14 +45,24 @@
   --ctp-rosewater: #dc8a78;
   --ctp-red: #d20f39;
 
+  /*
+   * Text colors. Latte's subtext0, blue, mauve and red fall just short of WCAG AA (4.5:1) for small text
+   * on base or mantle, so secondary text uses subtext1 and the accents are darkened by the least that
+   * passes on both backgrounds.
+   */
+  --role-dim: var(--ctp-subtext1);
+  --role-link: color-mix(in srgb, var(--ctp-blue), black 7%);
+  --role-prompt: color-mix(in srgb, var(--ctp-mauve), black 2%);
+  --role-err: color-mix(in srgb, var(--ctp-red), black 2%);
+
   /* Syntax roles. Light stays restrained: Latte's other accents are too low-contrast for small text. */
-  --role-cmd: var(--ctp-blue);
+  --role-cmd: var(--role-link);
   --role-arg: var(--ctp-text);
   --role-str: var(--ctp-text);
-  --role-tag: var(--ctp-mauve);
+  --role-tag: var(--role-prompt);
   --role-mark-list: var(--ctp-mauve);
   --role-mark-quote: var(--ctp-mauve);
-  --role-code: var(--ctp-mauve);
+  --role-code: var(--role-prompt);
   --role-quote-hl: color-mix(in srgb, var(--ctp-blue) 16%, transparent);
 
   /* Type scale: title / section / lede+quote / body / interface / secondary / keycap */
@@ -86,6 +97,12 @@
   --ctp-blue: #89b4fa;
   --ctp-rosewater: #f5e0dc;
   --ctp-red: #f38ba8;
+
+  /* Mocha's text colors are all well above 4.5:1 as they are */
+  --role-dim: var(--ctp-subtext0);
+  --role-link: var(--ctp-blue);
+  --role-prompt: var(--ctp-mauve);
+  --role-err: var(--ctp-red);
 
   /* Mocha gets more color */
   --role-cmd: #a6e3a1;
@@ -124,12 +141,12 @@
   --color-paper-2: var(--ctp-mantle);
   --color-crust: var(--ctp-crust);
   --color-ink: var(--ctp-text);
-  --color-dim: var(--ctp-subtext0);
+  --color-dim: var(--role-dim);
   --color-faint: var(--ctp-surface1);
-  --color-prompt: var(--ctp-mauve);
-  --color-link: var(--ctp-blue);
+  --color-prompt: var(--role-prompt);
+  --color-link: var(--role-link);
   --color-cursor: var(--ctp-rosewater);
-  --color-err: var(--ctp-red); /* error messages, e.g. on the 404 page */
+  --color-err: var(--role-err); /* error messages, e.g. on the 404 page */
   --color-cmd: var(--role-cmd);
   --color-arg: var(--role-arg);
   --color-str: var(--role-str);
