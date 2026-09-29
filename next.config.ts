@@ -13,9 +13,14 @@ const withMDX = createMDX({
   options: {
     // GitHub Flavored Markdown: tables, ~~strikethrough~~, task lists, footnotes, bare URLs as links
     remarkPlugins: ["remark-gfm"],
-    // Syntax highlighting at build time, in Catppuccin. Colors are written as light-dark(latte, mocha),
-    // so they follow the page's color-scheme, which next-themes sets from THEME=.
     rehypePlugins: [
+      // Unique ids on every heading (a repeated title becomes `title-1`), then the headings exported
+      // from each post as `tableOfContents`, which the outline and the agent read (lib/headings.ts)
+      "rehype-slug",
+      "@stefanprobst/rehype-extract-toc",
+      "@stefanprobst/rehype-extract-toc/mdx",
+      // Syntax highlighting at build time, in Catppuccin. Colors are written as light-dark(latte, mocha),
+      // so they follow the page's color-scheme, which next-themes sets from THEME=.
       [
         "@shikijs/rehype",
         {

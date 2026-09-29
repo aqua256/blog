@@ -1,7 +1,8 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { MDXContent } from "mdx/types";
-import { extractHeadings, stripInline, type Heading } from "./headings";
+import type { Toc } from "@stefanprobst/rehype-extract-toc";
+import { sectionsOf, type Heading } from "./headings";
 
 /** What each post declares with `export const metadata = { ... }` at the top of its .mdx file. */
 export type PostMetadata = {
@@ -39,6 +40,15 @@ async function listSlugs(): Promise<string[]> {
   return files.filter((file) => file.endsWith(".mdx")).map((file) => file.slice(0, -".mdx".length));
 }
 
+/** Markdown inline syntax → the text it renders as. */
+function stripInline(markdown: string): string {
+  return markdown
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1") // links and images → their text
+    .replace(/`([^`]*)`/g, "$1") // inline code
+    .replace(/(\*\*|__|\*|_|~~)(.+?)\1/g, "$2") // bold, italic, strikethrough
+    .trim();
+}
+
 /** The written text of an MDX source: without the metadata export, import/export lines and code blocks. */
 function proseOf(source: string): string {
   return source
@@ -72,6 +82,7 @@ async function loadPost(slug: string): Promise<Post> {
   const mod = (await import(`@/content/posts/${slug}.mdx`)) as {
     default: MDXContent;
     metadata: PostMetadata;
+    tableOfContents: Toc;
   };
   const source = await fs.readFile(path.join(POSTS_DIR, `${slug}.mdx`), "utf8");
   return {
@@ -80,7 +91,7 @@ async function loadPost(slug: string): Promise<Post> {
     description: mod.metadata.description ?? firstParagraph(source),
     readingMinutes: readingMinutes(source),
     Content: mod.default,
-    headings: extractHeadings(source),
+    headings: sectionsOf(mod.tableOfContents),
   };
 }
 

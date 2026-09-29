@@ -38,7 +38,8 @@ The first paragraph is shown larger, as the lede.
 ```
 
 - `##` headings become the outline beside the post on wide screens, and the agent lists them when asked
-  to summarize the post. Two sections with the same title share one link.
+  to summarize the post. Every heading gets an id to link to (`#title`); a repeated title becomes
+  `#title-1`, `#title-2`, as on GitHub.
 - GitHub Flavored Markdown works: tables, `~~strikethrough~~`, task lists (`- [x]`) and footnotes (`[^1]`).
 - Fenced code blocks with a language (```` ```ts ````) are highlighted at build time.
 - Reading time is estimated from the prose (code blocks are skipped).
