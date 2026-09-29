@@ -64,8 +64,7 @@ function contact(): Segment[] {
 }
 
 const REPLIES: Record<Topic, (context: Context) => Segment[]> = {
-  // TODO: Aqua256's own introduction
-  about: () => ["Aqua256 hasn't written this part yet. For now, the posts in ", { code: "~/posts" }, " say more than I can."],
+  about: () => [site.intro],
   building: () => [
     "Right now Aqua256 is building this blog, one small step at a time. Other work will live in ",
     { code: "~/projects" },

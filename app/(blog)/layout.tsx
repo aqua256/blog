@@ -3,7 +3,7 @@ import { AgentConsole } from "./_components/agent-console";
 import { SiteFooter } from "./_components/site-footer";
 import { SiteHeader } from "./_components/site-header";
 
-/** Terminal-style chrome for the blog pages. The root page keeps its own look. */
+/** Terminal-style chrome for every page of the site. */
 export default async function BlogLayout({ children }: { children: React.ReactNode }) {
   // What the agent needs to know about the posts: enough to list them and summarize the current one
   const posts = (await getPosts()).map(({ slug, title, headings }) => ({ slug, title, headings }));
