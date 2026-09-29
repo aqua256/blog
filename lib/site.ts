@@ -8,7 +8,7 @@ export const site = {
   host: "blog",
   // Shown under `fastfetch` on the home page, by the agent, in the RSS feed and as the page description
   intro:
-    "这个博客主要写我做东西的过程：一个想法怎么一步步变成能跑起来的代码，中间走过哪些弯路、做过哪些取舍；其余的是读文档、踩坑时顺手记下的技术笔记。",
+    "一块自留地，放些做过的东西，和一些技术笔记。",
   // Lines of `fastfetch` on the home page, before Uptime and Links
   profile: [
     { key: "Role", value: "学生" },
