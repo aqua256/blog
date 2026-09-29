@@ -3,6 +3,7 @@ import { Recursive } from "next/font/google";
 import { getPosts } from "@/lib/posts";
 import { site, siteUrl } from "@/lib/site";
 import { AgentConsole } from "./_components/agent-console";
+import { DeferredStylesheet } from "./_components/deferred-stylesheet";
 import { SiteFooter } from "./_components/site-footer";
 import { SiteHeader } from "./_components/site-header";
 import "./globals.css";
@@ -21,7 +22,8 @@ const recursive = Recursive({
 
 /**
  * Chinese text: LXGW WenKai (simplified), cut into ~220 unicode-range slices so a page only downloads
- * the characters it uses. Pinned version; globals.css points at the same version for punctuation.
+ * the characters it uses. Loaded without blocking the first paint, since it comes from a CDN.
+ * Pinned version; globals.css points at the same version for punctuation.
  */
 const LXGW_WENKAI_CSS =
   "https://cdn.jsdelivr.net/npm/@callmebill/lxgw-wenkai-web@1.522.0/lxgwwenkai-regular/result.css";
@@ -51,10 +53,8 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       className={`${recursive.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <head>
-        <link rel="stylesheet" href={LXGW_WENKAI_CSS} />
-      </head>
       <body className="term flex min-h-full flex-col bg-paper font-term text-ui text-ink selection:bg-faint">
+        <DeferredStylesheet href={LXGW_WENKAI_CSS} />
         <Providers>
           <AgentConsole posts={posts}>
             <SiteHeader />
