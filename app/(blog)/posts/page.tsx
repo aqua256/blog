@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getPosts } from "@/lib/posts";
+import { PostList } from "../_components/post-list";
 import { PromptLine } from "../_components/prompt-line";
 
 export const metadata: Metadata = {
@@ -25,32 +25,7 @@ export default async function PostsPage() {
 
           {/* Command output is indented one gutter, like the post page */}
           <div className="ml-12 max-[560px]:ml-6.5">
-            {posts.length === 0 ? (
-              <p className="text-dim">total 0</p>
-            ) : (
-              <ul className="flex flex-col gap-3 max-[560px]:gap-5">
-                {posts.map((post) => (
-                  <li
-                    key={post.slug}
-                    className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-baseline gap-x-6 max-[560px]:grid-cols-[1fr_auto] max-[560px]:gap-y-1"
-                  >
-                    <time dateTime={post.date} className="text-dim tabular-nums">
-                      {post.date}
-                    </time>
-                    <Link
-                      href={`/posts/${post.slug}`}
-                      className="text-link underline-offset-3 hover:underline max-[560px]:col-span-2 max-[560px]:row-start-2"
-                    >
-                      {post.title}
-                    </Link>
-                    <span className="whitespace-nowrap text-right text-dim max-[560px]:col-start-2 max-[560px]:row-start-1">
-                      {post.readingMinutes} min
-                      {post.draft && " · draft"}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
+            <PostList posts={posts} />
           </div>
         </section>
       </div>
