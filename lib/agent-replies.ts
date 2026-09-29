@@ -1,4 +1,5 @@
 import type { Heading } from "./headings";
+import { projects } from "./projects";
 import { site } from "./site";
 
 /**
@@ -59,17 +60,25 @@ function writing({ posts, current }: Context): Segment[] {
   ]);
 }
 
+function building(): Segment[] {
+  if (projects.length === 0) return ["Nothing in ", { code: "~/projects" }, " yet."];
+  return lines([
+    ["What Aqua256 is building:"],
+    ...projects.map(({ name, description, href }): Segment[] => [
+      href ? { href, text: `${name}/` } : { code: `${name}/` },
+      ` ${description}`,
+    ]),
+    ["All of it lives in ", { href: "/projects", text: "~/projects" }, "."],
+  ]);
+}
+
 function contact(): Segment[] {
   return lines([["The best places to reach Aqua256:"], ...site.social.map(({ label, href }) => [{ href, text: label }])]);
 }
 
 const REPLIES: Record<Topic, (context: Context) => Segment[]> = {
   about: () => [site.intro],
-  building: () => [
-    "Right now Aqua256 is building this blog, one small step at a time. Other work will live in ",
-    { code: "~/projects" },
-    ".",
-  ],
+  building,
   summary,
   writing,
   contact,
