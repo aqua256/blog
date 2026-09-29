@@ -11,8 +11,7 @@ export const site = {
   ],
   social: [
     { label: "linkedin", href: "https://www.linkedin.com/in/sheng-xiao-b20846367" },
-    // TODO: the GitHub profile URL
-    { label: "github", href: "#" },
+    { label: "github", href: "https://github.com/aqua256/blog" },
     { label: "rss", href: "/rss.xml" },
   ],
 } as const;

@@ -11,12 +11,12 @@ export type Project = {
   links?: { label: string; href: string }[];
 };
 
-// TODO: add the source link once the repository is public
 export const projects: Project[] = [
   {
     name: "blog",
     description: "this site: Next.js, MDX and a scripted agent",
     year: 2026,
     href: "/",
+    links: [{ label: "src", href: "https://github.com/aqua256/blog" }],
   },
 ];
