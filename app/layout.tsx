@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Recursive } from "next/font/google";
+import { Recursive } from "next/font/google";
 import { getPosts } from "@/lib/posts";
 import { site, siteUrl } from "@/lib/site";
 import { AgentConsole } from "./_components/agent-console";
@@ -7,16 +7,6 @@ import { SiteFooter } from "./_components/site-footer";
 import { SiteHeader } from "./_components/site-header";
 import "./globals.css";
 import { Providers } from "./providers";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 const recursive = Recursive({
   variable: "--font-recursive",
@@ -46,19 +36,16 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="zh-CN"
-      className={`${geistSans.variable} ${geistMono.variable} ${recursive.variable} h-full antialiased`}
+      className={`${recursive.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col">
+      <body className="term flex min-h-full flex-col bg-paper font-term text-ui text-ink selection:bg-faint">
         <Providers>
-          {/* On a wrapper rather than <body>, where the scaffold's unlayered body styles would win */}
-          <div className="term flex flex-1 flex-col bg-paper font-term text-ui text-ink selection:bg-faint">
-            <AgentConsole posts={posts}>
-              <SiteHeader />
-              <div className="flex-1">{children}</div>
-              <SiteFooter />
-            </AgentConsole>
-          </div>
+          <AgentConsole posts={posts}>
+            <SiteHeader />
+            <div className="flex-1">{children}</div>
+            <SiteFooter />
+          </AgentConsole>
         </Providers>
       </body>
     </html>
