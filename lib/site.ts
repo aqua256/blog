@@ -1,5 +1,5 @@
 export const site = {
-  /** Full name: page titles, the RSS feed, anywhere people should recognize the author */
+  /** The author's name: page titles, the RSS feed, anywhere people should recognize the author */
   name: "Aqua256",
   /** How the agent refers to the author in a sentence ("What Aqua256 is building") */
   givenName: "Aqua256",

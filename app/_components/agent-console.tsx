@@ -29,7 +29,7 @@ function cwdOf(pathname: string) {
  * A quake-style console that drops down from the top of the page.
  * A modal <dialog> gives focus trapping, Esc to close and focus return for free.
  *
- *   ~/posts $ aqua256-agent                                  [exit]
+ *   ~/posts $ aqua256-agent                                 [exit]
  *   demo · scripted replies
  *   <the conversation, see AgentChat>
  */
