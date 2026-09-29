@@ -74,6 +74,14 @@ export async function getPosts(): Promise<PostSummary[]> {
     .map(({ slug, title, date, tags, draft, readingMinutes }) => ({ slug, title, date, tags, draft, readingMinutes }));
 }
 
+/** The posts right before and after this one in time. */
+export async function getAdjacentPosts(slug: string): Promise<{ older?: PostSummary; newer?: PostSummary }> {
+  const posts = await getPosts();
+  const index = posts.findIndex((post) => post.slug === slug);
+  if (index === -1) return {};
+  return { newer: posts[index - 1], older: posts[index + 1] };
+}
+
 export async function getPost(slug: string): Promise<Post | null> {
   if (!(await listSlugs()).includes(slug)) return null;
   const post = await loadPost(slug);

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getPost, getPosts } from "@/lib/posts";
+import { getAdjacentPosts, getPost, getPosts } from "@/lib/posts";
+import { PostPager } from "../../_components/post-pager";
+import { PromptLine } from "../../_components/prompt-line";
 
 export async function generateStaticParams() {
   const posts = await getPosts();
@@ -15,23 +17,55 @@ export async function generateMetadata(props: PageProps<"/posts/[slug]">): Promi
   return post ? { title: post.title } : {};
 }
 
-// Page chrome (command line, meta, end-of-post navigation) comes in the next step.
+/**
+ * The post as a `cat` of its .mdx file:
+ *
+ *   ~/writing $ cat hello-world.mdx
+ *      # Title
+ *        2026-09-29 · 2 min read · #tag
+ *        body…
+ *   (END)
+ *   ← older                     newer →
+ */
 export default async function PostPage(props: PageProps<"/posts/[slug]">) {
   const { slug } = await props.params;
   const post = await getPost(slug);
   if (!post) notFound();
 
+  const { older, newer } = await getAdjacentPosts(slug);
   const { Content } = post;
+
   return (
-    <main className="px-(--gutter) py-12">
-      <article className="page-width mx-auto">
-        <div className="post-file">
-          <h1 className="post-title">{post.title}</h1>
-          <div className="post-body">
-            <Content />
+    <main className="px-(--gutter) pt-12 pb-18">
+      {/* Same width as the header; the second column is kept free for the outline on wide screens. */}
+      <div className="page-width mx-auto grid grid-cols-[minmax(0,var(--col))] gap-x-18 min-[1180px]:grid-cols-[minmax(0,var(--col))_220px]">
+        <article>
+          <PromptLine cwd="~/writing" command="cat" args={`${slug}.mdx`} />
+
+          <div className="post-file">
+            <h1 className="post-title">{post.title}</h1>
+            <p className="mb-9 text-small text-dim">
+              <time dateTime={post.date}>{post.date}</time> · {post.readingMinutes} min read
+              {post.tags && post.tags.length > 0 && (
+                <>
+                  {" · "}
+                  {post.tags.map((tag) => (
+                    <span key={tag} className="whitespace-nowrap text-tag">
+                      #{tag}{" "}
+                    </span>
+                  ))}
+                </>
+              )}
+            </p>
+            <div className="post-body">
+              <Content />
+            </div>
           </div>
-        </div>
-      </article>
+
+          <p className="mt-12 text-small text-dim">(END)</p>
+          <PostPager older={older} newer={newer} />
+        </article>
+      </div>
     </main>
   );
 }

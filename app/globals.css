@@ -197,7 +197,7 @@ body {
 
   .post-title {
     position: relative;
-    margin: 0 0 36px;
+    margin: 0 0 14px;
     font-size: var(--fs-title);
     line-height: 1.1;
     letter-spacing: -0.015em;
