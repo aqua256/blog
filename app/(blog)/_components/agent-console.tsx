@@ -2,6 +2,8 @@
 
 import { usePathname } from "next/navigation";
 import { createContext, useContext, useEffect, useEffectEvent, useRef } from "react";
+import type { AgentPost } from "@/lib/agent-replies";
+import { AgentChat } from "./agent-chat";
 
 const OpenAgentContext = createContext<(() => void) | null>(null);
 
@@ -29,9 +31,9 @@ function cwdOf(pathname: string) {
  *
  *   ~/posts $ aqua256-agent                                  [exit]
  *   demo · scripted replies
- *   visitor $ _
+ *   <the conversation, see AgentChat>
  */
-export function AgentConsole({ children }: { children: React.ReactNode }) {
+export function AgentConsole({ posts, children }: { posts: AgentPost[]; children: React.ReactNode }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const cwd = cwdOf(usePathname());
@@ -56,15 +58,6 @@ export function AgentConsole({ children }: { children: React.ReactNode }) {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
-
-  function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const input = inputRef.current;
-    if (!input) return;
-    const text = input.value.trim();
-    input.value = "";
-    if (/^(exit|quit)$/i.test(text)) close();
-  }
 
   return (
     <OpenAgentContext value={open}>
@@ -97,24 +90,7 @@ export function AgentConsole({ children }: { children: React.ReactNode }) {
               </div>
               <p className="mb-4 text-small text-dim">demo · scripted replies</p>
 
-              <form
-                onSubmit={onSubmit}
-                autoComplete="off"
-                className="flex items-center gap-x-2.5 border-y border-faint py-2.5 font-semibold focus-within:border-prompt"
-              >
-                <label htmlFor="agent-input" className="whitespace-nowrap text-dim">
-                  visitor $
-                </label>
-                <input
-                  ref={inputRef}
-                  id="agent-input"
-                  type="text"
-                  maxLength={200}
-                  enterKeyHint="send"
-                  placeholder="ask anything about Aqua256"
-                  className="min-w-[10ch] flex-1 bg-transparent py-1 font-medium text-ink caret-cursor outline-none placeholder:font-normal placeholder:text-dim/80"
-                />
-              </form>
+              <AgentChat posts={posts} inputRef={inputRef} onExit={close} />
             </div>
           </div>
         </div>

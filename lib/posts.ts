@@ -16,12 +16,12 @@ export type PostMetadata = {
 export type PostSummary = PostMetadata & {
   slug: string;
   readingMinutes: number;
+  /** The `##` sections, for the outline and the agent's summary */
+  headings: Heading[];
 };
 
 export type Post = PostSummary & {
   Content: MDXContent;
-  /** The `##` sections, for the outline */
-  headings: Heading[];
 };
 
 const POSTS_DIR = path.join(process.cwd(), "content", "posts");
@@ -75,7 +75,15 @@ export async function getPosts(): Promise<PostSummary[]> {
   return posts
     .filter(isVisible)
     .sort((a, b) => b.date.localeCompare(a.date))
-    .map(({ slug, title, date, tags, draft, readingMinutes }) => ({ slug, title, date, tags, draft, readingMinutes }));
+    .map(({ slug, title, date, tags, draft, readingMinutes, headings }) => ({
+      slug,
+      title,
+      date,
+      tags,
+      draft,
+      readingMinutes,
+      headings,
+    }));
 }
 
 /** The posts right before and after this one in time. */
