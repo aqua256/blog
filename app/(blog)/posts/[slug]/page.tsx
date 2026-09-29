@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAdjacentPosts, getPost, getPosts } from "@/lib/posts";
+import { AskButton, AskCommand, Key } from "../../_components/ask-button";
 import { PostOutline } from "../../_components/post-outline";
 import { PostPager } from "../../_components/post-pager";
 import { PromptLine } from "../../_components/prompt-line";
@@ -25,7 +26,7 @@ export async function generateMetadata(props: PageProps<"/posts/[slug]">): Promi
  *      # Title
  *        2026-09-29 · 2 min read · #tag
  *        body…
- *   (END)
+ *   (END)  press / to ask about this post
  *   ← older                     newer →
  */
 export default async function PostPage(props: PageProps<"/posts/[slug]">) {
@@ -63,13 +64,27 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
             </div>
           </div>
 
-          <p className="mt-12 text-small text-dim">(END)</p>
+          <p className="mt-12 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-small text-dim">
+            (END)
+            <AskButton className="text-left">
+              {/* Phones and tablets have no / key */}
+              <span className="pointer-coarse:hidden">
+                press <Key>/</Key> to
+              </span>
+              <span className="hidden pointer-coarse:inline">tap to</span> <AskCommand /> about this post
+            </AskButton>
+          </p>
           <PostPager older={older} newer={newer} />
         </article>
 
         {post.headings.length > 0 && (
           <aside className="hidden min-[1180px]:block">
-            <PostOutline headings={post.headings} />
+            <div className="sticky top-24">
+              <PostOutline headings={post.headings} />
+              <AskButton className="mt-5 text-small">
+                <AskCommand /> the agent <Key>/</Key>
+              </AskButton>
+            </div>
           </aside>
         )}
       </div>

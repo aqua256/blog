@@ -41,7 +41,7 @@ export function PostOutline({ headings }: { headings: Heading[] }) {
   const items = [{ id: TOP, text: "top" }, ...headings];
 
   return (
-    <nav aria-label="Outline" className="sticky top-24 text-small">
+    <nav aria-label="Outline" className="text-small">
       <h2 className="mb-3 font-semibold text-dim">outline</h2>
       <ol className="flex flex-col gap-2">
         {items.map(({ id, text }) => {
