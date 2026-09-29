@@ -179,3 +179,132 @@ body {
   --text-small: var(--fs-small);
   --text-key: var(--fs-key);
 }
+
+/*
+ * Post body — the HTML that MDX renders.
+ * Markdown syntax (##, -, 1., >) is drawn with ::before and hangs left of the text edge,
+ * so every line of prose starts on the same vertical line.
+ */
+@layer components {
+  .post-body {
+    font-size: var(--fs-body);
+    line-height: 1.78;
+    font-weight: 380;
+    font-variation-settings: "MONO" 0, "CASL" 0.3;
+  }
+
+  .post-body > * {
+    margin-block: 0 22px;
+  }
+
+  /* The opening paragraph reads as a lede */
+  .post-body > p:first-child {
+    font-size: var(--fs-lede);
+    line-height: 1.7;
+    font-weight: 420;
+  }
+
+  .post-body strong {
+    font-weight: 700;
+  }
+
+  .post-body a {
+    color: var(--color-link);
+    text-underline-offset: 3px;
+  }
+
+  .post-body code {
+    font-variation-settings: "MONO" 1, "CASL" 1;
+    font-size: 0.92em;
+    color: var(--color-code);
+  }
+
+  .post-body h2,
+  .post-body li,
+  .post-body blockquote {
+    position: relative;
+  }
+
+  .post-body h2::before,
+  .post-body li::before,
+  .post-body blockquote::before {
+    position: absolute;
+    right: 100%;
+    top: 0;
+    padding-right: 0.45em;
+    white-space: nowrap;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings: "MONO" 1, "CASL" 1;
+    opacity: 0.7;
+    user-select: none;
+  }
+
+  .post-body h2 {
+    margin-top: 56px;
+    margin-bottom: 14px;
+    font-size: var(--fs-h2);
+    line-height: 1.3;
+    font-weight: 750;
+    font-variation-settings: "MONO" 1, "CASL" 1;
+    text-wrap: balance;
+  }
+
+  .post-body h2::before {
+    content: "##";
+    color: var(--color-prompt);
+    font-size: 0.82em;
+    line-height: calc(1.3 / 0.82);
+  }
+
+  .post-body ul,
+  .post-body ol {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .post-body ol {
+    counter-reset: md-ol;
+  }
+
+  .post-body ul > li::before {
+    content: "-";
+    color: var(--color-mark-list);
+  }
+
+  .post-body ol > li {
+    counter-increment: md-ol;
+  }
+
+  .post-body ol > li::before {
+    content: counter(md-ol) ".";
+    color: var(--color-mark-list);
+  }
+
+  .post-body blockquote {
+    margin-block: 32px;
+    margin-inline: 0;
+    font-size: var(--fs-lede);
+    line-height: 1.6;
+    font-weight: 450;
+    font-variation-settings: "MONO" 0, "CASL" 1, "slnt" -8;
+  }
+
+  .post-body blockquote::before {
+    content: ">";
+    color: var(--color-mark-quote);
+    font-size: var(--fs-body);
+    top: 0.15em;
+  }
+
+  .post-body blockquote p {
+    display: inline;
+    margin: 0;
+    background: linear-gradient(transparent 62%, var(--color-quote-hl) 62%);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+}
