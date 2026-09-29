@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="en"
+      lang="zh-CN"
       className={`${geistSans.variable} ${geistMono.variable} ${recursive.variable} h-full antialiased`}
       suppressHydrationWarning
     >
