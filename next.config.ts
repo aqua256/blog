@@ -11,6 +11,19 @@ const withMDX = createMDX({
   options: {
     // GitHub Flavored Markdown: tables, ~~strikethrough~~, task lists, footnotes, bare URLs as links
     remarkPlugins: ["remark-gfm"],
+    // Syntax highlighting at build time, in Catppuccin. Colors are written as light-dark(latte, mocha),
+    // so they follow the page's color-scheme, which next-themes sets from THEME=.
+    rehypePlugins: [
+      [
+        "@shikijs/rehype",
+        {
+          themes: { light: "catppuccin-latte", dark: "catppuccin-mocha" },
+          defaultColor: "light-dark()",
+          colorsRendering: "none",
+          addLanguageClass: true,
+        },
+      ],
+    ],
   },
 });
 

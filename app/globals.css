@@ -270,7 +270,8 @@ body {
 
   .post-body h2::before,
   .post-body li::before,
-  .post-body blockquote::before {
+  .post-body blockquote::before,
+  .post-body .code-block::before {
     position: absolute;
     right: 100%;
     top: 0;
@@ -350,6 +351,61 @@ body {
     background: linear-gradient(transparent 62%, var(--color-quote-hl) 62%);
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
+  }
+
+  /*
+   * Code blocks, highlighted by @shikijs/rehype. The colors come inline as light-dark(latte, mocha);
+   * only the background is replaced, so blocks sit a shade apart from the page.
+   */
+  .post-body .code-block {
+    position: relative;
+    margin-block: 28px;
+  }
+
+  .post-body .code-block::before {
+    content: "```";
+    top: 13px;
+    color: var(--color-code);
+    font-size: var(--fs-small);
+    line-height: 1.65;
+  }
+
+  .post-body pre {
+    margin: 0;
+    padding: 12px 16px;
+    overflow-x: auto;
+    border: 1px solid var(--color-faint);
+    border-radius: 6px;
+    background-color: var(--color-paper-2) !important; /* beats Shiki's inline theme background */
+    font-size: var(--fs-ui);
+    line-height: 1.65;
+    font-weight: 400;
+    font-variation-settings: "MONO" 1, "CASL" 0;
+  }
+
+  .post-body pre:focus-visible {
+    outline: 2px solid var(--color-prompt);
+    outline-offset: 2px;
+  }
+
+  .post-body pre code {
+    font-size: inherit;
+    font-variation-settings: inherit;
+    color: inherit;
+  }
+
+  /* The language sits just above the block's top-right corner, where it never covers code */
+  .post-body .code-block[data-language]::after {
+    content: attr(data-language);
+    position: absolute;
+    bottom: 100%;
+    right: 2px;
+    padding-bottom: 2px;
+    line-height: 1.4;
+    color: var(--color-dim);
+    font-size: var(--fs-small);
+    font-variation-settings: "MONO" 1, "CASL" 1;
+    user-select: none;
   }
 
   /* GitHub Flavored Markdown (remark-gfm) */
@@ -440,8 +496,13 @@ body {
     }
 
     .post-body li::before,
-    .post-body blockquote::before {
+    .post-body blockquote::before,
+    .post-body .code-block::before {
       padding-right: 0.3em;
+    }
+
+    .post-body .code-block::before {
+      font-size: var(--fs-key);
     }
   }
 }

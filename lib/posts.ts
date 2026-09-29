@@ -37,13 +37,14 @@ async function listSlugs(): Promise<string[]> {
 }
 
 /**
- * Rough reading time from the raw source, skipping the metadata export and import/export lines.
+ * Rough reading time from the raw source, skipping the metadata export, import/export lines and code blocks.
  * CJK characters and English words are counted separately, then added up.
  */
 function readingMinutes(source: string): number {
   const prose = source
     .replace(/^export const metadata = \{[\s\S]*?\};?\s*$/m, "")
-    .replace(/^(import|export) .*$/gm, "");
+    .replace(/^(import|export) .*$/gm, "")
+    .replace(/^(```|~~~)[^\n]*\n[\s\S]*?^\1\s*$/gm, ""); // code blocks are scanned, not read
   const cjkChars = prose.match(CJK_CHAR)?.length ?? 0;
   const latinWords = prose.replace(CJK_CHAR, " ").match(LATIN_WORD)?.length ?? 0;
   const minutes = cjkChars / CJK_CHARS_PER_MINUTE + latinWords / WORDS_PER_MINUTE;
