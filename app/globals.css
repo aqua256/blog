@@ -2,8 +2,8 @@
 
 /*
  * Dark mode is driven by data-theme on <html> (Tailwind's documented data-attribute setup).
- * next-themes (app/providers.tsx) always sets it before first paint: the saved choice, or the system preference.
- * The prefers-color-scheme blocks below are only a no-JavaScript fallback.
+ * next-themes (app/providers.tsx) sets it before first paint to "light" or "dark": the saved choice,
+ * or what the system prefers when THEME=system.
  */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
@@ -27,7 +27,8 @@
 }
 
 /*
- * Blog design tokens — Catppuccin Latte (light) / Mocha (dark), switched by data-theme.
+ * Blog design tokens — Catppuccin Latte (light) on :root, Mocha (dark) under [data-theme="dark"],
+ * the pattern in next-themes' docs.
  */
 :root {
   color-scheme: light;
@@ -72,33 +73,6 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --ctp-base: #1e1e2e;
-    --ctp-mantle: #181825;
-    --ctp-crust: #11111b;
-    --ctp-text: #cdd6f4;
-    --ctp-subtext0: #a6adc8;
-    --ctp-overlay2: #9399b2;
-    --ctp-surface1: #45475a;
-    --ctp-mauve: #cba6f7;
-    --ctp-blue: #89b4fa;
-    --ctp-rosewater: #f5e0dc;
-    --ctp-red: #f38ba8;
-
-    /* Mocha gets more color */
-    --role-cmd: #a6e3a1;
-    --role-arg: #fab387;
-    --role-str: #f9e2af;
-    --role-tag: #f5c2e7;
-    --role-mark-list: #94e2d5;
-    --role-mark-quote: #89dceb;
-    --role-code: #fab387;
-    --role-quote-hl: color-mix(in srgb, #f9e2af 20%, transparent);
-  }
-}
-
 :root[data-theme="dark"] {
   color-scheme: dark;
   --ctp-base: #1e1e2e;
@@ -113,6 +87,7 @@
   --ctp-rosewater: #f5e0dc;
   --ctp-red: #f38ba8;
 
+  /* Mocha gets more color */
   --role-cmd: #a6e3a1;
   --role-arg: #fab387;
   --role-str: #f9e2af;
