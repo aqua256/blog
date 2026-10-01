@@ -65,7 +65,7 @@ export default async function HomePage() {
             <div className="ml-12 max-[560px]:ml-6.5">
               <div className="flex items-start gap-8 max-[560px]:flex-col max-[560px]:gap-5">
                 <AvatarArt label={`${site.name} 的头像`} />
-                <div className="min-w-0">
+                <div className="min-w-0 max-w-full">
                   <h1 className="print-line font-bold text-prompt" style={nth(0)}>
                     {site.user}
                   </h1>
@@ -81,8 +81,9 @@ export default async function HomePage() {
                     ))}
                   </dl>
                   <p aria-hidden className="print-line mt-3 flex" style={nth(info.length + 2)}>
+                    {/* Swatches may shrink (clipping their blocks) so the row fits narrow screens */}
                     {SWATCHES.map((name) => (
-                      <span key={name} style={{ color: `var(--ctp-${name})` }}>
+                      <span key={name} className="min-w-0 overflow-clip" style={{ color: `var(--ctp-${name})` }}>
                         ███
                       </span>
                     ))}
