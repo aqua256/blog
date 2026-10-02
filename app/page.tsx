@@ -35,6 +35,8 @@ const link = "text-link underline-offset-3 hover:underline";
  *
  *   ~ $ ask
  *      press / to ask anything about Aqua256
+ *
+ *   ~ $ █
  */
 export default async function HomePage() {
   const posts = await getPosts();
@@ -117,6 +119,8 @@ export default async function HomePage() {
                 <AskHint>anything about {site.givenName}</AskHint>
               </div>
             </section>
+
+            <PromptLine cwd="~" cursor />
           </div>
         </div>
       </main>

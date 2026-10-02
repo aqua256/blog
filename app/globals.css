@@ -153,6 +153,14 @@
   dialog:focus-visible {
     outline: none;
   }
+
+  /* Hover colors ease in rather than snap */
+  a,
+  button {
+    transition-property: color, border-color, text-decoration-color;
+    transition-duration: 150ms;
+    transition-timing-function: ease-out;
+  }
 }
 
 /* Terminal chrome: monospace, casual */
@@ -555,6 +563,45 @@
   }
 }
 
+/* Terminal motion: the block cursor of an idle prompt, and a command typing itself out */
+@layer components {
+  .block-cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1.2em;
+    margin-left: 0.05em;
+    vertical-align: -0.25em;
+    background: var(--color-cursor);
+  }
+
+  /* Revealed one character per step; the text is monospace, so equal slices are whole characters */
+  @media (prefers-reduced-motion: no-preference) {
+    .block-cursor {
+      animation: blink 1.1s steps(1) infinite;
+    }
+
+    .typed-text {
+      display: inline-block;
+      animation: type calc(var(--chars) * 32ms) steps(var(--chars)) 150ms both;
+    }
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes type {
+    from {
+      clip-path: inset(0 100% 0 0);
+    }
+    to {
+      clip-path: inset(0);
+    }
+  }
+}
+
 /*
  * Page transitions (app/_components/page-transition.tsx), following Next's view-transitions guide.
  * The old page leaves fast, the new one prints in with a slight rise, the header stays still and a post
@@ -607,6 +654,18 @@
   from {
     translate: 0 8px;
   }
+}
+
+/* Switching THEME= crossfades the whole page, header included (app/_components/theme-toggle.tsx) */
+:root:active-view-transition-type(theme)::view-transition-old(root),
+:root:active-view-transition-type(theme)::view-transition-old(site-header) {
+  display: block;
+  animation: 280ms ease-out both vt-fade reverse;
+}
+
+:root:active-view-transition-type(theme)::view-transition-new(root),
+:root:active-view-transition-type(theme)::view-transition-new(site-header) {
+  animation: 280ms ease-out both vt-fade;
 }
 
 /* With reduced motion nothing moves: titles jump into place and pages only fade */

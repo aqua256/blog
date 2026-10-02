@@ -6,6 +6,7 @@ import { PageTransition, PostTitleTransition } from "../../_components/page-tran
 import { PostOutline } from "../../_components/post-outline";
 import { PostPager } from "../../_components/post-pager";
 import { PromptLine } from "../../_components/prompt-line";
+import { TypedText } from "../../_components/typed-text";
 
 export async function generateStaticParams() {
   const posts = await getPosts();
@@ -45,7 +46,7 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
         {/* Same width as the header; the second column is kept free for the outline on wide screens. */}
         <div className="page-width mx-auto grid grid-cols-[minmax(0,var(--col))] gap-x-18 min-[1180px]:grid-cols-[minmax(0,var(--col))_220px]">
           <article id="top" className="scroll-mt-20">
-            <PromptLine cwd="~/posts" command="cat" args={`${slug}.mdx`} />
+            <PromptLine cwd="~/posts" command="cat" args={<TypedText text={`${slug}.mdx`} />} />
 
             <div className="post-file">
               <h1 className="post-title">

@@ -2,10 +2,21 @@
 
 import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
+import { flushSync } from "react-dom";
 
 const next: Record<string, string> = { system: "light", light: "dark", dark: "system" };
 
 const noopSubscribe = () => () => {};
+
+/** Crossfade from the old colors to the new ones, unless the browser can't or the reader prefers no motion. */
+function withCrossfade(update: () => void) {
+  if (!document.startViewTransition || matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    update();
+    return;
+  }
+  // flushSync makes next-themes set data-theme before the browser takes the "after" snapshot
+  document.startViewTransition({ update: () => flushSync(update), types: ["theme"] });
+}
 
 /** `THEME=system` — the current setting, written as a shell variable. Click to cycle system → light → dark. */
 export function ThemeToggle() {
@@ -22,7 +33,7 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      onClick={() => setTheme((current) => next[current] ?? "system")}
+      onClick={() => withCrossfade(() => setTheme((current) => next[current] ?? "system"))}
       className="group cursor-pointer whitespace-nowrap py-1"
     >
       <span className="font-semibold text-cmd">THEME</span>
