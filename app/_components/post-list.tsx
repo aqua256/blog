@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { PostSummary } from "@/lib/posts";
 
 /**
- * Posts as `ls` output, one per line (reading time is shown on the post itself):
+ * Posts as `ls` output, one per line:
  *
  *   2026-09-29   Hello, world
  *   2026-09-01   Designing APIs That Read Like Prose

@@ -19,7 +19,6 @@ export type PostMetadata = {
 export type PostSummary = PostMetadata & {
   slug: string;
   description: string;
-  readingMinutes: number;
   /** The `##` sections, for the outline and the agent's summary */
   headings: Heading[];
 };
@@ -29,11 +28,6 @@ export type Post = PostSummary & {
 };
 
 const POSTS_DIR = path.join(process.cwd(), "content", "posts");
-// Reading speeds: English words vs. CJK characters (which have no spaces between words)
-const WORDS_PER_MINUTE = 200;
-const CJK_CHARS_PER_MINUTE = 350;
-const CJK_CHAR = /[぀-ヿ㐀-鿿豈-﫿가-힯]/g;
-const LATIN_WORD = /[A-Za-z0-9]+(?:['’][A-Za-z]+)*/g;
 
 async function listSlugs(): Promise<string[]> {
   const files = await fs.readdir(POSTS_DIR).catch(() => [] as string[]);
@@ -66,18 +60,6 @@ function firstParagraph(source: string): string {
   return paragraph ? stripInline(paragraph.replace(/\s*\n\s*/g, " ")) : "";
 }
 
-/**
- * Rough reading time from the prose, skipping the metadata export, import/export lines and code blocks.
- * CJK characters and English words are counted separately, then added up.
- */
-function readingMinutes(source: string): number {
-  const prose = proseOf(source);
-  const cjkChars = prose.match(CJK_CHAR)?.length ?? 0;
-  const latinWords = prose.replace(CJK_CHAR, " ").match(LATIN_WORD)?.length ?? 0;
-  const minutes = cjkChars / CJK_CHARS_PER_MINUTE + latinWords / WORDS_PER_MINUTE;
-  return Math.max(1, Math.round(minutes));
-}
-
 async function loadPost(slug: string): Promise<Post> {
   const mod = (await import(`@/content/posts/${slug}.mdx`)) as {
     default: MDXContent;
@@ -89,7 +71,6 @@ async function loadPost(slug: string): Promise<Post> {
     ...mod.metadata,
     slug,
     description: mod.metadata.description ?? firstParagraph(source),
-    readingMinutes: readingMinutes(source),
     Content: mod.default,
     headings: sectionsOf(mod.tableOfContents),
   };
@@ -105,14 +86,13 @@ export async function getPosts(): Promise<PostSummary[]> {
   return posts
     .filter(isVisible)
     .sort((a, b) => b.date.localeCompare(a.date))
-    .map(({ slug, title, description, date, tags, draft, readingMinutes, headings }) => ({
+    .map(({ slug, title, description, date, tags, draft, headings }) => ({
       slug,
       title,
       description,
       date,
       tags,
       draft,
-      readingMinutes,
       headings,
     }));
 }

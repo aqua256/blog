@@ -24,7 +24,7 @@ export async function generateMetadata(props: PageProps<"/posts/[slug]">): Promi
  *
  *   ~/posts $ cat hello-world.mdx
  *      # Title
- *        2026-09-29 · 2 min read · #tag
+ *        2026-09-29 · #tag
  *        body…
  *   (END)  press / to ask about this post
  *   ← older                     newer →
@@ -47,7 +47,7 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
           <div className="post-file">
             <h1 className="post-title">{post.title}</h1>
             <p className="mb-9 text-small text-dim">
-              <time dateTime={post.date}>{post.date}</time> · {post.readingMinutes} min read
+              <time dateTime={post.date}>{post.date}</time>
               {post.tags && post.tags.length > 0 && (
                 <>
                   {" · "}
