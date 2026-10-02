@@ -1,0 +1,4 @@
+# Cloudflare static asset headers (copied to out/ by `next build`).
+# Generated share images are written without a file extension, so name their type here.
+/posts/*/opengraph-image
+  Content-Type: image/png

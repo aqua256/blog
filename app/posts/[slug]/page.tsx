@@ -18,7 +18,21 @@ export const dynamicParams = false;
 export async function generateMetadata(props: PageProps<"/posts/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
   const post = await getPost(slug);
-  return post ? { title: post.title } : {};
+  if (!post) return {};
+  // Shared links show the title and description; the image comes from opengraph-image.tsx
+  return {
+    title: post.title,
+    description: post.description,
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description: post.description,
+      url: `/posts/${slug}`,
+      publishedTime: post.date,
+      tags: post.tags,
+    },
+    twitter: { card: "summary_large_image" },
+  };
 }
 
 /**
