@@ -139,6 +139,22 @@
   }
 }
 
+/*
+ * One keyboard focus ring everywhere, in the prompt color. In the base layer, so utilities such as
+ * outline-none on the console's input still win.
+ */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-prompt);
+    outline-offset: 3px;
+  }
+
+  /* The console itself only holds focus between clicks; its controls show the ring */
+  dialog:focus-visible {
+    outline: none;
+  }
+}
+
 /* Terminal chrome: monospace, casual */
 .term {
   font-variation-settings: "MONO" 1, "CASL" 1;
@@ -234,6 +250,12 @@
 
   .post-body > * {
     margin-block: 0 22px;
+  }
+
+  /* No single character stranded on a paragraph's last line */
+  .post-body p,
+  .post-body li {
+    text-wrap: pretty;
   }
 
   /* The opening paragraph reads as a lede */
@@ -381,11 +403,6 @@
     font-variation-settings: "MONO" 1, "CASL" 0;
   }
 
-  .post-body pre:focus-visible {
-    outline: 2px solid var(--color-prompt);
-    outline-offset: 2px;
-  }
-
   .post-body pre code {
     font-size: inherit;
     font-variation-settings: inherit;
@@ -482,7 +499,7 @@
     }
 
     .post-title::before {
-      padding-right: 0.3em;
+      padding-right: 0.55em;
       font-size: 0.55em;
       line-height: calc(1.1 / 0.55);
     }

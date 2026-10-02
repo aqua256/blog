@@ -9,11 +9,11 @@ function isCurrent(pathname: string, href: string) {
 }
 
 /** `cd ~ ~/projects ~/posts` — one `cd` for every path, the current one in the prompt color. */
-export function NavLinks() {
+export function NavLinks({ className = "" }: { className?: string }) {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Site" className="flex items-baseline gap-3">
+    <nav aria-label="Site" className={`flex items-baseline gap-3 ${className}`}>
       <span aria-hidden="true" className="font-semibold text-cmd">
         cd
       </span>

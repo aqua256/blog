@@ -90,7 +90,7 @@ export default async function HomePage() {
                   </p>
                 </div>
               </div>
-              <p className="mt-8 font-[380] text-body leading-[1.7] [font-variation-settings:'MONO'_0,'CASL'_0.3]">
+              <p className="mt-8 font-[380] text-body leading-[1.7] text-pretty [font-variation-settings:'MONO'_0,'CASL'_0.3]">
                 {site.intro}
               </p>
             </div>
