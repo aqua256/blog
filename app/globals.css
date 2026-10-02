@@ -554,3 +554,68 @@
     }
   }
 }
+
+/*
+ * Page transitions (app/_components/page-transition.tsx), following Next's view-transitions guide.
+ * The old page leaves fast, the new one prints in with a slight rise, the header stays still and a post
+ * title morphs from the list into the heading. The rest of the document (the footer) just swaps.
+ */
+::view-transition {
+  pointer-events: none; /* clicks during the animation reach the page */
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+
+::view-transition-old(site-header) {
+  display: none;
+}
+
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+::view-transition-old(.page-out) {
+  animation: 120ms ease-in both vt-fade reverse;
+}
+
+::view-transition-new(.page-in) {
+  animation:
+    220ms ease-out 80ms both vt-fade,
+    360ms cubic-bezier(0.2, 0.8, 0.2, 1) both vt-rise;
+}
+
+::view-transition-group(.morph) {
+  animation-duration: 380ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes vt-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-rise {
+  from {
+    translate: 0 8px;
+  }
+}
+
+/* With reduced motion nothing moves: titles jump into place and pages only fade */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+  }
+
+  ::view-transition-new(.page-in) {
+    animation: 160ms ease-out both vt-fade;
+  }
+}

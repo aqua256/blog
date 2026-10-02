@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { PostSummary } from "@/lib/posts";
+import { PostTitleTransition } from "./page-transition";
 
 /**
  * Posts as `ls` output, one per line:
@@ -21,9 +22,11 @@ export function PostList({ posts }: { posts: PostSummary[] }) {
             {post.date}
           </time>
           <span>
-            <Link href={`/posts/${post.slug}`} className="text-link underline-offset-3 hover:underline">
-              {post.title}
-            </Link>
+            <PostTitleTransition slug={post.slug}>
+              <Link href={`/posts/${post.slug}`} className="text-link underline-offset-3 hover:underline">
+                {post.title}
+              </Link>
+            </PostTitleTransition>
             {post.draft && <span className="text-dim"> · draft</span>}
           </span>
         </li>
