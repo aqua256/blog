@@ -1,5 +1,7 @@
 import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
+import flexokiDark from "./lib/shiki/flexoki-dark.json";
+import flexokiLight from "./lib/shiki/flexoki-light.json";
 
 const nextConfig: NextConfig = {
   // Every page is built ahead of time, so the site ships as plain files in out/ (served by Cloudflare)
@@ -19,12 +21,13 @@ const withMDX = createMDX({
       "rehype-slug",
       "@stefanprobst/rehype-extract-toc",
       "@stefanprobst/rehype-extract-toc/mdx",
-      // Syntax highlighting at build time, in Catppuccin. Colors are written as light-dark(latte, mocha),
-      // so they follow the page's color-scheme, which next-themes sets from THEME=.
+      // Syntax highlighting at build time, in Flexoki (its official VS Code themes, from kepano/flexoki,
+      // MIT). Colors are written as light-dark(light, dark), so they follow the page's color-scheme, which
+      // next-themes sets from THEME=.
       [
         "@shikijs/rehype",
         {
-          themes: { light: "catppuccin-latte", dark: "catppuccin-mocha" },
+          themes: { light: flexokiLight, dark: flexokiDark },
           defaultColor: "light-dark()",
           colorsRendering: "none",
           addLanguageClass: true,

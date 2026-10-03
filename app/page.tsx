@@ -8,8 +8,8 @@ import { PostList } from "./_components/post-list";
 import { PromptLine } from "./_components/prompt-line";
 
 const RECENT_POSTS = 5;
-/** The color swatches fastfetch prints last, in Catppuccin's accents */
-const SWATCHES = ["red", "peach", "yellow", "green", "teal", "blue", "mauve", "pink"];
+/** The color swatches fastfetch prints last, in Flexoki's accents */
+const SWATCHES = ["red", "orange", "yellow", "green", "cyan", "blue", "purple", "magenta"];
 
 /** Style for the nth line of output, so lines print in turn (see .print-line in globals.css) */
 const nth = (line: number) => ({ "--line": line }) as React.CSSProperties;
@@ -87,7 +87,7 @@ export default async function HomePage() {
                     <p aria-hidden className="print-line mt-3 flex" style={nth(info.length + 2)}>
                       {/* Swatches may shrink (clipping their blocks) so the row fits narrow screens */}
                       {SWATCHES.map((name) => (
-                        <span key={name} className="min-w-0 overflow-clip" style={{ color: `var(--ctp-${name})` }}>
+                        <span key={name} className="min-w-0 overflow-clip" style={{ color: `var(--fx-${name})` }}>
                           ███
                         </span>
                       ))}

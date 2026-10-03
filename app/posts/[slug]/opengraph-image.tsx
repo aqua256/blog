@@ -3,7 +3,7 @@ import { getPost, getPosts } from "@/lib/posts";
 import { site } from "@/lib/site";
 
 /**
- * The card shown when a post is shared: the post page itself, as a dark (Mocha) terminal.
+ * The card shown when a post is shared: the post page itself, as a dark (Flexoki) terminal.
  *
  *   ~/posts $ cat hello-world.mdx
  *   # Hello, world
@@ -20,15 +20,15 @@ export async function generateStaticParams() {
   return posts.map(({ slug }) => ({ slug }));
 }
 
-// Catppuccin Mocha, as in globals.css
-const mocha = {
-  base: "#1e1e2e",
-  text: "#cdd6f4",
-  subtext0: "#a6adc8",
-  surface1: "#45475a",
-  mauve: "#cba6f7",
-  green: "#a6e3a1",
-  peach: "#fab387",
+// Flexoki dark, as in globals.css
+const dark = {
+  bg: "#100f0f",
+  text: "#cecdc3",
+  dim: "#878580",
+  faint: "#343331",
+  purple: "#8b7ec8",
+  green: "#879a39",
+  orange: "#da702c",
 };
 
 /**
@@ -71,29 +71,29 @@ export default async function Image({ params }: { params: Promise<{ slug: string
         display: "flex",
         flexDirection: "column",
         padding: "72px 88px",
-        background: mocha.base,
-        color: mocha.text,
+        background: dark.bg,
+        color: dark.text,
         fontFamily: "Recursive, WenKai",
         fontSize: 32,
       }}
     >
       <div style={{ display: "flex", gap: 16 }}>
-        <span style={{ color: mocha.mauve }}>~/posts</span>
-        <span style={{ color: mocha.subtext0 }}>$</span>
-        <span style={{ color: mocha.green, fontWeight: 800 }}>cat</span>
-        <span style={{ color: mocha.peach }}>{`${slug}.mdx`}</span>
+        <span style={{ color: dark.purple }}>~/posts</span>
+        <span style={{ color: dark.dim }}>$</span>
+        <span style={{ color: dark.green, fontWeight: 800 }}>cat</span>
+        <span style={{ color: dark.orange }}>{`${slug}.mdx`}</span>
       </div>
 
       <div style={{ display: "flex", flex: 1, flexDirection: "column", justifyContent: "center" }}>
         {/* The # sits on the first line, sharing its line height */}
         <div style={{ display: "flex", gap: 32, fontWeight: 800 }}>
-          <span style={{ color: mocha.surface1, fontSize: titleSize * 0.72, lineHeight: 1.2 / 0.72 }}>#</span>
+          <span style={{ color: dark.faint, fontSize: titleSize * 0.72, lineHeight: 1.2 / 0.72 }}>#</span>
           <span style={{ fontSize: titleSize, lineHeight: 1.2, letterSpacing: -1 }}>{post.title}</span>
         </div>
-        <div style={{ display: "flex", marginTop: 32, marginLeft: 70, color: mocha.subtext0 }}>{meta}</div>
+        <div style={{ display: "flex", marginTop: 32, marginLeft: 70, color: dark.dim }}>{meta}</div>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "flex-end", color: mocha.mauve, fontWeight: 800 }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", color: dark.purple, fontWeight: 800 }}>
         {signature}
       </div>
     </div>,

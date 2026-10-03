@@ -27,48 +27,44 @@
 }
 
 /*
- * Blog design tokens — Catppuccin Latte (light) on :root, Mocha (dark) under [data-theme="dark"],
- * the pattern in next-themes' docs.
+ * Blog design tokens — Flexoki (https://stephango.com/flexoki), light on :root and dark under
+ * [data-theme="dark"], the pattern in next-themes' docs. Light uses Flexoki's 600 accents, dark its 400s.
  */
 :root {
   color-scheme: light;
-  --ctp-base: #eff1f5;
-  --ctp-mantle: #e6e9ef;
-  --ctp-crust: #dce0e8;
-  --ctp-text: #4c4f69;
-  --ctp-subtext1: #5c5f77;
-  --ctp-subtext0: #6c6f85;
-  --ctp-overlay2: #7c7f93;
-  --ctp-surface1: #bcc0cc;
-  --ctp-mauve: #8839ef;
-  --ctp-blue: #1e66f5;
-  --ctp-rosewater: #dc8a78;
-  --ctp-red: #d20f39;
-  --ctp-peach: #fe640b;
-  --ctp-yellow: #df8e1d;
-  --ctp-green: #40a02b;
-  --ctp-teal: #179299;
-  --ctp-pink: #ea76cb;
+  --fx-bg: #fffcf0; /* paper */
+  --fx-bg-2: #f2f0e5; /* base-50 */
+  --fx-crust: #e6e4d9; /* base-100 */
+  --fx-faint: #dad8ce; /* base-150 */
+  --fx-dim: #6f6e69; /* base-600 */
+  --fx-text: #403e3c; /* base-800 */
+  --fx-red: #af3029;
+  --fx-orange: #bc5215;
+  --fx-yellow: #ad8301;
+  --fx-green: #66800b;
+  --fx-cyan: #24837b;
+  --fx-blue: #205ea6;
+  --fx-purple: #5e409d;
+  --fx-magenta: #a02f6f;
 
   /*
-   * Text colors. Latte's subtext0, blue, mauve and red fall just short of WCAG AA (4.5:1) for small text
-   * on base or mantle, so secondary text uses subtext1 and the accents are darkened by the least that
-   * passes on both backgrounds.
+   * Text colors, all at least WCAG AA (4.5:1) on both backgrounds. base-600 falls just short on base-50,
+   * so it is darkened by the least that passes.
    */
-  --role-dim: var(--ctp-subtext1);
-  --role-link: color-mix(in srgb, var(--ctp-blue), black 7%);
-  --role-prompt: color-mix(in srgb, var(--ctp-mauve), black 2%);
-  --role-err: color-mix(in srgb, var(--ctp-red), black 2%);
+  --role-dim: color-mix(in srgb, var(--fx-dim), black 1%);
+  --role-link: var(--fx-blue);
+  --role-prompt: var(--fx-purple);
+  --role-err: var(--fx-red);
 
-  /* Syntax roles. Light stays restrained: Latte's other accents are too low-contrast for small text. */
+  /* Syntax roles. Light stays restrained: the yellow, green and cyan are too low-contrast for small text. */
   --role-cmd: var(--role-link);
-  --role-arg: var(--ctp-text);
-  --role-str: var(--ctp-text);
+  --role-arg: var(--fx-text);
+  --role-str: var(--fx-text);
   --role-tag: var(--role-prompt);
-  --role-mark-list: var(--ctp-mauve);
-  --role-mark-quote: var(--ctp-mauve);
+  --role-mark-list: var(--fx-purple);
+  --role-mark-quote: var(--fx-purple);
   --role-code: var(--role-prompt);
-  --role-quote-hl: color-mix(in srgb, var(--ctp-blue) 16%, transparent);
+  --role-quote-hl: color-mix(in srgb, var(--fx-blue) 16%, transparent);
 
   /* Type scale: title / section / lede+quote / body / interface / secondary / keycap */
   --fs-title: clamp(30px, 5vw, 48px);
@@ -91,38 +87,36 @@
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --ctp-base: #1e1e2e;
-  --ctp-mantle: #181825;
-  --ctp-crust: #11111b;
-  --ctp-text: #cdd6f4;
-  --ctp-subtext0: #a6adc8;
-  --ctp-overlay2: #9399b2;
-  --ctp-surface1: #45475a;
-  --ctp-mauve: #cba6f7;
-  --ctp-blue: #89b4fa;
-  --ctp-rosewater: #f5e0dc;
-  --ctp-red: #f38ba8;
-  --ctp-peach: #fab387;
-  --ctp-yellow: #f9e2af;
-  --ctp-green: #a6e3a1;
-  --ctp-teal: #94e2d5;
-  --ctp-pink: #f5c2e7;
+  --fx-bg: #100f0f; /* black */
+  --fx-bg-2: #1c1b1a; /* base-950 */
+  --fx-crust: #100f0f; /* nothing darker than black */
+  --fx-faint: #343331; /* base-850 */
+  --fx-dim: #878580; /* base-500 */
+  --fx-text: #cecdc3; /* base-200 */
+  --fx-red: #d14d41;
+  --fx-orange: #da702c;
+  --fx-yellow: #d0a215;
+  --fx-green: #879a39;
+  --fx-cyan: #3aa99f;
+  --fx-blue: #4385be;
+  --fx-purple: #8b7ec8;
+  --fx-magenta: #ce5d97;
 
-  /* Mocha's text colors are all well above 4.5:1 as they are */
-  --role-dim: var(--ctp-subtext0);
-  --role-link: var(--ctp-blue);
-  --role-prompt: var(--ctp-mauve);
-  --role-err: var(--ctp-red);
+  /* Blue and red fall just short of 4.5:1 on base-950, so they are lightened by the least that passes */
+  --role-dim: var(--fx-dim);
+  --role-link: color-mix(in srgb, var(--fx-blue), white 3%);
+  --role-prompt: var(--fx-purple);
+  --role-err: color-mix(in srgb, var(--fx-red), white 9%);
 
-  /* Mocha gets more color */
-  --role-cmd: #a6e3a1;
-  --role-arg: #fab387;
-  --role-str: #f9e2af;
-  --role-tag: #f5c2e7;
-  --role-mark-list: #94e2d5;
-  --role-mark-quote: #89dceb;
-  --role-code: #fab387;
-  --role-quote-hl: color-mix(in srgb, #f9e2af 20%, transparent);
+  /* Dark gets more color */
+  --role-cmd: var(--fx-green);
+  --role-arg: var(--fx-orange);
+  --role-str: var(--fx-yellow);
+  --role-tag: var(--fx-magenta);
+  --role-mark-list: var(--fx-cyan);
+  --role-mark-quote: var(--fx-cyan);
+  --role-code: var(--fx-orange);
+  --role-quote-hl: color-mix(in srgb, var(--fx-yellow) 20%, transparent);
 }
 
 /* Page grid: article column, plus a 220px outline column on wide screens */
@@ -171,15 +165,15 @@
 @theme inline {
   --font-term: var(--font-recursive);
 
-  --color-paper: var(--ctp-base);
-  --color-paper-2: var(--ctp-mantle);
-  --color-crust: var(--ctp-crust);
-  --color-ink: var(--ctp-text);
+  --color-paper: var(--fx-bg);
+  --color-paper-2: var(--fx-bg-2);
+  --color-crust: var(--fx-crust);
+  --color-ink: var(--fx-text);
   --color-dim: var(--role-dim);
-  --color-faint: var(--ctp-surface1);
+  --color-faint: var(--fx-faint);
   --color-prompt: var(--role-prompt);
   --color-link: var(--role-link);
-  --color-cursor: var(--ctp-rosewater);
+  --color-cursor: var(--fx-orange);
   --color-err: var(--role-err); /* error messages, e.g. on the 404 page */
   --color-cmd: var(--role-cmd);
   --color-arg: var(--role-arg);
@@ -382,7 +376,7 @@
   }
 
   /*
-   * Code blocks, highlighted by @shikijs/rehype. The colors come inline as light-dark(latte, mocha);
+   * Code blocks, highlighted by @shikijs/rehype. The colors come inline as light-dark(light, dark);
    * only the background is replaced, so blocks sit a shade apart from the page.
    */
   .post-body .code-block {

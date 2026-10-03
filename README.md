@@ -3,8 +3,8 @@
 A personal blog that reads like a friendly terminal: every page is a shell command and its output
 (`cd ~/posts`, `ls -t`, `cat hello-world.mdx`), with a drop-down agent console you can ask about the site.
 
-Built with Next.js 16 (App Router), Tailwind CSS v4 and MDX. Colors are [Catppuccin](https://catppuccin.com)
-Latte (light) and Mocha (dark); type is [Recursive](https://www.recursive.design) for Latin text and
+Built with Next.js 16 (App Router), Tailwind CSS v4 and MDX. Colors are [Flexoki](https://stephango.com/flexoki),
+light and dark; type is [Recursive](https://www.recursive.design) for Latin text and
 [LXGW WenKai](https://github.com/lxgw/LxgwWenKai) for Chinese.
 
 ## Development
@@ -103,7 +103,7 @@ wrangler.jsonc        Cloudflare: serve out/ as static assets
   _components/        shared components
   _fonts/             Recursive, subset by scripts/subset-recursive.sh
 content/posts/        the posts (MDX)
-lib/                  site data, posts, headings, agent replies
+lib/                  site data, posts, headings, agent replies, Flexoki code themes
 mdx-components.tsx    how MDX elements render (heading ids, code blocks)
 scripts/              one-off maintenance scripts
 ```
