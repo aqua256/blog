@@ -3,6 +3,17 @@ import type { NextConfig } from "next";
 import flexokiDark from "./lib/shiki/flexoki-dark.json";
 import flexokiLight from "./lib/shiki/flexoki-light.json";
 
+/**
+ * Flexoki light draws comments and punctuation in base-600, just short of 4.5:1 on the code block's
+ * base-50 background. Darken them by the same 1% as dim text in globals.css.
+ */
+const flexokiLightReadable = {
+  ...flexokiLight,
+  tokenColors: flexokiLight.tokenColors.map((token) =>
+    ["comments", "punctuation"].includes(token.name) ? { ...token, settings: { ...token.settings, foreground: "#6E6D68" } } : token,
+  ),
+};
+
 const nextConfig: NextConfig = {
   // Every page is built ahead of time, so the site ships as plain files in out/ (served by Cloudflare)
   output: "export",
@@ -27,7 +38,7 @@ const withMDX = createMDX({
       [
         "@shikijs/rehype",
         {
-          themes: { light: flexokiLight, dark: flexokiDark },
+          themes: { light: flexokiLightReadable, dark: flexokiDark },
           defaultColor: "light-dark()",
           colorsRendering: "none",
           addLanguageClass: true,
