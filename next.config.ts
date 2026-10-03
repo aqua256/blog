@@ -3,16 +3,35 @@ import type { NextConfig } from "next";
 import flexokiDark from "./lib/shiki/flexoki-dark.json";
 import flexokiLight from "./lib/shiki/flexoki-light.json";
 
-/**
- * Flexoki light draws comments and punctuation in base-600, just short of 4.5:1 on the code block's
- * base-50 background. Darken them by the same 1% as dim text in globals.css.
+type Theme = { tokenColors: { settings: { foreground?: string; fontStyle?: string } }[] };
+
+/** The theme with some token colors swapped, e.g. { "#AD8301": "#896701" }. */
+function withColors<T extends Theme>(theme: T, colors: Record<string, string>): T {
+  return {
+    ...theme,
+    tokenColors: theme.tokenColors.map((token) => {
+      const replacement = colors[token.settings.foreground ?? ""];
+      return replacement ? { ...token, settings: { ...token.settings, foreground: replacement } } : token;
+    }),
+  };
+}
+
+/*
+ * Some Flexoki syntax colors fall short of WCAG AA (4.5:1) on the code block background (base-50 in
+ * light, base-950 in dark). Each is mixed with black (light) or white (dark) by the least that passes,
+ * as the text colors in globals.css are.
  */
-const flexokiLightReadable = {
-  ...flexokiLight,
-  tokenColors: flexokiLight.tokenColors.map((token) =>
-    ["comments", "punctuation"].includes(token.name) ? { ...token, settings: { ...token.settings, foreground: "#6E6D68" } } : token,
-  ),
-};
+const flexokiLightReadable = withColors(flexokiLight, {
+  "#6F6E69": "#6E6D68", // base-600, comments and punctuation: 4.47 → 4.54
+  "#BC5215": "#B44F14", // orange: 4.22 → 4.51
+  "#AD8301": "#896701", // yellow: 3.05 → 4.59
+  "#66800B": "#5E760A", // green: 3.94 → 4.51
+  "#24837B": "#217971", // cyan: 3.99 → 4.55
+});
+const flexokiDarkReadable = withColors(flexokiDark, {
+  "#D14D41": "#D55D52", // red: 3.97 → 4.52
+  "#4385BE": "#4989C0", // blue: 4.37 → 4.60
+});
 
 const nextConfig: NextConfig = {
   // Every page is built ahead of time, so the site ships as plain files in out/ (served by Cloudflare)
@@ -38,7 +57,7 @@ const withMDX = createMDX({
       [
         "@shikijs/rehype",
         {
-          themes: { light: flexokiLightReadable, dark: flexokiDark },
+          themes: { light: flexokiLightReadable, dark: flexokiDarkReadable },
           defaultColor: "light-dark()",
           colorsRendering: "none",
           addLanguageClass: true,
