@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Recursive } from "next/font/google";
+import localFont from "next/font/local";
 import { getPosts } from "@/lib/posts";
 import { site, siteUrl } from "@/lib/site";
 import { AgentConsole } from "./_components/agent-console";
@@ -12,11 +12,13 @@ import { Providers } from "./providers";
 /**
  * Latin text: Recursive, self-hosted by next/font. It has no Chinese glyphs, so Chinese characters fall
  * through to LXGW WenKai (loaded below), then to the usual system fonts while it downloads.
+ * The file is Google's Latin subset with each axis narrowed to what the site uses, about half the
+ * size of the full font; scripts/subset-recursive.sh rebuilds it.
  */
-const recursive = Recursive({
+const recursive = localFont({
+  src: "./_fonts/recursive.woff2",
+  weight: "380 800",
   variable: "--font-recursive",
-  subsets: ["latin"],
-  axes: ["CASL", "MONO", "slnt"],
   fallback: ["LXGW WenKai", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "sans-serif"],
 });
 

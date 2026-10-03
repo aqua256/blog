@@ -84,6 +84,11 @@ LXGW WenKai is loaded from jsDelivr (`@callmebill/lxgw-wenkai-web`) without bloc
 Its version is pinned in two places, `app/layout.tsx` and `app/globals.css`; update both together, and
 check the slice file names used for punctuation in `globals.css`, which can change between versions.
 
+Recursive is self-hosted from `app/_fonts/recursive.woff2`: Google's Latin subset with each axis
+narrowed to the range the site uses (weight 380–800, slant −8–0), about half the full size. Before
+using a weight or slant outside those ranges, widen them in `scripts/subset-recursive.sh` and run it
+(needs `pip install fonttools brotli`).
+
 ## Layout
 
 ```
@@ -96,7 +101,9 @@ app/
   rss.xml/, sitemap.ts, robots.ts
 wrangler.jsonc        Cloudflare: serve out/ as static assets
   _components/        shared components
+  _fonts/             Recursive, subset by scripts/subset-recursive.sh
 content/posts/        the posts (MDX)
 lib/                  site data, posts, headings, agent replies
 mdx-components.tsx    how MDX elements render (heading ids, code blocks)
+scripts/              one-off maintenance scripts
 ```
