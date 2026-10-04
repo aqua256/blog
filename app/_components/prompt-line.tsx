@@ -1,17 +1,12 @@
-/**
- * A shell line such as `~/posts $ cat hello-world.mdx`. With `cursor`, the line ends in a blinking block
- * cursor; with only a cwd it's the idle prompt `~ $ █`.
- */
+/** A shell line such as `~/posts $ cat hello-world.mdx`. The idle prompt you can type into is PromptInput. */
 export function PromptLine({
   cwd,
   command,
   args,
-  cursor = false,
 }: {
   cwd: string;
   command?: string;
   args?: React.ReactNode;
-  cursor?: boolean;
 }) {
   return (
     <p className="mb-3.5 font-semibold [overflow-wrap:anywhere]">
@@ -20,7 +15,6 @@ export function PromptLine({
       </span>
       {command && <span className="text-cmd">{command}</span>}
       {args && <span className="text-arg"> {args}</span>}
-      {cursor && <span aria-hidden className="block-cursor" />}
     </p>
   );
 }

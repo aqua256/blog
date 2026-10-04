@@ -6,7 +6,7 @@ import { useOpenAgent } from "./agent-console";
 export function AskButton({ className = "", children, ...props }: React.ComponentProps<"button">) {
   const open = useOpenAgent();
   return (
-    <button type="button" onClick={open} className={`group cursor-pointer text-dim hover:text-ink ${className}`} {...props}>
+    <button type="button" onClick={() => open()} className={`group cursor-pointer text-dim hover:text-ink ${className}`} {...props}>
       {children}
     </button>
   );

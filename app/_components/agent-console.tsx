@@ -5,9 +5,9 @@ import { createContext, useContext, useEffect, useEffectEvent, useRef } from "re
 import { AGENT_COMMAND, type AgentPost } from "@/lib/agent-replies";
 import { AgentChat } from "./agent-chat";
 
-const OpenAgentContext = createContext<(() => void) | null>(null);
+const OpenAgentContext = createContext<((text?: string) => void) | null>(null);
 
-/** Opens the agent console. Any component under <AgentConsole> can use it. */
+/** Opens the agent console, optionally with `text` already typed. Any component under <AgentConsole> can use it. */
 export function useOpenAgent() {
   const open = useContext(OpenAgentContext);
   if (!open) throw new Error("useOpenAgent must be used inside <AgentConsole>");
@@ -38,10 +38,13 @@ export function AgentConsole({ posts, children }: { posts: AgentPost[]; children
   const inputRef = useRef<HTMLInputElement>(null);
   const cwd = cwdOf(usePathname());
 
-  function open() {
+  function open(text = "") {
     const dialog = dialogRef.current;
     if (dialog && !dialog.open) dialog.showModal();
-    inputRef.current?.focus();
+    const input = inputRef.current;
+    if (!input) return;
+    if (text) input.value = text;
+    input.focus();
   }
 
   function close() {

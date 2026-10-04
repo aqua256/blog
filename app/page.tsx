@@ -5,6 +5,7 @@ import { AskHint } from "./_components/ask-button";
 import { AvatarArt } from "./_components/avatar-art";
 import { PageTransition } from "./_components/page-transition";
 import { PostList } from "./_components/post-list";
+import { PromptInput } from "./_components/prompt-input";
 import { PromptLine } from "./_components/prompt-line";
 
 const RECENT_POSTS = 5;
@@ -120,7 +121,7 @@ export default async function HomePage() {
               </div>
             </section>
 
-            <PromptLine cwd="~" cursor />
+            <PromptInput cwd="~" />
           </div>
         </div>
       </main>
