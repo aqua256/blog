@@ -4,8 +4,8 @@ A personal blog that reads like a friendly terminal: every page is a shell comma
 (`cd ~/posts`, `ls -t`, `cat hello-world.mdx`), with a drop-down agent console you can ask about the site.
 
 Built with Next.js 16 (App Router), Tailwind CSS v4 and MDX. Colors are [Flexoki](https://stephango.com/flexoki),
-light and dark; type is [Recursive](https://www.recursive.design) for Latin text and
-[LXGW WenKai](https://github.com/lxgw/LxgwWenKai) for Chinese.
+light and dark; text uses the system's own fonts (PingFang SC, Microsoft YaHei or Noto Sans CJK for Chinese),
+so no font files are downloaded.
 
 ## Development
 
@@ -80,20 +80,11 @@ These are generated at build time, so changing `SITE_URL` needs a rebuild:
 - `/rss.xml`: RSS 2.0 feed of the published posts
 - `/sitemap.xml` and `/robots.txt`
 
-LXGW WenKai is loaded from jsDelivr (`@callmebill/lxgw-wenkai-web`) without blocking the first paint.
-Its version is pinned in two places, `app/layout.tsx` and `app/globals.css`; update both together, and
-check the slice file names used for punctuation in `globals.css`, which can change between versions.
-
-Recursive is self-hosted from `app/_fonts/recursive.woff2`: Google's Latin subset with each axis
-narrowed to the range the site uses (weight 380–800, slant −8–0), about half the full size. Before
-using a weight or slant outside those ranges, widen them in `scripts/subset-recursive.sh` and run it
-(needs `pip install fonttools brotli`).
-
 ## Layout
 
 ```
 app/
-  layout.tsx          header, footer, agent console, fonts, site metadata
+  layout.tsx          header, footer, agent console, site metadata
   page.tsx            ~ (home)
   posts/              ~/posts and each post
   projects/           ~/projects
@@ -101,9 +92,7 @@ app/
   rss.xml/, sitemap.ts, robots.ts
 wrangler.jsonc        Cloudflare: serve out/ as static assets
   _components/        shared components
-  _fonts/             Recursive, subset by scripts/subset-recursive.sh
 content/posts/        the posts (MDX)
 lib/                  site data, posts, headings, agent replies, Flexoki code themes
 mdx-components.tsx    how MDX elements render (heading ids, code blocks)
-scripts/              one-off maintenance scripts
 ```

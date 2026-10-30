@@ -131,7 +131,7 @@ export function AgentChat({
                 <span className="font-normal text-dim">$ </span>
                 <span className="text-cmd">ask</span> <span className="text-str">&quot;{question}&quot;</span>
               </p>
-              <p className="font-[380] text-body leading-[1.7] whitespace-pre-line [font-variation-settings:'MONO'_0,'CASL'_0.3]">
+              <p className="font-[380] text-body leading-[1.7] whitespace-pre-line">
                 {visible.map((segment, j) => (
                   <SegmentView key={j} segment={segment} />
                 ))}
