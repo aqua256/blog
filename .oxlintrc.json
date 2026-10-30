@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["typescript", "react", "nextjs", "jsx-a11y", "import", "oxc"],
+  "plugins": ["typescript", "react", "nextjs", "jsx-a11y", "import", "oxc", "vitest"],
   "rules": {
     "react/rules-of-hooks": "error",
     "react/exhaustive-deps": "warn",
