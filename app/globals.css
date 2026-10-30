@@ -441,16 +441,34 @@
   }
 
   /*
-   * Code blocks, highlighted by @shikijs/rehype. The colors come inline as light-dark(light, dark);
-   * only the background is replaced, so blocks sit a shade apart from the page.
+   * Code blocks (mdx-components.tsx), highlighted by @shikijs/rehype. The colors come inline as
+   * light-dark(light, dark); only the background is replaced, so blocks sit a shade apart from the page.
+   * A bar on top holds the file name or language, and the copy button.
    */
+  .post-body .code-block {
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
+    border-radius: 6px;
+    background: var(--surface-code);
+  }
+
+  .post-body .code-block figcaption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 4px 0 16px;
+    border-bottom: 1px solid color-mix(in srgb, var(--ink) 6%, transparent);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1;
+    color: var(--ink-3);
+  }
+
   .post-body pre {
     margin: 0;
     padding: 16px 20px;
     overflow-x: auto;
-    border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
-    border-radius: 6px;
-    background-color: var(--surface-code) !important; /* beats Shiki's inline theme background */
+    background-color: transparent !important; /* beats Shiki's inline theme background */
     font-size: 14px;
     line-height: 1.7;
     tab-size: 2;

@@ -1,3 +1,4 @@
+import path from "node:path";
 import createMDX from "@next/mdx";
 import type { NextConfig } from "next";
 import flexokiDark from "./lib/shiki/flexoki-dark.json";
@@ -40,20 +41,25 @@ const nextConfig: NextConfig = {
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
 };
 
+// Local plugins go by absolute path: the MDX loader resolves names from its own directory
+const local = (file: string) => path.resolve("lib", file);
+
 const withMDX = createMDX({
-  // Turbopack takes plugins by package name, with JSON-serializable options only
+  // Turbopack takes plugins by package name or path, with JSON-serializable options only
   options: {
     // GitHub Flavored Markdown: tables, ~~strikethrough~~, task lists, footnotes, bare URLs as links
     remarkPlugins: ["remark-gfm"],
     rehypePlugins: [
       // Unique ids on every heading (a repeated title becomes `title-1`), then the headings exported
-      // from each post as `tableOfContents`, which the outline and the agent read (lib/headings.ts)
+      // from each post as `tableOfContents`, which the outline reads (lib/headings.ts)
       "rehype-slug",
       "@stefanprobst/rehype-extract-toc",
       "@stefanprobst/rehype-extract-toc/mdx",
+      // A code block's file name (```ts title="routes.ts"), kept across Shiki's rewrite of the <pre>
+      local("rehype-code-title-keep.mjs"),
       // Syntax highlighting at build time, in Flexoki (its official VS Code themes, from kepano/flexoki,
       // MIT). Colors are written as light-dark(light, dark), so they follow the page's color-scheme, which
-      // next-themes sets from THEME=.
+      // next-themes sets from the theme button.
       [
         "@shikijs/rehype",
         {
@@ -63,6 +69,7 @@ const withMDX = createMDX({
           addLanguageClass: true,
         },
       ],
+      local("rehype-code-title-apply.mjs"),
     ],
   },
 });

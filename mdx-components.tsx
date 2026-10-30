@@ -1,5 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 import { isValidElement, type ReactNode } from "react";
+import { CopyButton } from "./app/_components/copy-button";
 
 /** `ts` for a <code class="language-ts"> inside a code block (the class comes from @shikijs/rehype). */
 function languageOf(children: ReactNode) {
@@ -8,12 +9,17 @@ function languageOf(children: ReactNode) {
 }
 
 const components: MDXComponents = {
-  // Code blocks get a wrapper that stays put while the <pre> scrolls sideways,
-  // so the ``` mark and the language label don't scroll with the code
-  pre: (props) => (
-    <div className="code-block" data-language={languageOf(props.children)}>
+  // A code block gets a bar above the code: its file name (```ts title="routes.ts", see
+  // lib/rehype-code-title-keep.mjs) or else its language, and a copy button. The bar stays put while the
+  // <pre> scrolls sideways.
+  pre: ({ "data-title": title, ...props }: React.ComponentProps<"pre"> & { "data-title"?: string }) => (
+    <figure className="code-block">
+      <figcaption>
+        <span>{title ?? languageOf(props.children)}</span>
+        <CopyButton />
+      </figcaption>
       <pre {...props} />
-    </div>
+    </figure>
   ),
 };
 
