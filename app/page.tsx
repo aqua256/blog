@@ -9,8 +9,6 @@ import { PromptInput } from "./_components/prompt-input";
 import { PromptLine } from "./_components/prompt-line";
 
 const RECENT_POSTS = 5;
-/** The color swatches fastfetch prints last, in Flexoki's accents */
-const SWATCHES = ["red", "orange", "yellow", "green", "cyan", "blue", "purple", "magenta"];
 
 /** Style for the nth line of output, so lines print in turn (see .print-line in globals.css) */
 const nth = (line: number) => ({ "--line": line }) as React.CSSProperties;
@@ -27,7 +25,6 @@ const link = "text-link underline-offset-3 hover:underline";
  *      ▀▀▀▀▀▀▀▀   Skills   TypeScript
  *      (avatar)   Uptime   since 2026-09-29
  *                 Links    linkedin · github · rss
- *                 ███ ███ ███ ███ ███ ███ ███ ███
  *      <a few lines about Aqua256>
  *
  *   ~ $ ls -t ~/posts | head -5
@@ -85,17 +82,9 @@ export default async function HomePage() {
                         </div>
                       ))}
                     </dl>
-                    <p aria-hidden className="print-line mt-3 flex" style={nth(info.length + 2)}>
-                      {/* Swatches may shrink (clipping their blocks) so the row fits narrow screens */}
-                      {SWATCHES.map((name) => (
-                        <span key={name} className="min-w-0 overflow-clip" style={{ color: `var(--fx-${name})` }}>
-                          ███
-                        </span>
-                      ))}
-                    </p>
                   </div>
                 </div>
-                <p className="mt-8 font-[380] text-body leading-[1.7] text-pretty [font-variation-settings:'MONO'_0,'CASL'_0.3]">
+                <p className="mt-8 font-[380] text-body leading-[1.7] text-pretty">
                   {site.intro}
                 </p>
               </div>
