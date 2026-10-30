@@ -1,0 +1,4 @@
+# Cloudflare static asset redirects (copied to out/ by `next build`).
+# The projects page was removed; links to it go to the home page.
+/projects  /  301
+/projects/  /  301

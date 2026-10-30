@@ -48,7 +48,7 @@ The first paragraph is shown larger, as the lede.
 | What | Where |
 | --- | --- |
 | Name, introduction, navigation, social links | `lib/site.ts` |
-| Projects shown in `~/projects` | `lib/projects.ts` |
+| The about page's text | `content/about.mdx` |
 
 The introduction in `lib/site.ts` is shared by the profile card, the RSS feed and the page description.
 
@@ -84,12 +84,13 @@ app/
   layout.tsx          header, footer, site metadata
   page.tsx            ~ (home)
   posts/              ~/posts and each post
-  projects/           ~/projects
+  about/              the about page
   not-found.tsx       404, shown as a failed cd
   rss.xml/, sitemap.ts, robots.ts
 wrangler.jsonc        Cloudflare: serve out/ as static assets
   _components/        shared components
 content/posts/        the posts (MDX)
+content/about.mdx     the about page's text
 lib/                  site data, posts, headings, Flexoki code themes
 mdx-components.tsx    how MDX elements render (heading ids, code blocks)
 ```
