@@ -33,7 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Before the first paint: whether this page opens with the leaf shadow coming into focus */}
         <script dangerouslySetInnerHTML={{ __html: introScript }} />
       </head>
-      <body className="relative flex min-h-full flex-col bg-bg font-sans text-ui text-ink selection:bg-selection">
+      <body className="relative flex min-h-full flex-col bg-bg font-sans text-ink selection:bg-selection">
         <Providers>
           <Leaves />
           <LeavesIntro />

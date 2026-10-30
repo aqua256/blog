@@ -2,8 +2,8 @@
 
 /*
  * Dark mode is driven by data-theme on <html> (Tailwind's documented data-attribute setup).
- * next-themes (app/providers.tsx) sets it before first paint to "light" or "dark": the saved choice,
- * or what the system prefers when THEME=system.
+ * next-themes (app/providers.tsx) sets it before first paint to "light" or "dark": the reader's choice
+ * from the theme button, or else what the system prefers.
  */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
@@ -25,19 +25,7 @@
   --line: #dde4ec;
   --line-2: #c4d0dd;
   --accent: #0b6fa4;
-  --err: #b42318;
   --selection: #cfe0fb;
-
-  /* Type scale for the remaining terminal-style pages: interface / secondary */
-  --fs-ui: 15px;
-  --fs-small: 14px;
-}
-
-@media (max-width: 560px) {
-  :root {
-    --fs-ui: 14px;
-    --fs-small: 13px;
-  }
 }
 
 :root[data-theme="dark"] {
@@ -53,31 +41,16 @@
   --line: #26282c;
   --line-2: #3a3d42;
   --accent: #6aa6f8;
-  --err: #f97066;
   --selection: rgb(106 166 248 / 0.32);
 }
 
-/* Page grid: article column, plus a 220px outline column on wide screens */
-:root {
-  --gutter: clamp(16px, 6vw, 88px);
-  --col: 680px;
-  --page: calc(var(--col) + 72px + 220px);
-}
-
-@utility page-width {
-  max-width: var(--col);
-  @media (min-width: 1180px) {
-    max-width: var(--page);
-  }
-}
-
 /*
- * One keyboard focus ring everywhere, in the prompt color. In the base layer, so utilities can still
+ * One keyboard focus ring everywhere, in the accent color. In the base layer, so utilities can still
  * override it.
  */
 @layer base {
   :focus-visible {
-    outline: 2px solid var(--color-prompt);
+    outline: 2px solid var(--accent);
     outline-offset: 3px;
   }
 
@@ -107,19 +80,7 @@
   --color-line: var(--line);
   --color-line-2: var(--line-2);
   --color-accent: var(--accent);
-  --color-err: var(--err); /* error messages, e.g. on the 404 page */
   --color-selection: var(--selection);
-
-  /* Roles the terminal-style components still use; they go away with those components */
-  --color-dim: var(--ink-3);
-  --color-faint: var(--line);
-  --color-prompt: var(--accent);
-  --color-link: var(--accent);
-  --color-cmd: var(--accent);
-  --color-arg: var(--ink);
-
-  --text-ui: var(--fs-ui);
-  --text-small: var(--fs-small);
 }
 
 /*
@@ -653,8 +614,8 @@
 
 /*
  * Page transitions (app/_components/page-transition.tsx), following Next's view-transitions guide.
- * The old page leaves fast, the new one prints in with a slight rise, the header stays still and a post
- * title morphs from the list into the heading. The rest of the document (the footer) just swaps.
+ * The old page leaves fast, the new one fades in with a slight rise, the header stays still and a post
+ * title morphs from its card into the heading. The rest of the document (the footer) just swaps.
  */
 ::view-transition {
   pointer-events: none; /* clicks during the animation reach the page */
@@ -705,7 +666,7 @@
   }
 }
 
-/* Switching THEME= crossfades the whole page, header included (app/_components/theme-toggle.tsx) */
+/* Switching theme crossfades the whole page, header included (app/_components/theme-toggle.tsx) */
 :root:active-view-transition-type(theme)::view-transition-old(root),
 :root:active-view-transition-type(theme)::view-transition-old(site-header) {
   display: block;
