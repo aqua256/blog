@@ -15,10 +15,10 @@ function readablePath() {
 }
 
 /**
- * The URL the visitor asked for, as a path under ~: `/posts/typo` → `~/posts/typo`.
- * The 404 page is built once as a static page, so the path is only known in the browser.
+ * The address the visitor asked for, as code: `/posts/typo`. The 404 page is built once as a static
+ * page, so the path is only known in the browser; until then nothing is shown.
  */
 export function RequestedPath() {
   const pathname = useSyncExternalStore(noopSubscribe, readablePath, () => "");
-  return <>{pathname && `~${pathname.replace(/\/$/, "")}`}</>;
+  return pathname ? <code className="[overflow-wrap:anywhere]">{pathname.replace(/(.)\/$/, "$1")}</code> : null;
 }

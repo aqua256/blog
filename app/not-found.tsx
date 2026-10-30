@@ -1,42 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { PageColumns } from "./_components/page-columns";
+import { PageTitle } from "./_components/page-title";
 import { PageTransition } from "./_components/page-transition";
-import { PromptLine } from "./_components/prompt-line";
 import { RequestedPath } from "./_components/requested-path";
 
 export const metadata: Metadata = {
-  title: "404",
+  title: "找不到这个页面",
 };
 
-/**
- * Any URL that isn't a page, as a failed `cd`:
- *
- *   ~ $ cd ~/posts/typo
- *   cd: no such file or directory: ~/posts/typo
- *
- *   try cd ~
- */
+/** Any address that isn't a page: what was asked for, and the way back. One column, without the profile card. */
 export default function NotFound() {
   return (
     <PageTransition>
-      <main className="px-(--gutter) pt-12 pb-18">
-        <div className="page-width mx-auto">
-          <section aria-label="Page not found" className="max-w-(--col)">
-            <PromptLine cwd="~" command="cd" args={<RequestedPath />} />
-            <p className="text-err [overflow-wrap:anywhere]">
-              cd: no such file or directory: <RequestedPath />
+      <PageColumns>
+        <article className="max-w-[700px]">
+          <PageTitle>找不到这个页面</PageTitle>
+          <div className="post-body mt-10 max-[640px]:mt-8">
+            <p>
+              <RequestedPath /> 这个地址不存在，可能已经改名或删掉了。
             </p>
-
-            <p className="mt-8 flex flex-wrap items-baseline gap-x-2 text-small text-dim">
-              try
-              <Link href="/" className="group hover:text-ink">
-                <span className="font-semibold text-cmd">cd</span>{" "}
-                <span className="underline-offset-4 group-hover:underline">~</span>
-              </Link>
+            <p>
+              <Link href="/">回到首页</Link>，或者<Link href="/posts">去归档看看</Link>。
             </p>
-          </section>
-        </div>
-      </main>
+          </div>
+        </article>
+      </PageColumns>
     </PageTransition>
   );
 }
