@@ -1,17 +1,22 @@
+import fs from "node:fs/promises";
+import path from "node:path";
 import { ImageResponse } from "next/og";
 import { getPost, getPosts } from "@/lib/posts";
 import { site } from "@/lib/site";
 
 /**
- * The card shown when a post is shared: the post page itself, as a dark (Flexoki) terminal.
+ * The card shown when a post is shared, in the site's light theme: the title, the date and tags, and the
+ * author's name, with the leaf shadow reaching in from the top-right corner.
  *
- *   ~/posts $ cat hello-world.mdx
- *   # Hello, world
- *   2026-09-29 · #meta #blog
- *                                   aqua256@blog
+ *                                         (leaves)
+ *   TypeScript 的 satisfies
+ *   到底解决了什么
+ *   2026-10-14   #typescript
+ *
+ *   Aqua256
  */
 
-export const alt = "Post title on a dark terminal";
+export const alt = "文章标题，右上角是树影";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -20,16 +25,8 @@ export async function generateStaticParams() {
   return posts.map(({ slug }) => ({ slug }));
 }
 
-// Flexoki dark, as in globals.css
-const dark = {
-  bg: "#100f0f",
-  text: "#cecdc3",
-  dim: "#878580",
-  faint: "#343331",
-  purple: "#8b7ec8",
-  green: "#879a39",
-  orange: "#da702c",
-};
+// The light theme's colors, as in globals.css
+const colors = { bg: "#ffffff", ink: "#18212c", ink3: "#5d6b7b" };
 
 /**
  * A font from Google Fonts cut down to just `text`, the way next/font fetches fonts at build time.
@@ -47,20 +44,15 @@ async function googleFont(family: string, text: string): Promise<ArrayBuffer> {
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = (await getPost(slug))!;
-  const prompt = `~/posts $ cat ${slug}.mdx`;
-  const tags = (post.tags ?? []).map((tag) => `#${tag}`).join(" ");
-  const meta = tags ? `${post.date} · ${tags}` : post.date;
+  const tags = (post.tags ?? []).map((tag) => `#${tag}`).join("  ");
   // Long titles step down a size so three lines still fit
-  const titleSize = post.title.length > 16 ? 68 : 88;
-  const signature = `${site.user}@${site.host}`;
-  const all = prompt + post.title + meta + signature + "#";
+  const titleSize = post.title.length > 16 ? 56 : 68;
 
-  // Latin in Recursive (mono, casual), as on the site; Chinese in LXGW WenKai. Google only has the
-  // TC cut of WenKai, which also covers simplified characters.
-  const [recursive, recursiveBold, wenkai] = await Promise.all([
-    googleFont("Recursive:slnt,wght,CASL,CRSV,MONO@0,400,1,0.5,1", all),
-    googleFont("Recursive:slnt,wght,CASL,CRSV,MONO@0,800,1,0.5,0.5", all),
-    googleFont("LXGW+WenKai+TC:wght@700", post.title),
+  // The site itself uses the reader's system fonts, which an image can't; Noto Sans SC is closest to them
+  const [bold, regular, leaves] = await Promise.all([
+    googleFont("Noto+Sans+SC:wght@600", post.title + site.name),
+    googleFont("Noto+Sans+SC:wght@400", post.date + tags),
+    fs.readFile(path.join(process.cwd(), "public", "leaves.svg"), "base64"),
   ]);
 
   return new ImageResponse(
@@ -71,38 +63,42 @@ export default async function Image({ params }: { params: Promise<{ slug: string
         display: "flex",
         flexDirection: "column",
         padding: "72px 88px",
-        background: dark.bg,
-        color: dark.text,
-        fontFamily: "Recursive, WenKai",
-        fontSize: 32,
+        background: colors.bg,
+        color: colors.ink,
+        fontFamily: "Noto Sans SC",
       }}
     >
-      <div style={{ display: "flex", gap: 16 }}>
-        <span style={{ color: dark.purple }}>~/posts</span>
-        <span style={{ color: dark.dim }}>$</span>
-        <span style={{ color: dark.green, fontWeight: 800 }}>cat</span>
-        <span style={{ color: dark.orange }}>{`${slug}.mdx`}</span>
-      </div>
+      {/* The leaf shadow as on the site: faint, fading out downwards. ImageResponse draws plain <img> only. */}
+      {/* oxlint-disable-next-line nextjs/no-img-element -- next/image does not exist inside ImageResponse */}
+      <img
+        alt=""
+        src={`data:image/svg+xml;base64,${leaves}`}
+        width={720}
+        height={750}
+        style={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          opacity: 0.14,
+          maskImage: "linear-gradient(to bottom, black 45%, transparent 85%)",
+        }}
+      />
 
-      <div style={{ display: "flex", flex: 1, flexDirection: "column", justifyContent: "center" }}>
-        {/* The # sits on the first line, sharing its line height */}
-        <div style={{ display: "flex", gap: 32, fontWeight: 800 }}>
-          <span style={{ color: dark.faint, fontSize: titleSize * 0.72, lineHeight: 1.2 / 0.72 }}>#</span>
-          <span style={{ fontSize: titleSize, lineHeight: 1.2, letterSpacing: -1 }}>{post.title}</span>
+      <div style={{ display: "flex", flex: 1, flexDirection: "column", justifyContent: "center", maxWidth: 820 }}>
+        <div style={{ fontSize: titleSize, fontWeight: 600, lineHeight: 1.3, letterSpacing: -1 }}>{post.title}</div>
+        <div style={{ display: "flex", gap: 32, marginTop: 28, fontSize: 28, color: colors.ink3 }}>
+          <span>{post.date}</span>
+          {tags && <span>{tags}</span>}
         </div>
-        <div style={{ display: "flex", marginTop: 32, marginLeft: 70, color: dark.dim }}>{meta}</div>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "flex-end", color: dark.purple, fontWeight: 800 }}>
-        {signature}
-      </div>
+      <div style={{ display: "flex", fontSize: 30, fontWeight: 600 }}>{site.name}</div>
     </div>,
     {
       ...size,
       fonts: [
-        { name: "Recursive", data: recursive, weight: 400 },
-        { name: "Recursive", data: recursiveBold, weight: 800 },
-        { name: "WenKai", data: wenkai, weight: 800 },
+        { name: "Noto Sans SC", data: bold, weight: 600 },
+        { name: "Noto Sans SC", data: regular, weight: 400 },
       ],
     },
   );

@@ -1,9 +1,6 @@
 export const site = {
   /** The author's name: page titles, the RSS feed, anywhere people should recognize the author */
   name: "Aqua256",
-  /** The `user@host` signature on share images */
-  user: "aqua256",
-  host: "blog",
   // Shown in the profile card, in the RSS feed and as the page description
   intro:
     "一块自留地，放些做过的东西和碎碎念。",
