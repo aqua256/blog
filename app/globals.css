@@ -178,6 +178,101 @@
 }
 
 /*
+ * The leaf shadow (app/_components/leaves.tsx). Two masks intersect: it fades out downwards, and keeps
+ * only a third of its strength over the article column, so it never competes with the text. On phones
+ * there is no side column, so it only fades downwards, and the tree is enlarged so its hanging middle
+ * branches fill the screen.
+ */
+@layer components {
+  .leaves {
+    --fade: linear-gradient(#000 20%, transparent 46%);
+    --column: linear-gradient(90deg, rgb(0 0 0 / 0.3) 30%, #000 60%);
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(1200px, 90vw);
+    aspect-ratio: 24 / 25;
+    overflow: hidden;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    -webkit-mask-image: var(--fade), var(--column);
+    -webkit-mask-composite: source-in;
+    mask-image: var(--fade), var(--column);
+    mask-composite: intersect;
+  }
+
+  .leaves span {
+    position: absolute;
+    inset: 0;
+    background: url("/leaves.svg") center / 100% 100% no-repeat;
+    opacity: 0.11;
+    filter: blur(2.5px);
+    transform-origin: 100% 0;
+    animation: leaves-sway 7s ease-in-out infinite;
+  }
+
+  @media (max-width: 640px) {
+    .leaves {
+      --fade: linear-gradient(#000 22%, transparent 50%);
+      width: 100%;
+      aspect-ratio: auto;
+      height: 208vw;
+      -webkit-mask-image: var(--fade);
+      mask-image: var(--fade);
+    }
+
+    .leaves span {
+      inset: 0 -42vw auto auto;
+      width: 200vw;
+      height: 208vw;
+      opacity: 0.22;
+      filter: blur(1.5px);
+    }
+  }
+
+  /* Moonlight through leaves: a faint cool light in the corner, the leaves as black shadows within it */
+  :root[data-theme="dark"] .leaves {
+    mix-blend-mode: normal;
+  }
+
+  :root[data-theme="dark"] .leaves::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 100% 0, rgb(190 206 232 / 0.09), transparent 70%);
+  }
+
+  :root[data-theme="dark"] .leaves span {
+    opacity: 0.5;
+    filter: brightness(0) blur(2.5px);
+
+    @media (max-width: 640px) {
+      opacity: 0.65;
+      filter: brightness(0) blur(1.5px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .leaves span {
+      animation: none;
+    }
+  }
+
+  @keyframes leaves-sway {
+    0%,
+    100% {
+      transform: rotate(0);
+    }
+    30% {
+      transform: rotate(0.6deg) translate(-4px, 2px);
+    }
+    65% {
+      transform: rotate(-0.3deg);
+    }
+  }
+}
+
+/*
  * Post body — the HTML that MDX renders.
  * Markdown syntax (##, -, 1., >) is drawn with ::before and hangs left of the text edge,
  * so every line of prose starts on the same vertical line.

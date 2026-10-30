@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { site, siteUrl } from "@/lib/site";
+import { Leaves } from "./_components/leaves";
 import { SiteFooter } from "./_components/site-footer";
 import { SiteHeader } from "./_components/site-header";
 import "./globals.css";
@@ -27,11 +28,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className="h-full antialiased"
       suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col bg-bg font-sans text-ui text-ink selection:bg-selection">
+      <body className="relative flex min-h-full flex-col bg-bg font-sans text-ui text-ink selection:bg-selection">
         <Providers>
+          <Leaves />
           <SiteHeader />
-          <div className="flex-1">{children}</div>
-          <SiteFooter />
+          {/* Positioned above the leaf shadow, which lies on the page background */}
+          <div className="relative z-1 flex-1">{children}</div>
+          <div className="relative z-1">
+            <SiteFooter />
+          </div>
         </Providers>
       </body>
     </html>
