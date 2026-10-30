@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { newestFirst } from "@/lib/post-order";
+import { groupByYear, newestFirst } from "@/lib/post-order";
 
 describe("newestFirst", () => {
   it("puts the newest post first, across months and years", () => {
@@ -19,5 +19,23 @@ describe("newestFirst", () => {
     const posts = [{ date: "2026-09-29" }, { date: "2026-10-14" }];
     newestFirst(posts);
     expect(posts.map(({ date }) => date)).toEqual(["2026-09-29", "2026-10-14"]);
+  });
+});
+
+describe("groupByYear", () => {
+  it("puts the newest year first and the newest post first within each year", () => {
+    const posts = [
+      { slug: "hello", date: "2026-09-29" },
+      { slug: "new-year", date: "2027-01-03" },
+      { slug: "satisfies", date: "2026-10-14" },
+    ];
+    expect(groupByYear(posts).map(({ year, posts }) => [year, posts.map(({ slug }) => slug)])).toEqual([
+      ["2027", ["new-year"]],
+      ["2026", ["satisfies", "hello"]],
+    ]);
+  });
+
+  it("returns no groups when there are no posts", () => {
+    expect(groupByYear([])).toEqual([]);
   });
 });

@@ -1,37 +1,39 @@
 import type { Metadata } from "next";
+import { groupByYear } from "@/lib/post-order";
 import { getPosts } from "@/lib/posts";
+import { PageColumns } from "../_components/page-columns";
+import { PageTitle } from "../_components/page-title";
 import { PageTransition } from "../_components/page-transition";
-import { PostList } from "../_components/post-list";
-import { PromptLine } from "../_components/prompt-line";
+import { PostCard } from "../_components/post-card";
+import { ProfileCard } from "../_components/profile-card";
 
 export const metadata: Metadata = {
-  title: "posts",
+  title: "归档",
 };
 
-/**
- * The posts section as an `ls -t` of ~/posts:
- *
- *   ~/posts $ ls -t
- *      2026-09-29   Hello, world
- *      2026-09-01   Designing APIs That Read Like Prose
- */
-export default async function PostsPage() {
-  const posts = await getPosts();
+/** Every post as a card, under a quiet heading for each year, beside the profile card. */
+export default async function ArchivePage() {
+  const years = groupByYear(await getPosts());
 
   return (
     <PageTransition>
-      <main className="px-(--gutter) pt-12 pb-18">
-        <div className="page-width mx-auto grid grid-cols-[minmax(0,var(--col))] gap-x-18 min-[1180px]:grid-cols-[minmax(0,var(--col))_220px]">
-          <section aria-label="Posts">
-            <PromptLine cwd="~/posts" command="ls" args="-t" />
-
-            {/* Command output is indented one gutter, like the post page */}
-            <div className="ml-12 max-[560px]:ml-6.5">
-              <PostList posts={posts} />
-            </div>
-          </section>
-        </div>
-      </main>
+      <PageColumns side={<ProfileCard />}>
+        <PageTitle>归档</PageTitle>
+        {years.length > 0 ? (
+          years.map(({ year, posts }) => (
+            <section key={year} aria-labelledby={`year-${year}`} className="mt-10 flex flex-col gap-5">
+              <h2 id={`year-${year}`} className="text-[15px] leading-none font-semibold text-ink-3 tabular-nums">
+                {year}
+              </h2>
+              {posts.map((post) => (
+                <PostCard key={post.slug} post={post} />
+              ))}
+            </section>
+          ))
+        ) : (
+          <p className="mt-10 text-ink-3">还没有文章。</p>
+        )}
+      </PageColumns>
     </PageTransition>
   );
 }
