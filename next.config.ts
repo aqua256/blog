@@ -17,20 +17,18 @@ function withColors<T extends Theme>(theme: T, colors: Record<string, string>): 
 }
 
 /*
- * Some Flexoki syntax colors fall short of WCAG AA (4.5:1) on the code block background (base-50 in
- * light, base-950 in dark). Each is mixed with black (light) or white (dark) by the least that passes,
- * as the text colors in globals.css are.
+ * Some Flexoki syntax colors fall short of WCAG AA (4.5:1) on the code block background (#f7f9fb in
+ * light, #1a1b1e in dark; --surface-code in globals.css). Each is mixed with black (light) or white (dark)
+ * by the least that passes.
  */
 const flexokiLightReadable = withColors(flexokiLight, {
-  "#6F6E69": "#6E6D68", // base-600, comments and punctuation: 4.47 → 4.54
-  "#BC5215": "#B44F14", // orange: 4.22 → 4.51
-  "#AD8301": "#896701", // yellow: 3.05 → 4.59
-  "#66800B": "#5E760A", // green: 3.94 → 4.51
-  "#24837B": "#217971", // cyan: 3.99 → 4.55
+  "#AD8301": "#906D01", // yellow: 3.30 → 4.55
+  "#66800B": "#637C0B", // green: 4.27 → 4.50
+  "#24837B": "#237F77", // cyan: 4.32 → 4.55
 });
 const flexokiDarkReadable = withColors(flexokiDark, {
-  "#D14D41": "#D55D52", // red: 3.97 → 4.52
-  "#4385BE": "#4989C0", // blue: 4.37 → 4.60
+  "#D14D41": "#D55D52", // red: 3.98 → 4.52
+  "#4385BE": "#4989C0", // blue: 4.38 → 4.61
 });
 
 const nextConfig: NextConfig = {
