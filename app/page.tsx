@@ -1,103 +1,48 @@
 import Link from "next/link";
 import { getPosts } from "@/lib/posts";
 import { site } from "@/lib/site";
-import { AvatarArt } from "./_components/avatar-art";
+import { PageColumns } from "./_components/page-columns";
 import { PageTransition } from "./_components/page-transition";
-import { PostList } from "./_components/post-list";
-import { PromptLine } from "./_components/prompt-line";
+import { PostCard } from "./_components/post-card";
+import { ProfileCard } from "./_components/profile-card";
 
-const RECENT_POSTS = 5;
+const LATEST_POSTS = 5;
 
-/** Style for the nth line of output, so lines print in turn (see .print-line in globals.css) */
-const nth = (line: number) => ({ "--line": line }) as React.CSSProperties;
-
-const link = "text-link underline-offset-3 hover:underline";
-
-/**
- * The home directory:
- *
- *   ~ $ fastfetch
- *      ▀▀▀▀▀▀▀▀   aqua256
- *      ▀▀▀▀▀▀▀▀   ───────
- *      ▀▀▀▀▀▀▀▀   Role     学生
- *      ▀▀▀▀▀▀▀▀   Skills   TypeScript
- *      (avatar)   Uptime   since 2026-09-29
- *                 Links    linkedin · github · rss
- *      <a few lines about Aqua256>
- *
- *   ~ $ ls -t ~/posts | head -5
- *      2026-09-29   Hello, world
- *      cd ~/posts                        (only when there are more)
- */
+/** The latest posts as cards, ending in a link to the archive, beside the profile card. */
 export default async function HomePage() {
-  const posts = await getPosts();
-  const first = posts.at(-1);
-
-  const info: { key: string; value: React.ReactNode }[] = [
-    ...site.profile,
-    ...(first ? [{ key: "Uptime", value: `since ${first.date}` }] : []),
-    {
-      key: "Links",
-      value: site.social.map(({ label, href }, i) => (
-        <span key={label}>
-          {i > 0 && <span className="text-dim"> · </span>}
-          <a href={href} className={link}>
-            {label}
-          </a>
-        </span>
-      )),
-    },
-  ];
+  const posts = (await getPosts()).slice(0, LATEST_POSTS);
 
   return (
     <PageTransition>
-      <main className="px-(--gutter) pt-12 pb-18">
-        <div className="page-width mx-auto">
-          <div className="flex max-w-(--col) flex-col gap-12">
-            {/* Command output is indented one gutter, like the post page */}
-            <section aria-label="About">
-              <PromptLine cwd="~" command="fastfetch" />
-              <div className="ml-12 max-[560px]:ml-6.5">
-                <div className="flex items-start gap-8 max-[560px]:flex-col max-[560px]:gap-5">
-                  <AvatarArt label={`${site.name} 的头像`} />
-                  <div className="min-w-0 max-w-full">
-                    <h1 className="print-line font-bold text-prompt" style={nth(0)}>
-                      {site.user}
-                    </h1>
-                    <p aria-hidden className="print-line text-dim" style={nth(1)}>
-                      {"─".repeat(site.user.length)}
-                    </p>
-                    <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4">
-                      {info.map(({ key, value }, i) => (
-                        <div key={key} className="print-line col-span-2 grid grid-cols-subgrid" style={nth(i + 2)}>
-                          <dt className="font-semibold text-prompt">{key}</dt>
-                          <dd>{value}</dd>
-                        </div>
-                      ))}
-                    </dl>
-                  </div>
-                </div>
-                <p className="mt-8 font-[380] text-body leading-[1.7] text-pretty">
-                  {site.intro}
-                </p>
-              </div>
-            </section>
-
-            <section aria-label="Recent posts">
-              <PromptLine cwd="~" command="ls" args={`-t ~/posts | head -${RECENT_POSTS}`} />
-              <div className="ml-12 max-[560px]:ml-6.5">
-                <PostList posts={posts.slice(0, RECENT_POSTS)} />
-                {posts.length > RECENT_POSTS && (
-                  <Link href="/posts" className="group mt-4 inline-block text-dim hover:text-ink">
-                    <span className="font-semibold text-cmd">cd</span>{" "}
-                    <span className="underline-offset-4 group-hover:underline">~/posts</span> for all {posts.length}
-                  </Link>
-                )}
-              </div>
-            </section>
-          </div>
+      <PageColumns side={<ProfileCard />}>
+        {/* The leaf shadow reaches further down the home page (.leaves in globals.css) */}
+        <div data-leaves="long" className="flex flex-col gap-5">
+          <h1 className="sr-only">{site.name}</h1>
+          <h2 className="sr-only">最新文章</h2>
+          {posts.length > 0 ? (
+            posts.map((post) => <PostCard key={post.slug} post={post} />)
+          ) : (
+            <p className="text-ink-3">还没有文章。</p>
+          )}
+          <p className="mt-3 text-right">
+            <Link href="/posts" className="inline-flex min-h-11 items-center gap-1.5 text-[14px] text-ink-2 hover:text-ink">
+              全部文章
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={1.75}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                className="size-4"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </p>
         </div>
-      </main>
+      </PageColumns>
     </PageTransition>
   );
 }

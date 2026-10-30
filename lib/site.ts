@@ -1,25 +1,21 @@
 export const site = {
   /** The author's name: page titles, the RSS feed, anywhere people should recognize the author */
   name: "Aqua256",
-  /** The shell prompt in the header, `user@host` */
+  /** The `user@host` signature on share images */
   user: "aqua256",
   host: "blog",
-  // Shown under `fastfetch` on the home page, in the RSS feed and as the page description
+  // Shown in the profile card, in the RSS feed and as the page description
   intro:
     "一块自留地，放些做过的东西和碎碎念。",
-  // Lines of `fastfetch` on the home page, before Uptime and Links
-  profile: [
-    { key: "Role", value: "学生" },
-    { key: "Skills", value: "TypeScript" },
-  ],
   nav: [
     { label: "首页", href: "/" },
     { label: "归档", href: "/posts" },
   ],
+  // The profile card shows these as icons, with the label for screen readers and the title as a tooltip
   social: [
-    { label: "linkedin", href: "https://www.linkedin.com/in/sheng-xiao-b20846367" },
-    { label: "github", href: "https://github.com/aqua256" },
-    { label: "rss", href: "/rss.xml" },
+    { icon: "github", label: "GitHub", title: "GitHub", href: "https://github.com/aqua256" },
+    { icon: "mail", label: "邮件", title: "maix9527@gmail.com", href: "mailto:maix9527@gmail.com" },
+    { icon: "rss", label: "RSS", title: "RSS", href: "/rss.xml" },
   ],
 } as const;
 

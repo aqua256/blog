@@ -50,8 +50,7 @@ The first paragraph is shown larger, as the lede.
 | Name, introduction, navigation, social links | `lib/site.ts` |
 | Projects shown in `~/projects` | `lib/projects.ts` |
 
-The introduction in `lib/site.ts` is shared by the home page (`fastfetch`), the RSS feed and the page
-description.
+The introduction in `lib/site.ts` is shared by the profile card, the RSS feed and the page description.
 
 ## Deployment
 

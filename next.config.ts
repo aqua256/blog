@@ -34,6 +34,8 @@ const flexokiDarkReadable = withColors(flexokiDark, {
 const nextConfig: NextConfig = {
   // Every page is built ahead of time, so the site ships as plain files in out/ (served by Cloudflare)
   output: "export",
+  // A static export has no server to resize images on request; next/image serves them as they are
+  images: { unoptimized: true },
   // Allow .md and .mdx files as pages and imports
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
 };
