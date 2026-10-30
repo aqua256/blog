@@ -3,8 +3,8 @@
 A personal blog that reads like a friendly terminal: every page is a shell command and its output
 (`cd ~/posts`, `ls -t`, `cat hello-world.mdx`), with a drop-down agent console you can ask about the site.
 
-Built with Next.js 16 (App Router), Tailwind CSS v4 and MDX. Colors are [Flexoki](https://stephango.com/flexoki),
-light and dark; text uses the system's own fonts (PingFang SC, Microsoft YaHei or Noto Sans CJK for Chinese),
+Built with Next.js 16 (App Router), Tailwind CSS v4 and MDX. Colors are neutral grays with one blue accent,
+light and dark, and code is highlighted in [Flexoki](https://stephango.com/flexoki); text uses the system's own fonts (PingFang SC, Microsoft YaHei or Noto Sans CJK for Chinese),
 so no font files are downloaded.
 
 ## Development

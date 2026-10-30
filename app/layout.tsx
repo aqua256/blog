@@ -32,7 +32,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       className="h-full antialiased"
       suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col bg-paper font-sans text-ui text-ink selection:bg-faint">
+      <body className="flex min-h-full flex-col bg-bg font-sans text-ui text-ink selection:bg-selection">
         <Providers>
           <AgentConsole posts={posts}>
             <SiteHeader />

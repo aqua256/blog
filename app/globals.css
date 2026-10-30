@@ -8,44 +8,25 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 /*
- * Blog design tokens — Flexoki (https://stephango.com/flexoki), light on :root and dark under
- * [data-theme="dark"], the pattern in next-themes' docs. Light uses Flexoki's 600 accents, dark its 400s.
+ * Colors from the leaf-shadow design: neutral grays on white, a near-black dark theme, one blue accent.
+ * Light on :root and dark under [data-theme="dark"], the pattern in next-themes' docs. Every text color is
+ * at least WCAG AA (4.5:1) on the page, card, code block and inline code backgrounds of its theme.
  */
 :root {
   color-scheme: light;
-  --fx-bg: #fffcf0; /* paper */
-  --fx-bg-2: #f2f0e5; /* base-50 */
-  --fx-crust: #e6e4d9; /* base-100 */
-  --fx-faint: #dad8ce; /* base-150 */
-  --fx-dim: #6f6e69; /* base-600 */
-  --fx-text: #403e3c; /* base-800 */
-  --fx-red: #af3029;
-  --fx-orange: #bc5215;
-  --fx-yellow: #ad8301;
-  --fx-green: #66800b;
-  --fx-cyan: #24837b;
-  --fx-blue: #205ea6;
-  --fx-purple: #5e409d;
-  --fx-magenta: #a02f6f;
-
-  /*
-   * Text colors, all at least WCAG AA (4.5:1) on both backgrounds. base-600 falls just short on base-50,
-   * so it is darkened by the least that passes.
-   */
-  --role-dim: color-mix(in srgb, var(--fx-dim), black 1%);
-  --role-link: var(--fx-blue);
-  --role-prompt: var(--fx-purple);
-  --role-err: var(--fx-red);
-
-  /* Syntax roles. Light stays restrained: the yellow, green and cyan are too low-contrast for small text. */
-  --role-cmd: var(--role-link);
-  --role-arg: var(--fx-text);
-  --role-str: var(--fx-text);
-  --role-tag: var(--role-prompt);
-  --role-mark-list: var(--fx-purple);
-  --role-mark-quote: var(--fx-purple);
-  --role-code: var(--role-prompt);
-  --role-quote-hl: color-mix(in srgb, var(--fx-blue) 16%, transparent);
+  --bg: #ffffff;
+  --surface: #ffffff; /* cards */
+  --surface-code: #f7f9fb; /* code blocks */
+  --surface-inline: #eef2f6; /* inline code */
+  --ink: #18212c; /* headings and strong text */
+  --ink-body: #36404c; /* body text, one shade lighter than headings */
+  --ink-2: #4b5866; /* excerpts, secondary text */
+  --ink-3: #5d6b7b; /* dates, labels, quiet controls */
+  --line: #dde4ec;
+  --line-2: #c4d0dd;
+  --accent: #0b6fa4;
+  --err: #b42318;
+  --selection: #cfe0fb;
 
   /* Type scale: title / section / lede+quote / body / interface / secondary / keycap */
   --fs-title: clamp(30px, 5vw, 48px);
@@ -68,36 +49,19 @@
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --fx-bg: #100f0f; /* black */
-  --fx-bg-2: #1c1b1a; /* base-950 */
-  --fx-crust: #100f0f; /* nothing darker than black */
-  --fx-faint: #343331; /* base-850 */
-  --fx-dim: #878580; /* base-500 */
-  --fx-text: #cecdc3; /* base-200 */
-  --fx-red: #d14d41;
-  --fx-orange: #da702c;
-  --fx-yellow: #d0a215;
-  --fx-green: #879a39;
-  --fx-cyan: #3aa99f;
-  --fx-blue: #4385be;
-  --fx-purple: #8b7ec8;
-  --fx-magenta: #ce5d97;
-
-  /* Blue and red fall just short of 4.5:1 on base-950, so they are lightened by the least that passes */
-  --role-dim: var(--fx-dim);
-  --role-link: color-mix(in srgb, var(--fx-blue), white 3%);
-  --role-prompt: var(--fx-purple);
-  --role-err: color-mix(in srgb, var(--fx-red), white 9%);
-
-  /* Dark gets more color */
-  --role-cmd: var(--fx-green);
-  --role-arg: var(--fx-orange);
-  --role-str: var(--fx-yellow);
-  --role-tag: var(--fx-magenta);
-  --role-mark-list: var(--fx-cyan);
-  --role-mark-quote: var(--fx-cyan);
-  --role-code: var(--fx-orange);
-  --role-quote-hl: color-mix(in srgb, var(--fx-yellow) 20%, transparent);
+  --bg: #111214;
+  --surface: #18191c;
+  --surface-code: #1a1b1e;
+  --surface-inline: #25262a;
+  --ink: #e9eaec;
+  --ink-body: #c8cbd0;
+  --ink-2: #b3b6bc;
+  --ink-3: #8b9098;
+  --line: #26282c;
+  --line-2: #3a3d42;
+  --accent: #6aa6f8;
+  --err: #f97066;
+  --selection: rgb(106 166 248 / 0.32);
 }
 
 /* Page grid: article column, plus a 220px outline column on wide screens */
@@ -144,24 +108,37 @@
     "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-  --color-paper: var(--fx-bg);
-  --color-paper-2: var(--fx-bg-2);
-  --color-crust: var(--fx-crust);
-  --color-ink: var(--fx-text);
-  --color-dim: var(--role-dim);
-  --color-faint: var(--fx-faint);
-  --color-prompt: var(--role-prompt);
-  --color-link: var(--role-link);
-  --color-cursor: var(--fx-orange);
-  --color-err: var(--role-err); /* error messages, e.g. on the 404 page */
-  --color-cmd: var(--role-cmd);
-  --color-arg: var(--role-arg);
-  --color-str: var(--role-str);
-  --color-tag: var(--role-tag);
-  --color-mark-list: var(--role-mark-list);
-  --color-mark-quote: var(--role-mark-quote);
-  --color-code: var(--role-code);
-  --color-quote-hl: var(--role-quote-hl);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-code: var(--surface-code);
+  --color-surface-inline: var(--surface-inline);
+  --color-ink: var(--ink);
+  --color-ink-body: var(--ink-body);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-accent: var(--accent);
+  --color-err: var(--err); /* error messages, e.g. on the 404 page */
+  --color-selection: var(--selection);
+
+  /* Roles the terminal-style components still use; they go away with those components */
+  --color-paper: var(--bg);
+  --color-paper-2: var(--surface-code);
+  --color-crust: var(--surface-code);
+  --color-dim: var(--ink-3);
+  --color-faint: var(--line);
+  --color-prompt: var(--accent);
+  --color-link: var(--accent);
+  --color-cursor: var(--accent);
+  --color-cmd: var(--accent);
+  --color-arg: var(--ink);
+  --color-str: var(--ink);
+  --color-tag: var(--ink-2);
+  --color-mark-list: var(--ink-3);
+  --color-mark-quote: var(--ink-3);
+  --color-code: var(--ink);
+  --color-quote-hl: color-mix(in srgb, var(--accent) 14%, transparent);
 
   --text-title: var(--fs-title);
   --text-h2: var(--fs-h2);
