@@ -19,7 +19,7 @@ export function NavLinks() {
               <Link
                 href={href}
                 aria-current={current ? "page" : undefined}
-                className={`flex min-h-16 items-center px-3.5 text-[14px] max-[640px]:px-2.5 ${
+                className={`flex min-h-14 items-center px-3.25 text-[13px] max-[640px]:px-2.5 ${
                   current ? "font-semibold text-ink" : "text-ink-3 hover:text-ink"
                 }`}
               >

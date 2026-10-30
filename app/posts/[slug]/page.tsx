@@ -55,14 +55,14 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
           <>
             <ProfileCard />
             {headings.length > 0 && (
-              <div className="sticky top-24 mt-6 max-[963px]:hidden">
+              <div className="sticky top-21.5 mt-5.5 max-[869px]:hidden">
                 <PostOutline headings={headings} />
               </div>
             )}
           </>
         }
       >
-        <article className="max-w-[700px]">
+        <article className="max-w-[630px]">
           <header>
             <PageTitle>
               {/* inline-block: a title that wraps is still one box to morph */}
@@ -70,12 +70,12 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
                 <span className="inline-block">{post.title}</span>
               </PostTitleTransition>
             </PageTitle>
-            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[14px] leading-normal">
+            <div className="mt-3.5 flex flex-wrap items-center gap-x-4.5 gap-y-1.75 text-[13px] leading-normal">
               <time dateTime={post.date} className="text-ink-3 tabular-nums">
                 {post.date}
               </time>
               {post.tags && post.tags.length > 0 && (
-                <ul aria-label="标签" className="flex gap-4 text-ink-2">
+                <ul aria-label="标签" className="flex gap-3.5 text-ink-2">
                   {post.tags.map((tag) => (
                     <li key={tag}>#{tag}</li>
                   ))}
@@ -83,12 +83,12 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
               )}
             </div>
             {headings.length > 0 && (
-              <div className="min-[964px]:hidden">
+              <div className="min-[870px]:hidden">
                 <PostOutlineFolded headings={headings} />
               </div>
             )}
           </header>
-          <div className="post-body mt-10 max-[640px]:mt-8">
+          <div className="post-body mt-9 max-[640px]:mt-7">
             <Content />
           </div>
           <PostPager older={older} newer={newer} />

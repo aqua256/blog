@@ -21,8 +21,8 @@ export default async function ArchivePage() {
         <PageTitle>归档</PageTitle>
         {years.length > 0 ? (
           years.map(({ year, posts }) => (
-            <section key={year} aria-labelledby={`year-${year}`} className="mt-10 flex flex-col gap-5">
-              <h2 id={`year-${year}`} className="text-[15px] leading-none font-semibold text-ink-3 tabular-nums">
+            <section key={year} aria-labelledby={`year-${year}`} className="mt-9 flex flex-col gap-4.5">
+              <h2 id={`year-${year}`} className="text-[14px] leading-none font-semibold text-ink-3 tabular-nums">
                 {year}
               </h2>
               {posts.map((post) => (
@@ -31,7 +31,7 @@ export default async function ArchivePage() {
             </section>
           ))
         ) : (
-          <p className="mt-10 text-ink-3">还没有文章。</p>
+          <p className="mt-9 text-ink-3">还没有文章。</p>
         )}
       </PageColumns>
     </PageTransition>

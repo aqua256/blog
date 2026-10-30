@@ -14,9 +14,9 @@ export default function AboutPage() {
   return (
     <PageTransition>
       <PageColumns side={<ProfileCard />}>
-        <article className="max-w-[700px]">
+        <article className="max-w-[630px]">
           <PageTitle>关于</PageTitle>
-          <div className="post-body mt-10 max-[640px]:mt-8">
+          <div className="post-body mt-9 max-[640px]:mt-7">
             <About />
           </div>
         </article>

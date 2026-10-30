@@ -14,9 +14,9 @@ export default function NotFound() {
   return (
     <PageTransition>
       <PageColumns>
-        <article className="max-w-[700px]">
+        <article className="max-w-[630px]">
           <PageTitle>找不到这个页面</PageTitle>
-          <div className="post-body mt-10 max-[640px]:mt-8">
+          <div className="post-body mt-9 max-[640px]:mt-7">
             <p>
               <RequestedPath /> 这个地址不存在，可能已经改名或删掉了。
             </p>

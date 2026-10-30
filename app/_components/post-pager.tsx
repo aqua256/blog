@@ -9,12 +9,12 @@ const arrow = {
   strokeLinecap: "round",
   strokeLinejoin: "round",
   "aria-hidden": true,
-  className: "size-4",
+  className: "size-3.5",
 } as const;
 
-const link = "flex max-w-[46%] flex-col gap-1.5 py-1 group";
-const label = "inline-flex items-center gap-1.5 text-[14px] leading-normal text-ink-3";
-const title = "text-[16px] leading-normal font-semibold text-ink-2 group-hover:text-accent";
+const link = "flex max-w-[46%] flex-col gap-1.25 py-1 group";
+const label = "inline-flex items-center gap-1.25 text-[13px] leading-normal text-ink-3";
+const title = "text-[15px] leading-normal font-semibold text-ink-2 group-hover:text-accent";
 
 /**
  * The newer post on the left (上一篇) and the older one on the right (下一篇), the way the archive reads
@@ -24,7 +24,7 @@ export function PostPager({ older, newer }: { older?: PostSummary; newer?: PostS
   if (!older && !newer) return null;
 
   return (
-    <nav aria-label="相邻文章" className="mt-16 flex justify-between gap-6 border-t border-line pt-6">
+    <nav aria-label="相邻文章" className="mt-14.5 flex justify-between gap-5.5 border-t border-line pt-5.5">
       {newer && (
         <Link href={`/posts/${newer.slug}`} className={link}>
           <span className={label}>

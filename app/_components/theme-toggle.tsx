@@ -48,12 +48,12 @@ export function ThemeToggle() {
       aria-label={label}
       title={label}
       onClick={() => withCrossfade(() => setTheme(resolvedTheme === "dark" ? "light" : "dark"))}
-      className="-mr-3.25 grid size-11 cursor-pointer place-items-center rounded-md text-ink-3 hover:bg-ink/5 hover:text-ink"
+      className="-mr-2.75 grid size-10 cursor-pointer place-items-center rounded-md text-ink-3 hover:bg-ink/5 hover:text-ink"
     >
-      <svg {...icon} className="size-4.5 dark:hidden">
+      <svg {...icon} className="size-4 dark:hidden">
         <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
       </svg>
-      <svg {...icon} className="hidden size-4.5 dark:block">
+      <svg {...icon} className="hidden size-4 dark:block">
         <circle cx="12" cy="12" r="4" />
         <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
       </svg>

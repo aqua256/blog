@@ -10,7 +10,7 @@ const icon = {
   strokeLinecap: "round",
   strokeLinejoin: "round",
   "aria-hidden": true,
-  className: "size-4",
+  className: "size-3.5",
 } as const;
 
 /** Copies the code of the block it sits in. For 1.5s after a copy it shows a check and announces 已复制. */

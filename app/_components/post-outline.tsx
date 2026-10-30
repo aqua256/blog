@@ -44,8 +44,8 @@ export function PostOutline({ headings }: { headings: Heading[] }) {
   );
 
   return (
-    <nav aria-labelledby="outline-title" className="card px-6 pt-5 pb-4.5">
-      <h2 id="outline-title" className="mb-2 text-[14px] leading-normal font-semibold text-ink">
+    <nav aria-labelledby="outline-title" className="card px-5.5 pt-4.5 pb-4">
+      <h2 id="outline-title" className="mb-1.75 text-[13px] leading-normal font-semibold text-ink">
         目录
       </h2>
       <ol>
@@ -56,7 +56,7 @@ export function PostOutline({ headings }: { headings: Heading[] }) {
               <a
                 href={`#${id}`}
                 aria-current={current ? "location" : undefined}
-                className={`block py-1.5 text-[14px] leading-normal ${current ? "font-semibold text-ink" : "text-ink-3 hover:text-ink"}`}
+                className={`block py-1.25 text-[13px] leading-normal ${current ? "font-semibold text-ink" : "text-ink-3 hover:text-ink"}`}
               >
                 {text}
               </a>
@@ -71,8 +71,8 @@ export function PostOutline({ headings }: { headings: Heading[] }) {
 /** On narrow screens there is no side column: the outline folds into a card under the title. */
 export function PostOutlineFolded({ headings }: { headings: Heading[] }) {
   return (
-    <details className="card group mt-6 px-4">
-      <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-[14px] font-semibold text-ink [&::-webkit-details-marker]:hidden">
+    <details className="card group mt-5.5 px-4">
+      <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-[13px] font-semibold text-ink [&::-webkit-details-marker]:hidden">
         目录
         <svg
           viewBox="0 0 24 24"
@@ -90,7 +90,7 @@ export function PostOutlineFolded({ headings }: { headings: Heading[] }) {
       <ol className="mb-3">
         {headings.map(({ id, text }) => (
           <li key={id}>
-            <a href={`#${id}`} className="block py-2 text-[14px] leading-normal text-ink-2">
+            <a href={`#${id}`} className="block py-2 text-[13px] leading-normal text-ink-2">
               {text}
             </a>
           </li>
