@@ -3,6 +3,7 @@ import path from "node:path";
 import type { MDXContent } from "mdx/types";
 import type { Toc } from "@stefanprobst/rehype-extract-toc";
 import { sectionsOf, type Heading } from "./headings";
+import { newestFirst } from "./post-order";
 
 /** What each post declares with `export const metadata = { ... }` at the top of its .mdx file. */
 export type PostMetadata = {
@@ -83,18 +84,15 @@ function isVisible(post: PostMetadata) {
 /** Visible posts, newest first. */
 export async function getPosts(): Promise<PostSummary[]> {
   const posts = await Promise.all((await listSlugs()).map(loadPost));
-  return posts
-    .filter(isVisible)
-    .sort((a, b) => b.date.localeCompare(a.date))
-    .map(({ slug, title, description, date, tags, draft, headings }) => ({
-      slug,
-      title,
-      description,
-      date,
-      tags,
-      draft,
-      headings,
-    }));
+  return newestFirst(posts.filter(isVisible)).map(({ slug, title, description, date, tags, draft, headings }) => ({
+    slug,
+    title,
+    description,
+    date,
+    tags,
+    draft,
+    headings,
+  }));
 }
 
 /** The posts right before and after this one in time. */
