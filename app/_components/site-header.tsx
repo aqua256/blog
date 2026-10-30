@@ -4,24 +4,20 @@ import { NavLinks } from "./nav-links";
 import { ThemeToggle } from "./theme-toggle";
 
 /**
- * `aqua256@blog  cd ~ ~/projects ~/posts          THEME=dark`
+ * `Aqua256                       首页  归档  ☾`
  *
- * Phones get two deliberate rows instead of an arbitrary wrap:
- *
- *   aqua256@blog              THEME=dark
- *   cd ~ ~/projects ~/posts
+ * Sticks to the top; clear over the top of the page, it fills in over the first 120px of scrolling
+ * (.site-header in globals.css).
  */
 export function SiteHeader() {
   return (
-    <header style={{ viewTransitionName: "site-header" }} className="sticky top-[env(safe-area-inset-top,0px)] z-10 bg-paper/90 px-(--gutter) backdrop-blur-sm max-[560px]:static">
-      <div className="page-width mx-auto flex min-h-13 flex-wrap items-center gap-x-5 gap-y-1.5 border-b border-faint py-1.5">
-        <Link href="/" className="whitespace-nowrap font-bold">
-          <span className="text-prompt">{site.user}</span>@{site.host}
+    <header style={{ viewTransitionName: "site-header" }} className="site-header sticky top-0 z-10 border-b border-transparent">
+      <div className="mx-auto flex min-h-16 max-w-280 items-center gap-2 px-6 max-[640px]:px-4">
+        <Link href="/" className="text-[16px] font-semibold tracking-[-0.01em] text-ink">
+          {site.name}
         </Link>
-        <NavLinks className="max-[560px]:order-last max-[560px]:basis-full" />
-        <div className="ml-auto flex items-center gap-x-5">
-          <ThemeToggle />
-        </div>
+        <NavLinks />
+        <ThemeToggle />
       </div>
     </header>
   );

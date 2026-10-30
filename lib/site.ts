@@ -13,9 +13,8 @@ export const site = {
     { key: "Skills", value: "TypeScript" },
   ],
   nav: [
-    { path: "~", href: "/" },
-    { path: "~/projects", href: "/projects" },
-    { path: "~/posts", href: "/posts" },
+    { label: "首页", href: "/" },
+    { label: "归档", href: "/posts" },
   ],
   social: [
     { label: "linkedin", href: "https://www.linkedin.com/in/sheng-xiao-b20846367" },

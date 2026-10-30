@@ -144,6 +144,40 @@
 }
 
 /*
+ * The header is clear over the top of the page and fills in over the first 120px of scrolling. Browsers
+ * without scroll-driven animations show it filled from the start.
+ */
+@layer components {
+  .site-header {
+    --header-fill: color-mix(in srgb, var(--bg) 86%, transparent);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .site-header {
+      animation: header-fill linear both;
+      animation-timeline: scroll();
+      animation-range: 0 120px;
+    }
+  }
+
+  @supports not (animation-timeline: scroll()) {
+    .site-header {
+      background: var(--header-fill);
+      backdrop-filter: blur(12px);
+      border-bottom-color: var(--line);
+    }
+  }
+
+  @keyframes header-fill {
+    to {
+      background: var(--header-fill);
+      backdrop-filter: blur(12px);
+      border-bottom-color: var(--line);
+    }
+  }
+}
+
+/*
  * Post body — the HTML that MDX renders.
  * Markdown syntax (##, -, 1., >) is drawn with ::before and hangs left of the text edge,
  * so every line of prose starts on the same vertical line.
