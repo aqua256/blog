@@ -1,46 +1,17 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
 import type { Heading } from "@/lib/headings";
-
-function subscribe(onChange: () => void) {
-  window.addEventListener("scroll", onChange, { passive: true });
-  window.addEventListener("resize", onChange);
-  return () => {
-    window.removeEventListener("scroll", onChange);
-    window.removeEventListener("resize", onChange);
-  };
-}
-
-/** Scrolled all the way down (and the page does scroll). */
-function atBottom() {
-  const { scrollHeight } = document.documentElement;
-  return window.scrollY > 0 && window.scrollY + window.innerHeight >= scrollHeight - 2;
-}
-
-/**
- * The last section whose heading has scrolled above 35% of the viewport; none before the first one.
- * At the bottom of the page it's the last section, whose heading may never reach that line if it's short.
- */
-function activeSection(headings: Heading[]): string | null {
-  if (headings.length > 0 && atBottom()) return headings[headings.length - 1].id;
-  let active = null;
-  for (const { id } of headings) {
-    const el = document.getElementById(id);
-    if (el && el.getBoundingClientRect().top < window.innerHeight * 0.35) active = id;
-  }
-  return active;
-}
+import { useActiveSection } from "./use-active-section";
 
 /**
  * The outline card in the side column, held at the top while the post scrolls. The section being read
  * reads bolder and darker, like the current page in the header.
  */
 export function PostOutline({ headings }: { headings: Heading[] }) {
-  const active = useSyncExternalStore(
-    subscribe,
-    () => activeSection(headings),
-    () => null,
+  // Nothing is current above the first section
+  const active = useActiveSection(
+    headings.map(({ id }) => id),
+    { before: null },
   );
 
   return (
