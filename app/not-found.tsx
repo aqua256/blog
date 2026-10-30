@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AskHint } from "./_components/ask-button";
 import { PageTransition } from "./_components/page-transition";
 import { PromptLine } from "./_components/prompt-line";
 import { RequestedPath } from "./_components/requested-path";
@@ -15,7 +14,7 @@ export const metadata: Metadata = {
  *   ~ $ cd ~/posts/typo
  *   cd: no such file or directory: ~/posts/typo
  *
- *   try cd ~, or press / to ask
+ *   try cd ~
  */
 export default function NotFound() {
   return (
@@ -34,8 +33,6 @@ export default function NotFound() {
                 <span className="font-semibold text-cmd">cd</span>{" "}
                 <span className="underline-offset-4 group-hover:underline">~</span>
               </Link>
-              or
-              <AskHint>about this site</AskHint>
             </p>
           </section>
         </div>

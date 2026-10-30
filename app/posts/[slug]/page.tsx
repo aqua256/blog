@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAdjacentPosts, getPost, getPosts } from "@/lib/posts";
-import { AskButton, AskCommand, AskHint, Key } from "../../_components/ask-button";
 import { PageTransition, PostTitleTransition } from "../../_components/page-transition";
 import { PostOutline } from "../../_components/post-outline";
 import { PostPager } from "../../_components/post-pager";
@@ -87,10 +86,7 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
               </div>
             </div>
 
-            <p className="mt-12 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-small text-dim">
-              (END)
-              <AskHint>about this post</AskHint>
-            </p>
+            <p className="mt-12 text-small text-dim">(END)</p>
             <PostPager older={older} newer={newer} />
           </article>
 
@@ -98,9 +94,6 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
             <aside className="hidden min-[1180px]:block">
               <div className="sticky top-24">
                 <PostOutline headings={post.headings} />
-                <AskButton className="mt-5 text-small">
-                  <AskCommand /> the agent <Key>/</Key>
-                </AskButton>
               </div>
             </aside>
           )}

@@ -1,6 +1,6 @@
 import type { Toc } from "@stefanprobst/rehype-extract-toc";
 
-/** A `##` section of a post, for the outline and the agent's summary. */
+/** A `##` section of a post, for the outline. */
 export type Heading = { id: string; text: string };
 
 /**

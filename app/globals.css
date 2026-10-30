@@ -28,7 +28,7 @@
   --err: #b42318;
   --selection: #cfe0fb;
 
-  /* Type scale: title / section / lede+quote / body / interface / secondary / keycap */
+  /* Type scale: title / section / lede+quote / body / interface / secondary / code block mark */
   --fs-title: clamp(30px, 5vw, 48px);
   --fs-h2: clamp(22px, 3vw, 28px);
   --fs-lede: 21px;
@@ -79,18 +79,13 @@
 }
 
 /*
- * One keyboard focus ring everywhere, in the prompt color. In the base layer, so utilities such as
- * outline-none on the console's input still win.
+ * One keyboard focus ring everywhere, in the prompt color. In the base layer, so utilities can still
+ * override it.
  */
 @layer base {
   :focus-visible {
     outline: 2px solid var(--color-prompt);
     outline-offset: 3px;
-  }
-
-  /* The console itself only holds focus between clicks; its controls show the ring */
-  dialog:focus-visible {
-    outline: none;
   }
 
   /* Hover colors ease in rather than snap */
@@ -146,15 +141,6 @@
   --text-body: var(--fs-body);
   --text-ui: var(--fs-ui);
   --text-small: var(--fs-small);
-  --text-key: var(--fs-key);
-
-  /* The agent console drops down from the top */
-  --animate-drop: drop 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-  @keyframes drop {
-    from {
-      transform: translateY(-100%);
-    }
-  }
 }
 
 /*

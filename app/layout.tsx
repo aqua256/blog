@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { getPosts } from "@/lib/posts";
 import { site, siteUrl } from "@/lib/site";
-import { AgentConsole } from "./_components/agent-console";
 import { SiteFooter } from "./_components/site-footer";
 import { SiteHeader } from "./_components/site-header";
 import "./globals.css";
@@ -22,10 +20,7 @@ export const metadata: Metadata = {
 };
 
 /** Terminal-style chrome for every page of the site, including the 404 page. */
-export default async function RootLayout({ children }: LayoutProps<"/">) {
-  // What the agent needs to know about the posts: enough to list them and summarize the current one
-  const posts = (await getPosts()).map(({ slug, title, headings }) => ({ slug, title, headings }));
-
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="zh-CN"
@@ -34,11 +29,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-full flex-col bg-bg font-sans text-ui text-ink selection:bg-selection">
         <Providers>
-          <AgentConsole posts={posts}>
-            <SiteHeader />
-            <div className="flex-1">{children}</div>
-            <SiteFooter />
-          </AgentConsole>
+          <SiteHeader />
+          <div className="flex-1">{children}</div>
+          <SiteFooter />
         </Providers>
       </body>
     </html>

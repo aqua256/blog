@@ -12,7 +12,7 @@ export const metadata: Metadata = {
  * The projects section as an `ls` of ~/projects:
  *
  *   ~/projects $ ls
- *      blog/   this site: Next.js, MDX and a scripted agent   2026   src ↗
+ *      blog/   this site: Next.js and MDX                    2026   src ↗
  */
 export default function ProjectsPage() {
   return (

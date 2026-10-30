@@ -1,12 +1,10 @@
 export const site = {
   /** The author's name: page titles, the RSS feed, anywhere people should recognize the author */
   name: "Aqua256",
-  /** How the agent refers to the author in a sentence ("What Aqua256 is building") */
-  givenName: "Aqua256",
   /** The shell prompt in the header, `user@host` */
   user: "aqua256",
   host: "blog",
-  // Shown under `fastfetch` on the home page, by the agent, in the RSS feed and as the page description
+  // Shown under `fastfetch` on the home page, in the RSS feed and as the page description
   intro:
     "一块自留地，放些做过的东西和碎碎念。",
   // Lines of `fastfetch` on the home page, before Uptime and Links

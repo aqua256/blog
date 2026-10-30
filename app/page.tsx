@@ -1,11 +1,9 @@
 import Link from "next/link";
 import { getPosts } from "@/lib/posts";
 import { site } from "@/lib/site";
-import { AskHint } from "./_components/ask-button";
 import { AvatarArt } from "./_components/avatar-art";
 import { PageTransition } from "./_components/page-transition";
 import { PostList } from "./_components/post-list";
-import { PromptInput } from "./_components/prompt-input";
 import { PromptLine } from "./_components/prompt-line";
 
 const RECENT_POSTS = 5;
@@ -30,11 +28,6 @@ const link = "text-link underline-offset-3 hover:underline";
  *   ~ $ ls -t ~/posts | head -5
  *      2026-09-29   Hello, world
  *      cd ~/posts                        (only when there are more)
- *
- *   ~ $ ask
- *      press / to ask anything about Aqua256
- *
- *   ~ $ █
  */
 export default async function HomePage() {
   const posts = await getPosts();
@@ -102,15 +95,6 @@ export default async function HomePage() {
                 )}
               </div>
             </section>
-
-            <section aria-label="Ask">
-              <PromptLine cwd="~" command="ask" />
-              <div className="ml-12 max-[560px]:ml-6.5">
-                <AskHint>anything about {site.givenName}</AskHint>
-              </div>
-            </section>
-
-            <PromptInput cwd="~" />
           </div>
         </div>
       </main>

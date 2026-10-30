@@ -1,4 +1,4 @@
-/** Things Aqua256 has built, shown in ~/projects and by the agent. Newest first. */
+/** Things Aqua256 has built, shown in ~/projects. Newest first. */
 export type Project = {
   /** Shown as a directory: `blog/` */
   name: string;
@@ -14,7 +14,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     name: "blog",
-    description: "this site: Next.js, MDX and a scripted agent",
+    description: "this site: Next.js and MDX",
     year: 2026,
     href: "/",
     links: [{ label: "src", href: "https://github.com/aqua256/blog" }],

@@ -19,7 +19,7 @@ export type PostMetadata = {
 export type PostSummary = PostMetadata & {
   slug: string;
   description: string;
-  /** The `##` sections, for the outline and the agent's summary */
+  /** The `##` sections, for the outline */
   headings: Heading[];
 };
 

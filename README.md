@@ -1,7 +1,7 @@
 # Aqua256's blog
 
 A personal blog that reads like a friendly terminal: every page is a shell command and its output
-(`cd ~/posts`, `ls -t`, `cat hello-world.mdx`), with a drop-down agent console you can ask about the site.
+(`cd ~/posts`, `ls -t`, `cat hello-world.mdx`).
 
 Built with Next.js 16 (App Router), Tailwind CSS v4 and MDX. Colors are neutral grays with one blue accent,
 light and dark, and code is highlighted in [Flexoki](https://stephango.com/flexoki); text uses the system's own fonts (PingFang SC, Microsoft YaHei or Noto Sans CJK for Chinese),
@@ -37,8 +37,7 @@ The first paragraph is shown larger, as the lede.
 ## A section
 ```
 
-- `##` headings become the outline beside the post on wide screens, and the agent lists them when asked
-  to summarize the post. Every heading gets an id to link to (`#title`); a repeated title becomes
+- `##` headings become the outline beside the post on wide screens. Every heading gets an id to link to (`#title`); a repeated title becomes
   `#title-1`, `#title-2`, as on GitHub.
 - GitHub Flavored Markdown works: tables, `~~strikethrough~~`, task lists (`- [x]`) and footnotes (`[^1]`).
 - Fenced code blocks with a language (```` ```ts ````) are highlighted at build time.
@@ -50,10 +49,9 @@ The first paragraph is shown larger, as the lede.
 | --- | --- |
 | Name, introduction, navigation, social links | `lib/site.ts` |
 | Projects shown in `~/projects` | `lib/projects.ts` |
-| The agent's scripted replies | `lib/agent-replies.ts` |
 
-The introduction in `lib/site.ts` is shared by the home page (`fastfetch`), the agent, the RSS feed and
-the page description.
+The introduction in `lib/site.ts` is shared by the home page (`fastfetch`), the RSS feed and the page
+description.
 
 ## Deployment
 
@@ -84,7 +82,7 @@ These are generated at build time, so changing `SITE_URL` needs a rebuild:
 
 ```
 app/
-  layout.tsx          header, footer, agent console, site metadata
+  layout.tsx          header, footer, site metadata
   page.tsx            ~ (home)
   posts/              ~/posts and each post
   projects/           ~/projects
@@ -93,6 +91,6 @@ app/
 wrangler.jsonc        Cloudflare: serve out/ as static assets
   _components/        shared components
 content/posts/        the posts (MDX)
-lib/                  site data, posts, headings, agent replies, Flexoki code themes
+lib/                  site data, posts, headings, Flexoki code themes
 mdx-components.tsx    how MDX elements render (heading ids, code blocks)
 ```
