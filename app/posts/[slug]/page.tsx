@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAdjacentPosts, getPost, getPosts } from "@/lib/posts";
+import { PageColumns } from "../../_components/page-columns";
+import { PageTitle } from "../../_components/page-title";
 import { PageTransition, PostTitleTransition } from "../../_components/page-transition";
-import { PostOutline } from "../../_components/post-outline";
+import { PostOutline, PostOutlineFolded } from "../../_components/post-outline";
 import { PostPager } from "../../_components/post-pager";
-import { PromptLine } from "../../_components/prompt-line";
-import { TypedText } from "../../_components/typed-text";
+import { ProfileCard } from "../../_components/profile-card";
 
 export async function generateStaticParams() {
   const posts = await getPosts();
@@ -35,14 +36,8 @@ export async function generateMetadata(props: PageProps<"/posts/[slug]">): Promi
 }
 
 /**
- * The post as a `cat` of its .mdx file:
- *
- *   ~/posts $ cat hello-world.mdx
- *      # Title
- *        2026-09-29 · #tag
- *        body…
- *   (END)  press / to ask about this post
- *   ← older                     newer →
+ * The post beside the profile card and, on wide screens, an outline card that stays in view. On narrow
+ * screens the outline folds into a card under the title. The newer and older posts close the page.
  */
 export default async function PostPage(props: PageProps<"/posts/[slug]">) {
   const { slug } = await props.params;
@@ -50,55 +45,55 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
   if (!post) notFound();
 
   const { older, newer } = await getAdjacentPosts(slug);
-  const { Content } = post;
+  const { Content, headings } = post;
 
   // Keyed by slug so moving from one post to the next animates too
   return (
     <PageTransition key={slug}>
-      <main className="px-(--gutter) pt-12 pb-18">
-        {/* Same width as the header; the second column is kept free for the outline on wide screens. */}
-        <div className="page-width mx-auto grid grid-cols-[minmax(0,var(--col))] gap-x-18 min-[1180px]:grid-cols-[minmax(0,var(--col))_220px]">
-          <article id="top" className="scroll-mt-20">
-            <PromptLine cwd="~/posts" command="cat" args={<TypedText text={`${slug}.mdx`} />} />
-
-            <div className="post-file">
-              <h1 className="post-title">
-                {/* inline-block: a title that wraps is still one box to morph */}
-                <PostTitleTransition slug={slug}>
-                  <span className="inline-block">{post.title}</span>
-                </PostTitleTransition>
-              </h1>
-              <p className="mb-9 text-small text-dim">
-                <time dateTime={post.date}>{post.date}</time>
-                {post.tags && post.tags.length > 0 && (
-                  <>
-                    {" · "}
-                    {post.tags.map((tag) => (
-                      <span key={tag} className="whitespace-nowrap text-tag">
-                        #{tag}{" "}
-                      </span>
-                    ))}
-                  </>
-                )}
-              </p>
-              <div className="post-body">
-                <Content />
+      <PageColumns
+        side={
+          <>
+            <ProfileCard />
+            {headings.length > 0 && (
+              <div className="sticky top-24 mt-6 max-[963px]:hidden">
+                <PostOutline headings={headings} />
               </div>
+            )}
+          </>
+        }
+      >
+        <article className="max-w-[700px]">
+          <header>
+            <PageTitle>
+              {/* inline-block: a title that wraps is still one box to morph */}
+              <PostTitleTransition slug={slug}>
+                <span className="inline-block">{post.title}</span>
+              </PostTitleTransition>
+            </PageTitle>
+            <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[14px] leading-normal">
+              <time dateTime={post.date} className="text-ink-3 tabular-nums">
+                {post.date}
+              </time>
+              {post.tags && post.tags.length > 0 && (
+                <ul aria-label="标签" className="flex gap-4 text-ink-2">
+                  {post.tags.map((tag) => (
+                    <li key={tag}>#{tag}</li>
+                  ))}
+                </ul>
+              )}
             </div>
-
-            <p className="mt-12 text-small text-dim">(END)</p>
-            <PostPager older={older} newer={newer} />
-          </article>
-
-          {post.headings.length > 0 && (
-            <aside className="hidden min-[1180px]:block">
-              <div className="sticky top-24">
-                <PostOutline headings={post.headings} />
+            {headings.length > 0 && (
+              <div className="min-[964px]:hidden">
+                <PostOutlineFolded headings={headings} />
               </div>
-            </aside>
-          )}
-        </div>
-      </main>
+            )}
+          </header>
+          <div className="post-body mt-10 max-[640px]:mt-8">
+            <Content />
+          </div>
+          <PostPager older={older} newer={newer} />
+        </article>
+      </PageColumns>
     </PageTransition>
   );
 }

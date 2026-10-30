@@ -343,39 +343,6 @@
  * so every line of prose starts on the same vertical line.
  */
 @layer components {
-  /*
-   * The file's contents sit one gutter in from the page edge; markdown marks (#, ##, -, 1., >)
-   * live in that gutter, right-aligned against the text, like an editor's line-number column.
-   */
-  .post-file {
-    --md-gutter: 48px;
-    margin-left: var(--md-gutter);
-  }
-
-  .post-title {
-    position: relative;
-    margin: 0 0 14px;
-    font-size: var(--fs-title);
-    line-height: 1.1;
-    letter-spacing: -0.015em;
-    font-weight: 800;
-    text-wrap: balance;
-  }
-
-  .post-title::before {
-    content: "#";
-    position: absolute;
-    right: 100%;
-    top: 0;
-    padding-right: 0.45em;
-    font-size: 0.62em;
-    line-height: calc(1.1 / 0.62);
-    font-weight: 400;
-    color: var(--color-prompt);
-    opacity: 0.7;
-    user-select: none;
-  }
-
   .post-body {
     font-size: var(--fs-body);
     line-height: 1.78;
@@ -621,16 +588,6 @@
   }
 
   @media (max-width: 560px) {
-    .post-file {
-      --md-gutter: 26px;
-    }
-
-    .post-title::before {
-      padding-right: 0.55em;
-      font-size: 0.55em;
-      line-height: calc(1.1 / 0.55);
-    }
-
     .post-body h2::before {
       padding-right: 0.3em;
       font-size: 0.7em;
@@ -645,26 +602,6 @@
 
     .post-body .code-block::before {
       font-size: var(--fs-key);
-    }
-  }
-}
-
-/* Terminal motion: a command typing itself out */
-@layer components {
-  /* Revealed one character per step; the text is monospace, so equal slices are whole characters */
-  @media (prefers-reduced-motion: no-preference) {
-    .typed-text {
-      display: inline-block;
-      animation: type calc(var(--chars) * 32ms) steps(var(--chars)) 150ms both;
-    }
-  }
-
-  @keyframes type {
-    from {
-      clip-path: inset(0 100% 0 0);
-    }
-    to {
-      clip-path: inset(0);
     }
   }
 }

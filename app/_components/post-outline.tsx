@@ -3,8 +3,6 @@
 import { useSyncExternalStore } from "react";
 import type { Heading } from "@/lib/headings";
 
-const TOP = "top";
-
 function subscribe(onChange: () => void) {
   window.addEventListener("scroll", onChange, { passive: true });
   window.addEventListener("resize", onChange);
@@ -21,12 +19,12 @@ function atBottom() {
 }
 
 /**
- * The last section whose heading has scrolled above 35% of the viewport; "top" before the first one.
+ * The last section whose heading has scrolled above 35% of the viewport; none before the first one.
  * At the bottom of the page it's the last section, whose heading may never reach that line if it's short.
  */
-function activeSection(headings: Heading[]): string {
+function activeSection(headings: Heading[]): string | null {
   if (headings.length > 0 && atBottom()) return headings[headings.length - 1].id;
-  let active = TOP;
+  let active = null;
   for (const { id } of headings) {
     const el = document.getElementById(id);
     if (el && el.getBoundingClientRect().top < window.innerHeight * 0.35) active = id;
@@ -35,35 +33,31 @@ function activeSection(headings: Heading[]): string {
 }
 
 /**
- * Outline for wide screens. The section being read gets a `>` marker.
- *
- *   outline
- *   > top
- *     为什么又做了一个博客
+ * The outline card in the side column, held at the top while the post scrolls. The section being read
+ * reads bolder and darker, like the current page in the header.
  */
 export function PostOutline({ headings }: { headings: Heading[] }) {
   const active = useSyncExternalStore(
     subscribe,
     () => activeSection(headings),
-    () => TOP,
+    () => null,
   );
 
-  const items = [{ id: TOP, text: "top" }, ...headings];
-
   return (
-    <nav aria-label="Outline" className="text-small">
-      <h2 className="mb-3 font-semibold text-dim">outline</h2>
-      <ol className="flex flex-col gap-2">
-        {items.map(({ id, text }) => {
+    <nav aria-labelledby="outline-title" className="card px-6 pt-5 pb-4.5">
+      <h2 id="outline-title" className="mb-2 text-[14px] leading-normal font-semibold text-ink">
+        目录
+      </h2>
+      <ol>
+        {headings.map(({ id, text }) => {
           const current = id === active;
           return (
             <li key={id}>
               <a
                 href={`#${id}`}
                 aria-current={current ? "location" : undefined}
-                className={current ? "block leading-snug font-bold text-ink" : "block leading-snug text-dim hover:text-ink"}
+                className={`block py-1.5 text-[14px] leading-normal ${current ? "font-semibold text-ink" : "text-ink-3 hover:text-ink"}`}
               >
-                {current && <span className="text-prompt">&gt; </span>}
                 {text}
               </a>
             </li>
@@ -71,5 +65,37 @@ export function PostOutline({ headings }: { headings: Heading[] }) {
         })}
       </ol>
     </nav>
+  );
+}
+
+/** On narrow screens there is no side column: the outline folds into a card under the title. */
+export function PostOutlineFolded({ headings }: { headings: Heading[] }) {
+  return (
+    <details className="card group mt-6 px-4">
+      <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-[14px] font-semibold text-ink [&::-webkit-details-marker]:hidden">
+        目录
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.75}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          className="size-4 text-ink-3 transition-transform duration-200 group-open:rotate-180"
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </summary>
+      <ol className="mb-3">
+        {headings.map(({ id, text }) => (
+          <li key={id}>
+            <a href={`#${id}`} className="block py-2 text-[14px] leading-normal text-ink-2">
+              {text}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </details>
   );
 }
