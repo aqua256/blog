@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { PostSummary } from "@/lib/posts";
-import { PostTitleTransition } from "./page-transition";
 
 /**
  * A post as a card: title, description, then the date on the left and the tags on the right. The whole
@@ -11,11 +10,9 @@ export function PostCard({ post }: { post: PostSummary }) {
   return (
     <article className="card post-card relative px-7 py-6 max-[640px]:p-5">
       <h3 className="text-[18px] leading-[1.4] font-semibold tracking-[-0.015em]">
-        <PostTitleTransition slug={post.slug}>
-          <Link href={`/posts/${post.slug}`} className="text-ink before:absolute before:inset-0 hover:text-accent">
-            {post.title}
-          </Link>
-        </PostTitleTransition>
+        <Link href={`/posts/${post.slug}`} className="text-ink before:absolute before:inset-0 hover:text-accent">
+          {post.title}
+        </Link>
       </h3>
       <p className="relative z-1 mt-2.25 text-[15px] leading-[1.8] text-pretty text-ink-2">{post.description}</p>
       <div className="mt-3.5 flex flex-wrap items-center gap-x-4.5 gap-y-1.75 text-[13px] leading-normal">

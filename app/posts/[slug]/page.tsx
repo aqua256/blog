@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { getAdjacentPosts, getPost, getPosts } from "@/lib/posts";
 import { PageColumns } from "../../_components/page-columns";
 import { PageTitle } from "../../_components/page-title";
-import { PageTransition, PostTitleTransition } from "../../_components/page-transition";
 import { PostOutline, PostOutlineFolded } from "../../_components/post-outline";
 import { PostPager } from "../../_components/post-pager";
 import { ProfileCard } from "../../_components/profile-card";
@@ -47,53 +46,45 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
   const { older, newer } = await getAdjacentPosts(slug);
   const { Content, headings } = post;
 
-  // Keyed by slug so moving from one post to the next animates too
   return (
-    <PageTransition key={slug}>
-      <PageColumns
-        side={
-          <>
-            <ProfileCard />
-            {headings.length > 0 && (
-              <div className="sticky top-21.5 mt-5.5 max-[869px]:hidden">
-                <PostOutline headings={headings} />
-              </div>
-            )}
-          </>
-        }
-      >
-        <article className="max-w-[630px]">
-          <header>
-            <PageTitle>
-              {/* inline-block: a title that wraps is still one box to morph */}
-              <PostTitleTransition slug={slug}>
-                <span className="inline-block">{post.title}</span>
-              </PostTitleTransition>
-            </PageTitle>
-            <div className="mt-3.5 flex flex-wrap items-center gap-x-4.5 gap-y-1.75 text-[13px] leading-normal">
-              <time dateTime={post.date} className="text-ink-3 tabular-nums">
-                {post.date}
-              </time>
-              {post.tags && post.tags.length > 0 && (
-                <ul aria-label="标签" className="flex gap-3.5 text-ink-2">
-                  {post.tags.map((tag) => (
-                    <li key={tag}>#{tag}</li>
-                  ))}
-                </ul>
-              )}
+    <PageColumns
+      side={
+        <>
+          <ProfileCard />
+          {headings.length > 0 && (
+            <div className="sticky top-21.5 mt-5.5 max-[869px]:hidden">
+              <PostOutline headings={headings} />
             </div>
-            {headings.length > 0 && (
-              <div className="min-[870px]:hidden">
-                <PostOutlineFolded headings={headings} />
-              </div>
+          )}
+        </>
+      }
+    >
+      <article className="max-w-[630px]">
+        <header>
+          <PageTitle>{post.title}</PageTitle>
+          <div className="mt-3.5 flex flex-wrap items-center gap-x-4.5 gap-y-1.75 text-[13px] leading-normal">
+            <time dateTime={post.date} className="text-ink-3 tabular-nums">
+              {post.date}
+            </time>
+            {post.tags && post.tags.length > 0 && (
+              <ul aria-label="标签" className="flex gap-3.5 text-ink-2">
+                {post.tags.map((tag) => (
+                  <li key={tag}>#{tag}</li>
+                ))}
+              </ul>
             )}
-          </header>
-          <div className="post-body mt-9 max-[640px]:mt-7">
-            <Content />
           </div>
-          <PostPager older={older} newer={newer} />
-        </article>
-      </PageColumns>
-    </PageTransition>
+          {headings.length > 0 && (
+            <div className="min-[870px]:hidden">
+              <PostOutlineFolded headings={headings} />
+            </div>
+          )}
+        </header>
+        <div className="post-body mt-9 max-[640px]:mt-7">
+          <Content />
+        </div>
+        <PostPager older={older} newer={newer} />
+      </article>
+    </PageColumns>
   );
 }
