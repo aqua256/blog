@@ -1,0 +1,13 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "react", "nextjs", "jsx-a11y", "import", "oxc"],
+  "rules": {
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "warn",
+    "nextjs/no-html-link-for-pages": "error",
+    "nextjs/no-sync-scripts": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/ban-ts-comment": "error"
+  },
+  "ignorePatterns": [".next/**", "out/**", "build/**", "next-env.d.ts", ".claude/**"]
+}
