@@ -222,7 +222,7 @@
 }
 
 /*
- * The intro: on the first page of a visit the leaf shadow comes into focus, from a faint blur to sharp
+ * The intro: when a tab first opens the home page the leaf shadow comes into focus, from a faint blur to sharp
  * over 1.8s, like a camera pulling focus, while the header, page and footer fade in (readable by 0.6s).
  * The `intro` class is set before the first paint and removed when the intro is over or skipped
  * (app/_components/leaves-intro.tsx); the sway waits for the focus to finish, so it carries on seamlessly.

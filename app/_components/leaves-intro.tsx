@@ -7,21 +7,26 @@ const LENGTH = 1800;
 const SKIP_ON = ["pointerdown", "wheel", "keydown", "touchstart"] as const;
 
 /**
- * Runs in <head> before the first paint (app/layout.tsx): on the first page of a visit (a browser tab's
- * session), unless the reader prefers reduced motion, it marks <html> with the `intro` class that starts
- * the opening in globals.css. If storage is unavailable (blocked, or some private modes) it throws, and
- * the page simply opens without the intro.
+ * Runs in <head> before the first paint (app/layout.tsx): when the home page is loaded for the first time
+ * in a browser tab, unless the reader prefers reduced motion, it marks <html> with the `intro` class that
+ * starts the opening in globals.css. Arriving straight at another page plays nothing, and neither do later
+ * loads of the home page in that tab. If storage is unavailable (blocked, or some private modes) it throws,
+ * and the page simply opens without the intro.
  */
 export const introScript = `try {
-  if (!sessionStorage.getItem("${PLAYED}") && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (
+    location.pathname === "/" &&
+    !sessionStorage.getItem("${PLAYED}") &&
+    !matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
     sessionStorage.setItem("${PLAYED}", "1");
     document.documentElement.classList.add("intro");
   }
 } catch (e) {}`;
 
 /**
- * Ends the opening: removes the `intro` class when it is over, so later pages of the visit don't fade in
- * again, or at once when the reader clicks, scrolls or presses a key.
+ * Ends the opening: removes the `intro` class when it is over, so pages opened from here don't fade in, or
+ * at once when the reader clicks, scrolls or presses a key.
  */
 export function LeavesIntro() {
   useEffect(() => {
