@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { site, siteUrl } from "@/lib/site";
 import { Leaves } from "./_components/leaves";
+import { introScript, LeavesIntro } from "./_components/leaves-intro";
 import { SiteFooter } from "./_components/site-footer";
 import { SiteHeader } from "./_components/site-header";
 import "./globals.css";
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   },
 };
 
-/** Terminal-style chrome for every page of the site, including the 404 page. */
+/** The header, leaf shadow and footer around every page of the site, including the 404 page. */
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -28,13 +29,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className="h-full antialiased"
       suppressHydrationWarning
     >
+      <head>
+        {/* Before the first paint: whether this page opens with the leaf shadow coming into focus */}
+        <script dangerouslySetInnerHTML={{ __html: introScript }} />
+      </head>
       <body className="relative flex min-h-full flex-col bg-bg font-sans text-ui text-ink selection:bg-selection">
         <Providers>
           <Leaves />
+          <LeavesIntro />
           <SiteHeader />
-          {/* Positioned above the leaf shadow, which lies on the page background */}
-          <div className="relative z-1 flex-1">{children}</div>
-          <div className="relative z-1">
+          {/* Positioned above the leaf shadow, which lies on the page background; both fade in with the intro */}
+          <div data-intro="fade" className="relative z-1 flex-1">
+            {children}
+          </div>
+          <div data-intro="fade" className="relative z-1">
             <SiteFooter />
           </div>
         </Providers>

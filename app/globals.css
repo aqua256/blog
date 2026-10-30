@@ -261,6 +261,52 @@
 }
 
 /*
+ * The intro: on the first page of a visit the leaf shadow comes into focus, from a faint blur to sharp
+ * over 1.8s, like a camera pulling focus, while the header, page and footer fade in (readable by 0.6s).
+ * The `intro` class is set before the first paint and removed when the intro is over or skipped
+ * (app/_components/leaves-intro.tsx); the sway waits for the focus to finish, so it carries on seamlessly.
+ */
+@layer components {
+  html.intro .leaves span {
+    animation:
+      leaves-focus 1.8s cubic-bezier(0.3, 0.6, 0.2, 1) both,
+      leaves-sway 7s ease-in-out 1.8s infinite;
+  }
+
+  html.intro[data-theme="dark"] .leaves span {
+    animation-name: leaves-focus-dark, leaves-sway;
+  }
+
+  html.intro .leaves::before {
+    animation: intro-fade 1.8s ease-out both;
+  }
+
+  html.intro [data-intro="fade"] {
+    animation: intro-fade 0.45s ease-out 0.15s both;
+  }
+
+  @keyframes leaves-focus {
+    from {
+      opacity: 0;
+      filter: blur(28px);
+    }
+  }
+
+  @keyframes leaves-focus-dark {
+    from {
+      opacity: 0;
+      filter: brightness(0) blur(28px);
+    }
+  }
+
+  @keyframes intro-fade {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
+/*
  * Cards: the post cards and the side column's cards. On white they lift off the page with a faint
  * blue-gray shadow; in dark mode a shadow can't be seen, so a slightly lighter surface and a hairline
  * set them apart. A post card rises a little while its title is hovered.
