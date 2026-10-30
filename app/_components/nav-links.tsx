@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { isCurrentSection } from "@/lib/nav";
 import { site } from "@/lib/site";
 
-/** 首页 / 归档: the current section only reads bolder and darker. */
+/** 首页 / 归档 / 关于: the current section only reads bolder and darker. */
 export function NavLinks() {
   const pathname = usePathname();
 

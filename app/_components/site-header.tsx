@@ -4,7 +4,7 @@ import { NavLinks } from "./nav-links";
 import { ThemeToggle } from "./theme-toggle";
 
 /**
- * `Aqua256                       首页  归档  ☾`
+ * `Aqua256                  首页  归档  关于  ☾`
  *
  * Sticks to the top; clear over the top of the page, it fills in over the first 120px of scrolling
  * (.site-header in globals.css).

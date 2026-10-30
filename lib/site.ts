@@ -10,6 +10,7 @@ export const site = {
   nav: [
     { label: "首页", href: "/" },
     { label: "归档", href: "/posts" },
+    { label: "关于", href: "/about" },
   ],
   // The profile card shows these as icons, with the label for screen readers and the title as a tooltip
   social: [
