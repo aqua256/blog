@@ -28,20 +28,13 @@
   --err: #b42318;
   --selection: #cfe0fb;
 
-  /* Type scale: title / section / lede+quote / body / interface / secondary / code block mark */
-  --fs-title: clamp(30px, 5vw, 48px);
-  --fs-h2: clamp(22px, 3vw, 28px);
-  --fs-lede: 21px;
-  --fs-body: 18px;
+  /* Type scale for the remaining terminal-style pages: interface / secondary */
   --fs-ui: 15px;
   --fs-small: 14px;
-  --fs-key: 11px;
 }
 
 @media (max-width: 560px) {
   :root {
-    --fs-lede: 19px;
-    --fs-body: 17px;
     --fs-ui: 14px;
     --fs-small: 13px;
   }
@@ -118,26 +111,13 @@
   --color-selection: var(--selection);
 
   /* Roles the terminal-style components still use; they go away with those components */
-  --color-paper: var(--bg);
-  --color-paper-2: var(--surface-code);
-  --color-crust: var(--surface-code);
   --color-dim: var(--ink-3);
   --color-faint: var(--line);
   --color-prompt: var(--accent);
   --color-link: var(--accent);
   --color-cmd: var(--accent);
   --color-arg: var(--ink);
-  --color-str: var(--ink);
-  --color-tag: var(--ink-2);
-  --color-mark-list: var(--ink-3);
-  --color-mark-quote: var(--ink-3);
-  --color-code: var(--ink);
-  --color-quote-hl: color-mix(in srgb, var(--accent) 14%, transparent);
 
-  --text-title: var(--fs-title);
-  --text-h2: var(--fs-h2);
-  --text-lede: var(--fs-lede);
-  --text-body: var(--fs-body);
   --text-ui: var(--fs-ui);
   --text-small: var(--fs-small);
 }
@@ -338,189 +318,152 @@
 }
 
 /*
- * Post body — the HTML that MDX renders.
- * Markdown syntax (##, -, 1., >) is drawn with ::before and hangs left of the text edge,
- * so every line of prose starts on the same vertical line.
+ * Post body — the HTML that MDX renders. After yue.css: 18px body text one shade lighter than the
+ * headings, in a column of at most 700px (about 38 Chinese characters a line).
  */
 @layer components {
   .post-body {
-    font-size: var(--fs-body);
-    line-height: 1.78;
-    font-weight: 380;
-  }
-
-  .post-body > * {
-    margin-block: 0 22px;
-  }
-
-  /* No single character stranded on a paragraph's last line */
-  .post-body p,
-  .post-body li {
+    font-size: 18px;
+    line-height: 1.85;
+    color: var(--ink-body);
     text-wrap: pretty;
   }
 
-  /* The opening paragraph reads as a lede */
-  .post-body > p:first-child {
-    font-size: var(--fs-lede);
-    line-height: 1.7;
-    font-weight: 420;
-  }
-
-  .post-body strong {
-    font-weight: 700;
-  }
-
-  .post-body a {
-    color: var(--color-link);
-    text-underline-offset: 3px;
-  }
-
-  /* Code keeps Latin punctuation */
-  .post-body code {
-    font-family: var(--font-mono);
-    font-size: 0.92em;
-    color: var(--color-code);
-  }
-
-  .post-body h2,
-  .post-body li,
-  .post-body blockquote {
-    position: relative;
-  }
-
-  .post-body h2::before,
-  .post-body li::before,
-  .post-body blockquote::before,
-  .post-body .code-block::before {
-    position: absolute;
-    right: 100%;
-    top: 0;
-    padding-right: 0.45em;
-    white-space: nowrap;
-    font-weight: 400;
-    font-style: normal;
-    opacity: 0.7;
-    user-select: none;
+  .post-body > * {
+    margin-block: 0 24px;
   }
 
   .post-body h2 {
-    scroll-margin-top: 80px; /* clear the sticky header when jumped to */
-    margin-top: 56px;
-    margin-bottom: 14px;
-    font-size: var(--fs-h2);
-    line-height: 1.3;
-    font-weight: 750;
+    scroll-margin-top: 88px; /* clear the sticky header when jumped to */
+    margin-block: 56px 16px;
+    font-size: 22px;
+    line-height: 1.4;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--ink);
     text-wrap: balance;
   }
 
-  .post-body h2::before {
-    content: "##";
-    color: var(--color-prompt);
-    font-size: 0.82em;
-    line-height: calc(1.3 / 0.82);
+  .post-body strong {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .post-body a {
+    text-decoration: underline 1px var(--line-2);
+    text-underline-offset: 4px;
+  }
+
+  .post-body a:hover {
+    color: var(--accent);
+    text-decoration-color: currentColor;
   }
 
   .post-body ul,
   .post-body ol {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    padding-left: 1.25em;
+  }
+
+  .post-body ul {
+    list-style: disc;
   }
 
   .post-body ol {
-    counter-reset: md-ol;
+    list-style: decimal;
   }
 
-  .post-body ul > li::before {
-    content: "-";
-    color: var(--color-mark-list);
+  .post-body li + li {
+    margin-top: 6px;
   }
 
-  .post-body ol > li {
-    counter-increment: md-ol;
-  }
-
-  .post-body ol > li::before {
-    content: counter(md-ol) ".";
-    color: var(--color-mark-list);
+  .post-body li::marker {
+    color: var(--ink-3);
   }
 
   .post-body blockquote {
-    margin-block: 32px;
     margin-inline: 0;
-    font-size: var(--fs-lede);
+    padding-left: 18px;
+    border-left: 2px solid var(--line-2);
+    color: var(--ink-2);
+  }
+
+  .post-body blockquote > :last-child {
+    margin-bottom: 0;
+  }
+
+  .post-body code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+  }
+
+  .post-body :not(pre) > code {
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    background: var(--surface-inline);
+    color: var(--ink);
+  }
+
+  /* A rule is a short centered stroke, quieter than one across the column */
+  .post-body hr {
+    width: 80px;
+    height: 0;
+    margin: 48px auto;
+    border: 0;
+    border-top: 1px solid var(--line-2);
+  }
+
+  /* Images fill the column; a hairline gives white screenshots an edge on the white page */
+  .post-body img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 0 0 1px rgb(24 33 44 / 0.08);
+  }
+
+  .post-body figure {
+    margin-inline: 0;
+  }
+
+  .post-body figcaption {
+    margin-top: 12px;
+    font-size: 14px;
     line-height: 1.6;
-    font-weight: 450;
+    color: var(--ink-3);
+    text-align: center;
+    text-wrap: balance;
   }
 
-  .post-body blockquote::before {
-    content: ">";
-    color: var(--color-mark-quote);
-    font-size: var(--fs-body);
-    top: 0.15em;
-  }
-
-  .post-body blockquote p {
-    display: inline;
-    margin: 0;
-    background: linear-gradient(transparent 62%, var(--color-quote-hl) 62%);
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
+  /* Screenshots are usually light, so in dark mode they are dimmed a little */
+  :root[data-theme="dark"] .post-body img {
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08);
+    filter: brightness(0.9);
   }
 
   /*
    * Code blocks, highlighted by @shikijs/rehype. The colors come inline as light-dark(light, dark);
    * only the background is replaced, so blocks sit a shade apart from the page.
    */
-  .post-body .code-block {
-    position: relative;
-    margin-block: 28px;
-  }
-
-  .post-body .code-block::before {
-    content: "```";
-    top: 13px;
-    color: var(--color-code);
-    font-size: var(--fs-small);
-    line-height: 1.65;
-  }
-
   .post-body pre {
     margin: 0;
-    padding: 12px 16px;
+    padding: 16px 20px;
     overflow-x: auto;
-    border: 1px solid var(--color-faint);
+    border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
     border-radius: 6px;
-    background-color: var(--color-paper-2) !important; /* beats Shiki's inline theme background */
-    font-size: var(--fs-ui);
-    line-height: 1.65;
-    font-weight: 400;
+    background-color: var(--surface-code) !important; /* beats Shiki's inline theme background */
+    font-size: 14px;
+    line-height: 1.7;
+    tab-size: 2;
   }
 
   .post-body pre code {
     font-size: inherit;
-    color: inherit;
-  }
-
-  /* The language sits just above the block's top-right corner, where it never covers code */
-  .post-body .code-block[data-language]::after {
-    content: attr(data-language);
-    position: absolute;
-    bottom: 100%;
-    right: 2px;
-    padding-bottom: 2px;
-    line-height: 1.4;
-    color: var(--color-dim);
-    font-size: var(--fs-small);
-    user-select: none;
   }
 
   /* GitHub Flavored Markdown (remark-gfm) */
 
   .post-body del {
-    color: var(--color-dim);
+    color: var(--ink-3);
   }
 
   /* Wide tables scroll sideways instead of widening the page */
@@ -529,34 +472,32 @@
     max-width: 100%;
     overflow-x: auto;
     border-collapse: collapse;
-    font-size: var(--fs-ui);
+    font-size: 16px;
     line-height: 1.6;
   }
 
   .post-body th,
   .post-body td {
-    padding: 6px 20px 6px 0;
+    padding: 8px 20px 8px 0;
     text-align: left;
     vertical-align: top;
-    border-bottom: 1px dashed var(--color-faint);
+    border-bottom: 1px solid var(--line);
   }
 
   .post-body th {
-    font-weight: 700;
-    border-bottom-style: solid;
+    font-weight: 600;
+    color: var(--ink);
+    border-bottom-color: var(--line-2);
   }
 
-  /* Task lists show [ ] / [x] where the - would be, instead of a checkbox */
-  .post-body li.task-list-item > input {
-    display: none;
+  .post-body .contains-task-list {
+    padding-left: 0;
+    list-style: none;
   }
 
-  .post-body ul > li.task-list-item::before {
-    content: "[ ]";
-  }
-
-  .post-body ul > li.task-list-item:has(> input:checked)::before {
-    content: "[x]";
+  .post-body .task-list-item input {
+    margin: 0 0.5em 0 0;
+    accent-color: var(--accent);
   }
 
   .post-body sup a {
@@ -587,21 +528,18 @@
     white-space: nowrap;
   }
 
-  @media (max-width: 560px) {
-    .post-body h2::before {
-      padding-right: 0.3em;
-      font-size: 0.7em;
-      line-height: calc(1.3 / 0.7);
+  @media (max-width: 640px) {
+    .post-body {
+      font-size: 17px;
     }
 
-    .post-body li::before,
-    .post-body blockquote::before,
-    .post-body .code-block::before {
-      padding-right: 0.3em;
+    .post-body h2 {
+      font-size: 20px;
     }
 
-    .post-body .code-block::before {
-      font-size: var(--fs-key);
+    .post-body pre {
+      padding: 14px 16px;
+      font-size: 13px;
     }
   }
 }
