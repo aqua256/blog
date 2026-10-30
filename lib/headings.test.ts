@@ -36,6 +36,14 @@ describe("sectionsOf", () => {
     expect(sectionsOf(toc).map(({ id }) => id)).toEqual(["notes", "notes-1"]);
   });
 
+  it("leaves out the heading over the footnotes", () => {
+    const toc: Toc = [
+      { depth: 2, value: "Section", id: "section" },
+      { depth: 2, value: "参考", id: "footnote-label" },
+    ];
+    expect(sectionsOf(toc)).toEqual([{ id: "section", text: "Section" }]);
+  });
+
   it("skips a heading without an id, which the outline could not link to", () => {
     const toc: Toc = [{ depth: 2, value: "No anchor" }];
     expect(sectionsOf(toc)).toEqual([]);

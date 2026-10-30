@@ -49,6 +49,13 @@ const withMDX = createMDX({
   options: {
     // GitHub Flavored Markdown: tables, ~~strikethrough~~, task lists, footnotes, bare URLs as links
     remarkPlugins: ["remark-gfm"],
+    // Footnotes end the post under a visible 参考 heading (the default is a hidden "Footnotes"); every
+    // ↩ is labeled 回到正文 for screen readers
+    remarkRehypeOptions: {
+      footnoteLabel: "参考",
+      footnoteLabelProperties: {},
+      footnoteBackLabel: "回到正文",
+    },
     rehypePlugins: [
       // Unique ids on every heading (a repeated title becomes `title-1`), then the headings exported
       // from each post as `tableOfContents`, which the outline reads (lib/headings.ts)

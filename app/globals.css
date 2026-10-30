@@ -518,32 +518,75 @@
     accent-color: var(--accent);
   }
 
-  .post-body sup a {
-    text-decoration: none;
+  /* Footnotes: a small [1] in the text, and a 参考 list after a short centered rule */
+  .post-body sup {
+    font-size: 0.7em;
+    line-height: 0;
   }
 
-  /* Footnotes: small print after a dashed rule */
+  .post-body a[data-footnote-ref] {
+    margin-inline: 1px;
+    color: var(--ink-3);
+    text-decoration: none;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .post-body a[data-footnote-ref]::before {
+    content: "[";
+  }
+
+  .post-body a[data-footnote-ref]::after {
+    content: "]";
+  }
+
+  .post-body a[data-footnote-ref]:hover {
+    color: var(--accent);
+  }
+
   .post-body .footnotes {
     margin-top: 48px;
-    padding-top: 18px;
-    border-top: 1px dashed var(--color-faint);
-    font-size: var(--fs-small);
+    font-size: 15px;
     line-height: 1.7;
-    color: var(--color-dim);
+    color: var(--ink-2);
+  }
+
+  .post-body .footnotes::before {
+    content: "";
+    display: block;
+    width: 80px;
+    margin: 0 auto 48px;
+    border-top: 1px solid var(--line-2);
+  }
+
+  .post-body .footnotes h2 {
+    margin: 0 0 12px;
+    font-size: 15px;
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: var(--ink-3);
+  }
+
+  .post-body .footnotes ol {
+    margin: 0;
+    padding-left: 1.5em;
+  }
+
+  .post-body .footnotes li::marker {
+    font-variant-numeric: tabular-nums;
   }
 
   .post-body .footnotes p {
     margin: 0;
   }
 
-  /* The "Footnotes" heading is for screen readers only */
-  .post-body .footnotes h2 {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
+  .post-body a[data-footnote-backref] {
+    margin-left: 6px;
+    color: var(--ink-3);
+    text-decoration: none;
+  }
+
+  .post-body a[data-footnote-backref]:hover {
+    color: var(--accent);
   }
 
   @media (max-width: 640px) {
