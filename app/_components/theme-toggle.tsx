@@ -32,12 +32,15 @@ export function ThemeToggle() {
   const label = !mounted ? "切换深浅色" : resolvedTheme === "dark" ? "切换到浅色" : "切换到深色";
 
   return (
+    // Padded like the nav links (nav-links.tsx), and pulled 4px closer to cancel the header's wider gap,
+    // so the icon sits as far from 关于 as the links from each other; the right margin keeps it on the
+    // content edge
     <button
       type="button"
       aria-label={label}
       title={label}
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="-mr-2.75 grid size-10 cursor-pointer place-items-center text-ink-3 hover:text-ink"
+      className="-mr-3.25 -ml-1 grid min-h-14 cursor-pointer place-items-center px-3.25 text-ink-3 hover:text-ink max-[640px]:-mr-2.5 max-[640px]:px-2.5"
     >
       <svg {...icon} className="size-4 dark:hidden">
         <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
