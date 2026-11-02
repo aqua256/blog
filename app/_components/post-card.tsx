@@ -2,26 +2,34 @@ import Link from "next/link";
 import type { PostSummary } from "@/lib/posts";
 
 /**
- * A post as a card: title, description, then the date on the left and the tags on the right. The whole
- * card opens the post (the title link stretches over it); the description, date and tags sit above that
- * layer so their text can still be selected.
+ * A post as a card: title, description, then the date on the left and the tags on the right. Every card is
+ * the same height, so the list reads evenly: the title keeps to one line and the description to two, cut
+ * off with an ellipsis, and a short description still takes up both lines; tags that don't fit beside the
+ * date are left off. The whole card opens the post (the title link stretches over it); the description,
+ * date and tags sit above that layer so their text can still be selected.
  */
 export function PostCard({ post }: { post: PostSummary }) {
   return (
     <article className="card post-card relative px-7 py-6 max-[640px]:p-5">
-      <h3 className="text-[18px] leading-[1.4] font-semibold tracking-[-0.015em]">
+      <h3 className="truncate text-[18px] leading-[1.4] font-semibold tracking-[-0.015em]">
         <Link href={`/posts/${post.slug}`} className="text-ink before:absolute before:inset-0 hover:text-accent">
           {post.title}
         </Link>
       </h3>
-      <p className="relative z-1 mt-2.25 text-[15px] leading-[1.8] text-pretty text-ink-2">{post.description}</p>
-      <div className="mt-3.5 flex flex-wrap items-center gap-x-4.5 gap-y-1.75 text-[13px] leading-normal">
-        <p className="relative z-1 text-ink-3 tabular-nums">
+      <p className="relative z-1 mt-2.25 line-clamp-2 min-h-[3.6em] text-[15px] leading-[1.8] text-pretty text-ink-2">
+        {post.description}
+      </p>
+      <div className="mt-3.5 flex items-center gap-4.5 text-[13px] leading-normal">
+        <p className="relative z-1 shrink-0 text-ink-3 tabular-nums">
           <time dateTime={post.date}>{post.date}</time>
           {post.draft && " · 草稿"}
         </p>
         {post.tags && post.tags.length > 0 && (
-          <ul aria-label="标签" className="relative z-1 ml-auto flex gap-3.5 text-ink-2">
+          // Tags that don't fit wrap onto a second row, which the one-line height hides
+          <ul
+            aria-label="标签"
+            className="relative z-1 ml-auto flex h-[1.5em] min-w-0 flex-wrap justify-end gap-x-3.5 overflow-hidden text-ink-2"
+          >
             {post.tags.map((tag) => (
               <li key={tag}>#{tag}</li>
             ))}
