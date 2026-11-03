@@ -324,6 +324,13 @@
   }
 }
 
+/* Animatable, for the fade on a code block's right edge (.post-body pre) */
+@property --code-fade {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
 /*
  * Post body — the HTML that MDX renders. After yue.css: 16px body text one shade lighter than the
  * headings, in a column of at most 630px (about 39 Chinese characters a line).
@@ -473,26 +480,36 @@
     color: var(--ink-3);
   }
 
-  /*
-   * Long lines wrap instead of scrolling, where the cut-off part was easy to miss. Each Shiki line is its
-   * own box with a hanging indent, so a wrapped part sits 2ch in and reads as the same line. Copying
-   * takes the text, which has no added breaks.
-   */
   .post-body pre {
     margin: 0;
     padding: 14px 18px;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere; /* not break-word, which leaves an unbroken URL wider than its line box */
+    overflow-x: auto;
     background-color: transparent !important; /* beats Shiki's inline theme background */
     font-size: 13px;
     line-height: 1.7;
     tab-size: 2;
   }
 
-  .post-body pre .line {
-    display: inline-block;
-    padding-left: 2ch;
-    text-indent: -2ch;
+  /*
+   * Long lines scroll sideways rather than wrap, since a browser wraps after a hyphen and splits a flag
+   * such as --graph in two. While a line runs on past the right edge, the edge fades out to say so; it
+   * clears as the block scrolls to its end. Browsers without scroll-driven animations show no fade.
+   */
+  @supports (animation-timeline: scroll()) {
+    .post-body pre {
+      mask-image: linear-gradient(to left, transparent, #000 var(--code-fade));
+      animation: code-fade linear both;
+      animation-timeline: scroll(self inline);
+    }
+  }
+
+  @keyframes code-fade {
+    from {
+      --code-fade: 48px;
+    }
+    to {
+      --code-fade: 0px;
+    }
   }
 
   .post-body pre code {
