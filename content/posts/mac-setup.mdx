@@ -9,11 +9,12 @@ export const metadata = {
 
 这份清单主要是写给 Agent 读的，所以每一步都尽量写成可以直接照做的命令和路径，少了些解释。如果是人自己照着配置，就不必全盘照搬，按自己的习惯挑着用就好。
 
-## Claude
+## 开始之前
 
-> 这一步要手动完成，后面的清单都交给装好的 Claude 去执行。
+> 这两步要手动完成，后面的清单都交给装好的 Claude 去执行。
 
 - Claude 桌面应用：从 [claude.ai/download](https://claude.ai/download) 下载，拖进「应用程序」后打开并登录
+- 旧电脑的文件用外置硬盘迁移，不走云端
 
 ## 个人信息
 
@@ -44,11 +45,10 @@ source "$HOME/Library/Mobile Documents/com~apple~CloudDocs/mac-setup/setup.env"
 
 - Appearance → Dark
 - Appearance → Show scroll bars → Always
-- Dock → remove unused apps
-- Dock → Automatically hide and show the Dock → on
-- Dock → Size → smaller
-- Dock → Show suggested and recent apps in Dock → off
-- Dock → Show indicators for open applications → on
+- Desktop & Dock → Automatically hide and show the Dock → on
+- Desktop & Dock → Size → smaller
+- Desktop & Dock → Show suggested and recent apps in Dock → off
+- Desktop & Dock → Show indicators for open applications → on
 - Battery → Show Percentage → on
 - Displays → Night Shift → on
 - Touch ID & Password → add fingerprint
@@ -66,14 +66,6 @@ source "$HOME/Library/Mobile Documents/com~apple~CloudDocs/mac-setup/setup.env"
 - Keyboard → Press 🌐 key to → Do Nothing
 - Keyboard → Keyboard Shortcuts → Mission Control → all off
 - Desktop & Dock → Hot Corners → all four set to "–"
-- Finder → General → New Finder windows show → Downloads
-- Finder → General → Show these items on the desktop → all off
-- Finder → Sidebar → Favourites → all on; add Library to Favourites
-- Finder → Sidebar → show Desktop, Downloads, Documents, home folder, Library
-- Finder → Tags → all off
-- Finder → Advanced → Show all filename extensions → on
-- Finder → Advanced → Remove items from the Bin after 30 days → on
-- Finder → View → Show Preview → on
 - General → Sharing → File Sharing and other services → all off
 - Privacy & Security → FileVault → on
 - Privacy & Security → Screen & System Audio Recording → add Google Chrome
@@ -113,10 +105,6 @@ sudo scutil --set LocalHostName "$SETUP_COMPUTER_NAME"
 sudo scutil --set HostName "$SETUP_COMPUTER_NAME"
 ```
 
-## 文件
-
-- 旧电脑的文件用外置硬盘迁移，不走云端
-
 ## Xcode Command Line Tools
 
 命令执行后会弹出系统安装窗口，需要手动点「安装」并等它下载完：
@@ -135,7 +123,7 @@ xcode-select -p
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 # Apple Silicon 上 brew 装在 /opt/homebrew，默认不在 PATH 里
 echo 'eval "$(/opt/homebrew/bin/brew shellenv zsh)"' >> ~/.zprofile
-eval "$(/opt/homebrew/bin/brew shellenv)"
+eval "$(/opt/homebrew/bin/brew shellenv zsh)"
 brew update
 ```
 
@@ -176,7 +164,6 @@ brew install \
   zoxide \
   neovim \
   btop \
-  htop \
   tlrc \
   tokei \
   ffmpeg \
@@ -198,6 +185,15 @@ brew install \
 
 ## macOS 内置应用
 
+- Dock → drag unused apps off the Dock
+- Finder → Settings → General → New Finder windows show → Downloads
+- Finder → Settings → General → Show these items on the desktop → all off
+- Finder → Settings → Sidebar → Favourites → all on; add Library to Favourites
+- Finder → Settings → Sidebar → show Desktop, Downloads, Documents, home folder, Library
+- Finder → Settings → Tags → all off
+- Finder → Settings → Advanced → Show all filename extensions → on
+- Finder → Settings → Advanced → Remove items from the Bin after 30 days → on
+- Finder → View → Show Preview → on
 - Messages → Settings → iMessage → Enable Messages in iCloud → on, wait for sync, then off
 - System Settings → Apple Account → iCloud → Contacts → on
 - iPhone → Settings → Apps → Messages → Text Message Forwarding → this Mac → on
@@ -329,7 +325,7 @@ cursor --install-extension wayou.vscode-todo-highlight
 }
 ```
 
-- 手动操作：把搜索从活动栏移到面板
+- 需要用户操作：把搜索从活动栏移到面板
 
 ## Zed
 
@@ -406,7 +402,7 @@ gh ssh-key add ~/.ssh/github.pub -t github
 
 ```bash
 cat > ~/.ssh/config <<'EOF'
-Host *
+Host github.com
   AddKeysToAgent yes
   UseKeychain yes
   IdentityFile ~/.ssh/github
@@ -450,6 +446,6 @@ rust = "latest"
 pnpm = "latest"
 ```
 
-## References
+## 参考
 
 - Robin Wieruch, [Mac Setup for Web Development](https://www.robinwieruch.de/mac-setup-web-development/)
