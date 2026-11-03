@@ -62,6 +62,8 @@ const withMDX = createMDX({
       "rehype-slug",
       "@stefanprobst/rehype-extract-toc",
       "@stefanprobst/rehype-extract-toc/mdx",
+      // No line starts with → (Notes → Settings): the space before an arrow does not break
+      local("rehype-arrow-nowrap.mjs"),
       // A code block's file name (```ts title="routes.ts"), kept across Shiki's rewrite of the <pre>
       local("rehype-code-title-keep.mjs"),
       // Syntax highlighting at build time, in Flexoki (its official VS Code themes, from kepano/flexoki,
