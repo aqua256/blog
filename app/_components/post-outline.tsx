@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import type { Heading } from "@/lib/headings";
 import { useActiveSection } from "./use-active-section";
 
@@ -41,10 +42,20 @@ export function PostOutline({ headings }: { headings: Heading[] }) {
   );
 }
 
-/** On narrow screens there is no side column: the outline folds into a card under the title. */
+/**
+ * On narrow screens there is no side column: the outline folds into a card under the title. Picking a
+ * section folds it again, so it doesn't stand open at the top on the way back.
+ */
 export function PostOutlineFolded({ headings }: { headings: Heading[] }) {
+  const details = useRef<HTMLDetailsElement>(null);
+
+  // Runs before the browser follows the link, so it scrolls to the section with the outline already folded
+  function fold() {
+    if (details.current) details.current.open = false;
+  }
+
   return (
-    <details className="card group mt-5.5 px-4">
+    <details ref={details} className="card group mt-5.5 px-4">
       <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-[15px] font-semibold tracking-[-0.01em] text-ink [&::-webkit-details-marker]:hidden">
         目录
         <svg
@@ -63,7 +74,7 @@ export function PostOutlineFolded({ headings }: { headings: Heading[] }) {
       <ol className="mb-3 ml-px border-l border-line">
         {headings.map(({ id, text }) => (
           <li key={id}>
-            <a href={`#${id}`} className="block py-2 pl-3.25 text-[13px] leading-normal text-ink-2">
+            <a href={`#${id}`} onClick={fold} className="block py-2 pl-3.25 text-[13px] leading-normal text-ink-2">
               {text}
             </a>
           </li>
