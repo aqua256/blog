@@ -403,9 +403,11 @@
     font-size: 0.875em;
   }
 
+  /* A long path that breaks across lines keeps its padding and rounded corners on every piece */
   .post-body :not(pre) > code {
     padding: 0.2em 0.4em;
     border-radius: 4px;
+    box-decoration-break: clone;
     background: var(--surface-inline);
     color: var(--ink);
   }
@@ -471,14 +473,26 @@
     color: var(--ink-3);
   }
 
+  /*
+   * Long lines wrap instead of scrolling, where the cut-off part was easy to miss. Each Shiki line is its
+   * own box with a hanging indent, so a wrapped part sits 2ch in and reads as the same line. Copying
+   * takes the text, which has no added breaks.
+   */
   .post-body pre {
     margin: 0;
     padding: 14px 18px;
-    overflow-x: auto;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere; /* not break-word, which leaves an unbroken URL wider than its line box */
     background-color: transparent !important; /* beats Shiki's inline theme background */
     font-size: 13px;
     line-height: 1.7;
     tab-size: 2;
+  }
+
+  .post-body pre .line {
+    display: inline-block;
+    padding-left: 2ch;
+    text-indent: -2ch;
   }
 
   .post-body pre code {

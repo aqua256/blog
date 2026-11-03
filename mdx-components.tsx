@@ -10,8 +10,7 @@ function languageOf(children: ReactNode) {
 
 const components: MDXComponents = {
   // A code block gets a bar above the code: its file name (```ts title="routes.ts", see
-  // lib/rehype-code-title-keep.mjs) or else its language, and a copy button. The bar stays put while the
-  // <pre> scrolls sideways.
+  // lib/rehype-code-title-keep.mjs) or else its language, and a copy button.
   pre: ({ "data-title": title, ...props }: React.ComponentProps<"pre"> & { "data-title"?: string }) => (
     <figure className="code-block">
       <figcaption>
