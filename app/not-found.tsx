@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <PageColumns>
-      <article className="max-w-[630px]">
+      <article className="max-w-160">
         <PageTitle>找不到这个页面</PageTitle>
-        <div className="post-body mt-9 max-[640px]:mt-7">
+        <div className="typeset mt-6">
           <p>
             <RequestedPath /> 这个地址不存在，可能已经改名或删掉了。
           </p>

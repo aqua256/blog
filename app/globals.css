@@ -279,317 +279,420 @@
   }
 }
 
-/* Animatable, for the fade on a code block's right edge (.post-body pre) */
-@property --code-fade {
+/*
+ * Icon buttons (the copy button, the theme switch). The fill sits 1px inside the button and its ring grows
+ * out to the edge on hover; pressing pulls the ring back in, so the button seems to give under the pointer.
+ * The strokes thicken on hover.
+ */
+@layer components {
+  .icon-button {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .icon-button::before {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: 7px;
+    box-shadow: 0 0 0 1px transparent;
+    transition:
+      background-color var(--duration-fast) ease,
+      box-shadow 180ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .icon-button:hover {
+    color: var(--ink);
+  }
+
+  .icon-button:hover::before {
+    background-color: var(--hover);
+    box-shadow: 0 0 0 1px var(--hover);
+  }
+
+  .icon-button:active::before {
+    background-color: var(--active);
+    box-shadow: 0 0 0 0 var(--active);
+    transition-duration: var(--duration-fast);
+  }
+
+  .icon-button > * {
+    position: relative;
+  }
+
+  .icon-button svg {
+    stroke-width: 1.5;
+    transition: stroke-width var(--duration-fast) ease-out;
+  }
+
+  .icon-button:hover svg {
+    stroke-width: 2;
+  }
+
+  /*
+   * Two icons in one place, such as copy and check: the one leaving shrinks and blurs out on the faster
+   * exit while the other comes in.
+   */
+  .icon-swap {
+    display: grid;
+  }
+
+  .icon-swap > * {
+    grid-area: 1 / 1;
+    transition-property: opacity, transform, filter;
+    transition-duration: var(--duration-fast);
+    transition-timing-function: ease-out;
+  }
+
+  .icon-swap > [data-off] {
+    opacity: 0;
+    transform: scale(0.6);
+    filter: blur(4px);
+    transition-duration: var(--duration-fast-exit);
+    transition-timing-function: ease-in;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .icon-swap > * {
+      transform: none !important;
+      filter: none !important;
+    }
+  }
+}
+
+/* Animatable, for the fades on a code block's edges (.typeset pre) */
+@property --fade-start {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --fade-end {
   syntax: "<length>";
   inherits: false;
   initial-value: 0px;
 }
 
 /*
- * Post body — the HTML that MDX renders. After yue.css: 16px body text one shade lighter than the
- * headings, in a column of at most 630px (about 39 Chinese characters a line).
+ * Prose — the HTML that MDX renders, typeset by Fluid Functionalism's .typeset rules: body text in the muted
+ * color, headings in the title and subtitle roles. Space only ever goes above a block (12px between blocks,
+ * 8px under a heading, 24px above a section heading), so text arriving below never pushes what is above.
  */
 @layer components {
-  .post-body {
-    font-size: 16px;
-    line-height: 1.85;
+  .typeset {
+    font-size: 13px;
+    line-height: 20px;
     color: var(--muted);
     text-wrap: pretty;
   }
 
-  .post-body > * {
-    margin-block: 0 22px;
+  .typeset > * {
+    margin-block: 12px 0;
   }
 
-  .post-body h2 {
-    scroll-margin-top: 80px; /* clear the sticky header when jumped to */
-    margin-block: 50px 14px;
-    font-size: 20px;
-    line-height: 1.4;
-    font-weight: 600;
-    letter-spacing: -0.015em;
+  .typeset > :first-child {
+    margin-top: 0;
+  }
+
+  .typeset h1 {
+    margin-top: 24px;
+    font-size: 28px;
+    line-height: 34px;
+    font-weight: 700;
+    --opsz: 25;
     color: var(--ink);
     text-wrap: balance;
   }
 
-  .post-body strong {
-    font-weight: 600;
+  .typeset h2 {
+    scroll-margin-top: 72px; /* clear the sticky header when jumped to */
+    margin-top: 24px;
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: 550;
+    --opsz: 18;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  .typeset :is(h3, h4, h5, h6) {
+    scroll-margin-top: 72px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 550;
+    --opsz: 18;
     color: var(--ink);
   }
 
-  .post-body a {
-    text-decoration: underline 1px var(--line);
-    text-underline-offset: 4px;
+  .typeset > :is(h1, h2, h3, h4, h5, h6) + * {
+    margin-top: 8px;
   }
 
-  .post-body a:hover {
-    color: var(--accent);
+  .typeset > :first-child:is(h1, h2) {
+    margin-top: 0;
+  }
+
+  .typeset strong {
+    color: var(--ink);
+  }
+
+  .typeset a {
+    color: var(--ink);
+    text-decoration: underline 1px var(--line);
+    text-underline-offset: 3px;
+  }
+
+  .typeset a:hover {
     text-decoration-color: currentColor;
   }
 
-  .post-body ul,
-  .post-body ol {
-    padding-left: 1.25em;
+  .typeset ul,
+  .typeset ol {
+    padding-left: 24px;
   }
 
-  .post-body ul {
+  .typeset ul {
     list-style: disc;
   }
 
-  .post-body ol {
+  .typeset ol {
     list-style: decimal;
   }
 
-  .post-body li + li {
-    margin-top: 6px;
+  .typeset li + li {
+    margin-top: 4px;
   }
 
-  .post-body li::marker {
-    color: var(--muted);
-  }
-
-  .post-body blockquote {
+  .typeset blockquote {
     margin-inline: 0;
-    padding-left: 18px;
-    border-left: 2px solid var(--line);
-    color: var(--muted);
+    padding-left: 12px;
+    box-shadow: inset 2px 0 0 var(--line);
   }
 
-  .post-body blockquote > :last-child {
-    margin-bottom: 0;
+  .typeset blockquote > * + * {
+    margin-top: 12px;
   }
 
-  .post-body code {
+  .typeset code {
     font-family: var(--font-mono);
-    font-size: 0.875em;
   }
 
   /* A long path that breaks across lines keeps its padding and rounded corners on every piece */
-  .post-body :not(pre) > code {
-    padding: 0.2em 0.4em;
+  .typeset :not(pre) > code {
+    padding: 1px 4px;
     border-radius: 4px;
     box-decoration-break: clone;
     background: var(--active);
     color: var(--ink);
+    font-size: 12px;
+    line-height: 16px;
   }
 
-  /* A rule is a short centered stroke, quieter than one across the column */
-  .post-body hr {
-    width: 72px;
+  .typeset hr {
     height: 0;
-    margin: 44px auto;
+    margin-top: 24px;
     border: 0;
     border-top: 1px solid var(--line);
   }
 
-  /* Images fill the column; a hairline gives white screenshots an edge on the white page */
-  .post-body img {
+  .typeset hr + * {
+    margin-top: 24px;
+  }
+
+  /* Images fill the column; a hairline gives light screenshots an edge on the light page */
+  .typeset img {
     display: block;
     width: 100%;
     height: auto;
-    border-radius: 6px;
-    box-shadow: 0 0 0 1px rgb(24 33 44 / 0.08);
+    border-radius: 12px;
+    box-shadow: 0 0 0 1px var(--line);
   }
 
-  .post-body figure {
+  .typeset figure {
     margin-inline: 0;
   }
 
-  .post-body figcaption {
-    margin-top: 11px;
-    font-size: 13px;
-    line-height: 1.6;
-    color: var(--muted);
+  .typeset figcaption {
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 16px;
     text-align: center;
     text-wrap: balance;
   }
 
   /* Screenshots are usually light, so in dark mode they are dimmed a little */
-  :root[data-theme="dark"] .post-body img {
-    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08);
+  :root[data-theme="dark"] .typeset img {
     filter: brightness(0.9);
   }
 
   /*
    * Code blocks (mdx-components.tsx), highlighted by @shikijs/rehype. The colors come inline as
-   * light-dark(light, dark); only the background is replaced, so blocks sit a shade apart from the page.
-   * A bar on top holds the file name or language, and the copy button.
+   * light-dark(light, dark); only the background is replaced. A bar on top holds the file name or language,
+   * and the copy button.
    */
-  .post-body .code-block {
-    overflow: hidden;
-    border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
-    border-radius: 6px;
+  .typeset .code-block {
+    overflow: clip;
+    border-radius: 12px;
     background: var(--surface-code);
+    box-shadow: inset 0 0 0 1px var(--line);
   }
 
-  .post-body .code-block figcaption {
+  .typeset .code-block figcaption {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 4px 0 16px;
-    border-bottom: 1px solid color-mix(in srgb, var(--ink) 6%, transparent);
+    height: 36px;
+    margin: 0;
+    padding: 0 4px 0 12px;
+    box-shadow: inset 0 -1px 0 var(--line);
     font-family: var(--font-mono);
-    font-size: 12px;
-    line-height: 1;
-    color: var(--muted);
+    text-align: start;
   }
 
-  .post-body pre {
+  .typeset pre {
     margin: 0;
-    padding: 14px 18px;
+    padding: 12px;
     overflow-x: auto;
     background-color: transparent !important; /* beats Shiki's inline theme background */
-    font-size: 13px;
-    line-height: 1.7;
+    font-size: 12px;
+    line-height: 20px;
     tab-size: 2;
   }
 
   /*
    * Long lines scroll sideways rather than wrap, since a browser wraps after a hyphen and splits a flag
-   * such as --graph in two. While a line runs on past the right edge, the edge fades out to say so; it
-   * clears as the block scrolls to its end. Browsers without scroll-driven animations show no fade.
+   * such as --graph in two. Each edge fades out while there is more code past it. Browsers without
+   * scroll-driven animations show no fade.
    */
   @supports (animation-timeline: scroll()) {
-    .post-body pre {
-      mask-image: linear-gradient(to left, transparent, #000 var(--code-fade));
+    .typeset pre {
+      mask-image: linear-gradient(
+        to right,
+        transparent,
+        #000 var(--fade-start),
+        #000 calc(100% - var(--fade-end)),
+        transparent
+      );
       animation: code-fade linear both;
       animation-timeline: scroll(self inline);
     }
   }
 
   @keyframes code-fade {
-    from {
-      --code-fade: 48px;
+    0% {
+      --fade-start: 0px;
+      --fade-end: 40px;
     }
-    to {
-      --code-fade: 0px;
+    8% {
+      --fade-start: 24px;
+    }
+    92% {
+      --fade-end: 40px;
+    }
+    100% {
+      --fade-start: 24px;
+      --fade-end: 0px;
     }
   }
 
-  .post-body pre code {
+  .typeset pre code {
     font-size: inherit;
   }
 
   /* GitHub Flavored Markdown (remark-gfm) */
 
-  .post-body del {
-    color: var(--muted);
-  }
-
   /* Wide tables scroll sideways instead of widening the page */
-  .post-body table {
+  .typeset table {
     display: block;
     max-width: 100%;
     overflow-x: auto;
     border-collapse: collapse;
-    font-size: 14px;
-    line-height: 1.6;
   }
 
-  .post-body th,
-  .post-body td {
-    padding: 8px 20px 8px 0;
+  .typeset th,
+  .typeset td {
+    padding: 8px 16px 8px 0;
     text-align: left;
     vertical-align: top;
-    border-bottom: 1px solid var(--line);
+    box-shadow: inset 0 -1px 0 var(--line);
   }
 
-  .post-body th {
-    font-weight: 600;
+  .typeset th {
     color: var(--ink);
-    border-bottom-color: var(--line);
   }
 
-  .post-body .contains-task-list {
+  .typeset .contains-task-list {
     padding-left: 0;
     list-style: none;
   }
 
-  .post-body .task-list-item input {
-    margin: 0 0.5em 0 0;
+  .typeset .task-list-item input {
+    margin: 0 8px 0 0;
     accent-color: var(--accent);
   }
 
-  /* Footnotes: a small [1] in the text, and a 参考 list after a short centered rule */
-  .post-body sup {
+  /* Footnotes: a small [1] in the text, and a 参考 list under a hairline */
+  .typeset sup {
     font-size: 0.7em;
     line-height: 0;
   }
 
-  .post-body a[data-footnote-ref] {
+  .typeset a[data-footnote-ref] {
     margin-inline: 1px;
     color: var(--muted);
     text-decoration: none;
     font-variant-numeric: tabular-nums;
   }
 
-  .post-body a[data-footnote-ref]::before {
+  .typeset a[data-footnote-ref]::before {
     content: "[";
   }
 
-  .post-body a[data-footnote-ref]::after {
+  .typeset a[data-footnote-ref]::after {
     content: "]";
   }
 
-  .post-body a[data-footnote-ref]:hover {
-    color: var(--accent);
+  .typeset a[data-footnote-ref]:hover {
+    color: var(--ink);
   }
 
-  .post-body .footnotes {
-    margin-top: 44px;
-    font-size: 14px;
-    line-height: 1.7;
-    color: var(--muted);
+  .typeset .footnotes {
+    margin-top: 24px;
+    padding-top: 24px;
+    box-shadow: inset 0 1px 0 var(--line);
   }
 
-  .post-body .footnotes::before {
-    content: "";
-    display: block;
-    width: 72px;
-    margin: 0 auto 44px;
-    border-top: 1px solid var(--line);
-  }
-
-  .post-body .footnotes h2 {
-    margin: 0 0 11px;
-    font-size: 14px;
-    line-height: 1.5;
-    letter-spacing: 0;
-    color: var(--muted);
-  }
-
-  .post-body .footnotes ol {
+  .typeset .footnotes h2 {
     margin: 0;
-    padding-left: 1.5em;
+    font-size: 14px;
+    line-height: 20px;
   }
 
-  .post-body .footnotes li::marker {
+  .typeset .footnotes ol {
+    margin-top: 8px;
+  }
+
+  .typeset .footnotes li::marker {
     font-variant-numeric: tabular-nums;
   }
 
-  .post-body .footnotes p {
+  .typeset .footnotes p {
     margin: 0;
   }
 
-  .post-body a[data-footnote-backref] {
-    margin-left: 6px;
+  .typeset a[data-footnote-backref] {
+    margin-left: 4px;
     color: var(--muted);
     text-decoration: none;
   }
 
-  .post-body a[data-footnote-backref]:hover {
-    color: var(--accent);
-  }
-
-  @media (max-width: 640px) {
-    .post-body h2 {
-      font-size: 18px;
-    }
-
-    .post-body pre {
-      padding: 12px 14px;
-      font-size: 12px;
-    }
+  .typeset a[data-footnote-backref]:hover {
+    color: var(--ink);
   }
 }

@@ -59,15 +59,15 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
         </>
       }
     >
-      <article className="max-w-[630px]">
+      <article className="max-w-160">
         <header>
           <PageTitle>{post.title}</PageTitle>
-          <div className="mt-3.5 flex flex-wrap items-center gap-x-4.5 gap-y-1.75 text-[13px] leading-normal">
-            <time dateTime={post.date} className="text-muted tabular-nums">
+          <div className="type-caption mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-muted">
+            <time dateTime={post.date} className="tabular-nums">
               {post.date}
             </time>
             {post.tags && post.tags.length > 0 && (
-              <ul aria-label="标签" className="flex gap-3.5 text-muted">
+              <ul aria-label="标签" className="flex gap-3">
                 {post.tags.map((tag) => (
                   <li key={tag}>#{tag}</li>
                 ))}
@@ -80,7 +80,7 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
             </div>
           )}
         </header>
-        <div className="post-body mt-9 max-[640px]:mt-7">
+        <div className="typeset mt-6">
           <Content />
         </div>
         <PostPager older={older} newer={newer} />

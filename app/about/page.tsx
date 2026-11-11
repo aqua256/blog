@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <PageColumns side={<ProfileCard />}>
-      <article className="max-w-[630px]">
+      <article className="max-w-160">
         <PageTitle>关于</PageTitle>
-        <div className="post-body mt-9 max-[640px]:mt-7">
+        <div className="typeset mt-6">
           <About />
         </div>
       </article>
