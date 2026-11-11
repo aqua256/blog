@@ -22,38 +22,40 @@ export default async function ArchivePage() {
 
   return (
     <PageColumns side={<ProfileCard />}>
-      <PageTitle>归档</PageTitle>
-      {years.length > 0 ? (
-        <>
-          <p className="mt-2.5 text-[14px] leading-[1.6] text-muted">{posts.length} 篇文章，按年份排列。</p>
-          <YearNav years={years.map(({ year, posts }) => ({ year, count: posts.length }))} />
-          {years.map(({ year, posts }) => (
-            <section key={year} id={`year-${year}`} aria-labelledby={`year-${year}-title`} className="mt-8 scroll-mt-20">
-              <h2 id={`year-${year}-title`} className="mb-2 text-[14px] leading-none font-semibold text-muted tabular-nums">
-                {year}
-              </h2>
-              <ol className="border-b border-line">
-                {posts.map((post) => (
-                  <li key={post.slug} className="flex items-baseline gap-5.5 border-t border-line py-3.25 max-[640px]:gap-4">
-                    <Link
-                      href={`/posts/${post.slug}`}
-                      className="min-w-0 flex-1 text-[15px] leading-[1.6] text-pretty text-ink hover:text-accent"
-                    >
-                      {post.title}
-                      {post.draft && <span className="text-muted"> · 草稿</span>}
-                    </Link>
-                    <time dateTime={post.date} className="ml-auto flex-none text-[13px] leading-[1.6] text-muted tabular-nums">
-                      {post.date.slice(5)}
-                    </time>
-                  </li>
-                ))}
-              </ol>
-            </section>
-          ))}
-        </>
-      ) : (
-        <p className="mt-9 text-muted">还没有文章。</p>
-      )}
+      <div className="reveal">
+        <PageTitle>归档</PageTitle>
+        {years.length > 0 ? (
+          <>
+            <p className="mt-2.5 text-[14px] leading-[1.6] text-muted">{posts.length} 篇文章，按年份排列。</p>
+            <YearNav years={years.map(({ year, posts }) => ({ year, count: posts.length }))} />
+            {years.map(({ year, posts }) => (
+              <section key={year} id={`year-${year}`} aria-labelledby={`year-${year}-title`} className="mt-8 scroll-mt-20">
+                <h2 id={`year-${year}-title`} className="mb-2 text-[14px] leading-none font-semibold text-muted tabular-nums">
+                  {year}
+                </h2>
+                <ol className="border-b border-line">
+                  {posts.map((post) => (
+                    <li key={post.slug} className="flex items-baseline gap-5.5 border-t border-line py-3.25 max-[640px]:gap-4">
+                      <Link
+                        href={`/posts/${post.slug}`}
+                        className="min-w-0 flex-1 text-[15px] leading-[1.6] text-pretty text-ink hover:text-accent"
+                      >
+                        {post.title}
+                        {post.draft && <span className="text-muted"> · 草稿</span>}
+                      </Link>
+                      <time dateTime={post.date} className="ml-auto flex-none text-[13px] leading-[1.6] text-muted tabular-nums">
+                        {post.date.slice(5)}
+                      </time>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+            ))}
+          </>
+        ) : (
+          <p className="mt-9 text-muted">还没有文章。</p>
+        )}
+      </div>
     </PageColumns>
   );
 }

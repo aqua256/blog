@@ -13,8 +13,7 @@ export default async function HomePage() {
 
   return (
     <PageColumns side={<ProfileCard />}>
-      {/* The leaf shadow reaches further down the home page (.leaves in globals.css) */}
-      <div data-leaves="long" className="flex flex-col gap-4.5">
+      <div className="reveal flex flex-col gap-4.5">
         <h1 className="sr-only">{site.name}</h1>
         <h2 className="sr-only">最新文章</h2>
         {posts.length > 0 ? (

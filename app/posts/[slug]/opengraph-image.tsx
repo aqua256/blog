@@ -1,14 +1,11 @@
-import fs from "node:fs/promises";
-import path from "node:path";
 import { ImageResponse } from "next/og";
 import { getPost, getPosts } from "@/lib/posts";
 import { site } from "@/lib/site";
 
 /**
  * The card shown when a post is shared, in the site's light theme: the title, the date and tags, and the
- * author's name, with the leaf shadow reaching in from the top-right corner.
+ * author's name.
  *
- *                                         (leaves)
  *   TypeScript 的 satisfies
  *   到底解决了什么
  *   2026-10-14   #typescript
@@ -16,7 +13,7 @@ import { site } from "@/lib/site";
  *   Aqua256
  */
 
-export const alt = "文章标题，右上角是树影";
+export const alt = "文章标题、日期和标签";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -26,7 +23,7 @@ export async function generateStaticParams() {
 }
 
 // The light theme's colors, as in globals.css
-const colors = { bg: "#ffffff", ink: "#18212c", ink3: "#5d6b7b" };
+const colors = { bg: "#fafafa", ink: "#0a0a0a", muted: "#666666" };
 
 /**
  * A font from Google Fonts cut down to just `text`, the way next/font fetches fonts at build time.
@@ -48,11 +45,10 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   // Long titles step down a size so three lines still fit
   const titleSize = post.title.length > 16 ? 56 : 68;
 
-  // The site itself uses the reader's system fonts, which an image can't; Noto Sans SC is closest to them
-  const [bold, regular, leaves] = await Promise.all([
+  // The site sets Chinese in the reader's system sans, which an image can't use; Noto Sans SC is closest to it
+  const [bold, regular] = await Promise.all([
     googleFont("Noto+Sans+SC:wght@600", post.title + site.name),
     googleFont("Noto+Sans+SC:wght@400", post.date + tags),
-    fs.readFile(path.join(process.cwd(), "public", "leaves.svg"), "base64"),
   ]);
 
   return new ImageResponse(
@@ -68,25 +64,10 @@ export default async function Image({ params }: { params: Promise<{ slug: string
         fontFamily: "Noto Sans SC",
       }}
     >
-      {/* The leaf shadow as on the site: faint, fading out downwards. ImageResponse draws plain <img> only. */}
-      {/* oxlint-disable-next-line nextjs/no-img-element -- next/image does not exist inside ImageResponse */}
-      <img
-        alt=""
-        src={`data:image/svg+xml;base64,${leaves}`}
-        width={720}
-        height={750}
-        style={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          opacity: 0.14,
-          maskImage: "linear-gradient(to bottom, black 45%, transparent 85%)",
-        }}
-      />
 
       <div style={{ display: "flex", flex: 1, flexDirection: "column", justifyContent: "center", maxWidth: 820 }}>
         <div style={{ fontSize: titleSize, fontWeight: 600, lineHeight: 1.3, letterSpacing: -1 }}>{post.title}</div>
-        <div style={{ display: "flex", gap: 32, marginTop: 28, fontSize: 28, color: colors.ink3 }}>
+        <div style={{ display: "flex", gap: 32, marginTop: 28, fontSize: 28, color: colors.muted }}>
           <span>{post.date}</span>
           {tags && <span>{tags}</span>}
         </div>
