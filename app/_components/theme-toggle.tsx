@@ -40,7 +40,7 @@ export function ThemeToggle() {
       aria-label={label}
       title={label}
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      className="-mr-3.25 -ml-1 grid min-h-14 cursor-pointer place-items-center px-3.25 text-ink-3 hover:text-ink max-[640px]:-mr-2.5 max-[640px]:px-2.5"
+      className="-mr-3.25 -ml-1 grid min-h-14 cursor-pointer place-items-center px-3.25 text-muted hover:text-ink max-[640px]:-mr-2.5 max-[640px]:px-2.5"
     >
       <svg {...icon} className="size-4 dark:hidden">
         <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />

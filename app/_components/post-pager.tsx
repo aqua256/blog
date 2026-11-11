@@ -13,8 +13,8 @@ const arrow = {
 } as const;
 
 const link = "flex max-w-[46%] flex-col gap-1.25 py-1 group";
-const label = "inline-flex items-center gap-1.25 text-[13px] leading-normal text-ink-3";
-const title = "text-[15px] leading-normal font-semibold text-ink-2 group-hover:text-accent";
+const label = "inline-flex items-center gap-1.25 text-[13px] leading-normal text-muted";
+const title = "text-[15px] leading-normal font-semibold text-muted group-hover:text-accent";
 
 /**
  * The newer post on the left (上一篇) and the older one on the right (下一篇), the way the archive reads

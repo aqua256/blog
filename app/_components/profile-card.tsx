@@ -42,10 +42,10 @@ export function ProfileCard() {
     <section aria-label="关于作者" className="card flex flex-col items-center px-5.5 pt-7 pb-5.5 text-center">
       <Image src={avatar} alt={`${site.name} 的头像`} width={112} height={112} className="avatar rounded-sm" />
       <h2 className="mt-4 mb-1.25 text-[18px] leading-[1.2] font-semibold tracking-[-0.01em] text-ink">{site.name}</h2>
-      <p className="text-[13px] leading-[1.75] break-keep text-ink-2">{site.intro}</p>
+      <p className="text-[13px] leading-[1.75] break-keep text-muted">{site.intro}</p>
       <nav aria-label="外部链接" className="mt-3.5 flex justify-center gap-1.5">
         {site.social.map(({ icon, label, title, href }) => (
-          <a key={href} href={href} aria-label={label} title={title} className="grid size-10 place-items-center text-ink-2 hover:text-accent">
+          <a key={href} href={href} aria-label={label} title={title} className="grid size-10 place-items-center text-muted hover:text-accent">
             {icons[icon]}
           </a>
         ))}

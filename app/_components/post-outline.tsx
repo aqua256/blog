@@ -30,7 +30,7 @@ export function PostOutline({ headings }: { headings: Heading[] }) {
               <a
                 href={`#${id}`}
                 aria-current={current ? "location" : undefined}
-                className={`relative block py-1.25 pl-3.25 text-[13px] leading-normal ${current ? "font-semibold text-ink before:absolute before:inset-y-1.5 before:-left-px before:w-0.5 before:rounded-full before:bg-ink" : "text-ink-2 hover:text-ink"}`}
+                className={`relative block py-1.25 pl-3.25 text-[13px] leading-normal ${current ? "font-semibold text-ink before:absolute before:inset-y-1.5 before:-left-px before:w-0.5 before:rounded-full before:bg-ink" : "text-muted hover:text-ink"}`}
               >
                 {text}
               </a>
@@ -66,7 +66,7 @@ export function PostOutlineFolded({ headings }: { headings: Heading[] }) {
           strokeLinecap="round"
           strokeLinejoin="round"
           aria-hidden="true"
-          className="size-4 text-ink-3 transition-transform duration-200 group-open:rotate-180"
+          className="size-4 text-muted transition-transform duration-200 group-open:rotate-180"
         >
           <path d="m6 9 6 6 6-6" />
         </svg>
@@ -74,7 +74,7 @@ export function PostOutlineFolded({ headings }: { headings: Heading[] }) {
       <ol className="mb-3 ml-px border-l border-line">
         {headings.map(({ id, text }) => (
           <li key={id}>
-            <a href={`#${id}`} onClick={fold} className="block py-2 pl-3.25 text-[13px] leading-normal text-ink-2">
+            <a href={`#${id}`} onClick={fold} className="block py-2 pl-3.25 text-[13px] leading-normal text-muted">
               {text}
             </a>
           </li>

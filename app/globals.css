@@ -8,77 +8,152 @@
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 /*
- * Colors from the leaf-shadow design: neutral grays on white, a near-black dark theme, one blue accent.
- * Light on :root and dark under [data-theme="dark"], the pattern in next-themes' docs. Every text color is
- * at least WCAG AA (4.5:1) on the page, card, code block and inline code backgrounds of its theme.
+ * Colors from Fluid Functionalism: a #FAFAFA floor (#171717 in dark), two text colors, translucent hover and
+ * active fills that work on any surface, and one blue accent. Light on :root and dark under
+ * [data-theme="dark"], the pattern in next-themes' docs. The muted color is #666 rather than the spec's
+ * #737373, which falls to 4.16:1 on the hover fill; #666 stays above WCAG AA (4.5:1) on every fill.
  */
 :root {
   color-scheme: light;
-  --bg: #ffffff;
-  --surface: #ffffff; /* cards */
-  --surface-code: #f7f9fb; /* code blocks */
-  --surface-inline: #eef2f6; /* inline code */
-  --ink: #18212c; /* headings and strong text */
-  --ink-body: #36404c; /* body text, one shade lighter than headings */
-  --ink-2: #4b5866; /* excerpts, secondary text */
-  --ink-3: #5d6b7b; /* dates, labels, quiet controls */
-  --line: #dde4ec;
-  --line-2: #c4d0dd;
-  --accent: #0b6fa4;
-  --selection: #cfe0fb;
+  --bg: #fafafa;
+  --surface: #ffffff; /* a control lifted off the floor, such as the selected segment */
+  --surface-code: #fcfcfc; /* code blocks */
+  --ink: #0a0a0a;
+  --muted: #666666;
+  --line: rgb(0 0 0 / 0.08);
+  --hover: rgb(0 0 0 / 0.04);
+  --active: rgb(0 0 0 / 0.07);
+  --accent: #6b97ff;
+  /* #6B97FF is 2.7:1 on the light floor, under the 3:1 a focus ring needs, so the ring is darkened */
+  --ring: color-mix(in oklab, #6b97ff 75%, #000);
+  --selection: rgb(107 151 255 / 0.25);
+  --raised: 0 0 0 1px rgb(0 0 0 / 0.06), 0 1px 3px rgb(0 0 0 / 0.08);
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg: #111214;
-  --surface: #18191c;
-  --surface-code: #1a1b1e;
-  --surface-inline: #25262a;
-  --ink: #e9eaec;
-  --ink-body: #c8cbd0;
-  --ink-2: #b3b6bc;
-  --ink-3: #8b9098;
-  --line: #26282c;
-  --line-2: #3a3d42;
-  --accent: #6aa6f8;
-  --selection: rgb(106 166 248 / 0.32);
+  --bg: #171717;
+  --surface: #333333;
+  --surface-code: #1e1e1e;
+  --ink: #fafafa;
+  --muted: #a1a1a1;
+  --line: rgb(255 255 255 / 0.08);
+  --hover: rgb(255 255 255 / 0.06);
+  --active: rgb(255 255 255 / 0.1);
+  --accent: #6b97ff;
+  --ring: #6b97ff;
+  --selection: rgb(107 151 255 / 0.32);
+  --raised: 0 0 0 1px rgb(255 255 255 / 0.06), 0 1px 3px rgb(0 0 0 / 0.4);
 }
 
 /*
- * One keyboard focus ring everywhere, in the accent color. In the base layer, so utilities can still
- * override it.
+ * One keyboard focus ring everywhere. In the base layer, so utilities can still override it.
+ *
+ * Inter's weight comes from font-weight, so `strong` and the type roles below set it as usual; only the
+ * optical size is set by hand, as --opsz, because Fluid Functionalism pairs each weight with its own
+ * (400 with 14, 550 with 18, 700 with 25) rather than following the font size. Chinese falls through to the
+ * system sans, which ignores the axes and goes by font-weight alone.
  */
 @layer base {
-  :focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
+  :root {
+    --opsz: 14;
   }
 
-  /* Hover colors ease in rather than snap */
+  *,
+  ::before,
+  ::after {
+    font-variation-settings: "opsz" var(--opsz);
+  }
+
+  b,
+  strong,
+  th {
+    font-weight: 550;
+    --opsz: 18;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  /* Hover colors ease in on the fast spring rather than snap */
   a,
   button {
-    transition-property: color, border-color, text-decoration-color;
-    transition-duration: 150ms;
+    transition-property: color, background-color, text-decoration-color;
+    transition-duration: var(--duration-fast);
     transition-timing-function: ease-out;
   }
 }
 
+/*
+ * Motion and type from Fluid Functionalism. Springs come in three speeds, each with a faster exit; the
+ * spring itself is a linear() curve with a small overshoot (bounce .12).
+ */
+@theme {
+  --ease-spring: linear(0, 0.2 6%, 0.5 15%, 0.75 27%, 0.9 42%, 0.97 60%, 1);
+  --duration-fast: 80ms;
+  --duration-fast-exit: 60ms;
+  --duration-moderate: 160ms;
+  --duration-moderate-exit: 120ms;
+  --duration-slow: 240ms;
+}
+
+/* The five type roles. Nothing is set in capitals or letter-spaced. */
+@utility type-display {
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 700;
+  --opsz: 25;
+
+  @media (max-width: 640px) {
+    font-size: 24px;
+    line-height: 30px;
+  }
+}
+
+@utility type-title {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 550;
+  --opsz: 18;
+}
+
+@utility type-subtitle {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 550;
+  --opsz: 18;
+}
+
+@utility type-body {
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+  --opsz: 14;
+}
+
+@utility type-caption {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  --opsz: 14;
+}
+
 @theme inline {
-  /* System fonts only: Latin follows the platform UI font, Chinese falls through to the platform sans */
-  --font-sans: -apple-system, system-ui, "Segoe UI", "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
-    "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
+  /* Inter for Latin (app/layout.tsx); Chinese falls through to the platform sans */
+  --font-sans: var(--font-inter), -apple-system, system-ui, "Segoe UI", "Helvetica Neue", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-code: var(--surface-code);
-  --color-surface-inline: var(--surface-inline);
   --color-ink: var(--ink);
-  --color-ink-body: var(--ink-body);
-  --color-ink-2: var(--ink-2);
-  --color-ink-3: var(--ink-3);
+  --color-muted: var(--muted);
   --color-line: var(--line);
-  --color-line-2: var(--line-2);
+  --color-hover: var(--hover);
+  --color-active: var(--active);
   --color-accent: var(--accent);
   --color-selection: var(--selection);
 }
@@ -339,7 +414,7 @@
   .post-body {
     font-size: 16px;
     line-height: 1.85;
-    color: var(--ink-body);
+    color: var(--muted);
     text-wrap: pretty;
   }
 
@@ -364,7 +439,7 @@
   }
 
   .post-body a {
-    text-decoration: underline 1px var(--line-2);
+    text-decoration: underline 1px var(--line);
     text-underline-offset: 4px;
   }
 
@@ -391,14 +466,14 @@
   }
 
   .post-body li::marker {
-    color: var(--ink-3);
+    color: var(--muted);
   }
 
   .post-body blockquote {
     margin-inline: 0;
     padding-left: 18px;
-    border-left: 2px solid var(--line-2);
-    color: var(--ink-2);
+    border-left: 2px solid var(--line);
+    color: var(--muted);
   }
 
   .post-body blockquote > :last-child {
@@ -415,7 +490,7 @@
     padding: 0.2em 0.4em;
     border-radius: 4px;
     box-decoration-break: clone;
-    background: var(--surface-inline);
+    background: var(--active);
     color: var(--ink);
   }
 
@@ -425,7 +500,7 @@
     height: 0;
     margin: 44px auto;
     border: 0;
-    border-top: 1px solid var(--line-2);
+    border-top: 1px solid var(--line);
   }
 
   /* Images fill the column; a hairline gives white screenshots an edge on the white page */
@@ -445,7 +520,7 @@
     margin-top: 11px;
     font-size: 13px;
     line-height: 1.6;
-    color: var(--ink-3);
+    color: var(--muted);
     text-align: center;
     text-wrap: balance;
   }
@@ -477,7 +552,7 @@
     font-family: var(--font-mono);
     font-size: 12px;
     line-height: 1;
-    color: var(--ink-3);
+    color: var(--muted);
   }
 
   .post-body pre {
@@ -519,7 +594,7 @@
   /* GitHub Flavored Markdown (remark-gfm) */
 
   .post-body del {
-    color: var(--ink-3);
+    color: var(--muted);
   }
 
   /* Wide tables scroll sideways instead of widening the page */
@@ -543,7 +618,7 @@
   .post-body th {
     font-weight: 600;
     color: var(--ink);
-    border-bottom-color: var(--line-2);
+    border-bottom-color: var(--line);
   }
 
   .post-body .contains-task-list {
@@ -564,7 +639,7 @@
 
   .post-body a[data-footnote-ref] {
     margin-inline: 1px;
-    color: var(--ink-3);
+    color: var(--muted);
     text-decoration: none;
     font-variant-numeric: tabular-nums;
   }
@@ -585,7 +660,7 @@
     margin-top: 44px;
     font-size: 14px;
     line-height: 1.7;
-    color: var(--ink-2);
+    color: var(--muted);
   }
 
   .post-body .footnotes::before {
@@ -593,7 +668,7 @@
     display: block;
     width: 72px;
     margin: 0 auto 44px;
-    border-top: 1px solid var(--line-2);
+    border-top: 1px solid var(--line);
   }
 
   .post-body .footnotes h2 {
@@ -601,7 +676,7 @@
     font-size: 14px;
     line-height: 1.5;
     letter-spacing: 0;
-    color: var(--ink-3);
+    color: var(--muted);
   }
 
   .post-body .footnotes ol {
@@ -619,7 +694,7 @@
 
   .post-body a[data-footnote-backref] {
     margin-left: 6px;
-    color: var(--ink-3);
+    color: var(--muted);
     text-decoration: none;
   }
 

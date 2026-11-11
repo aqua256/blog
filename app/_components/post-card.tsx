@@ -16,11 +16,11 @@ export function PostCard({ post }: { post: PostSummary }) {
           {post.title}
         </Link>
       </h3>
-      <p className="relative z-1 mt-2.25 line-clamp-2 min-h-[3.6em] text-[15px] leading-[1.8] text-pretty text-ink-2">
+      <p className="relative z-1 mt-2.25 line-clamp-2 min-h-[3.6em] text-[15px] leading-[1.8] text-pretty text-muted">
         {post.description}
       </p>
       <div className="mt-3.5 flex items-center gap-4.5 text-[13px] leading-normal">
-        <p className="relative z-1 shrink-0 text-ink-3 tabular-nums">
+        <p className="relative z-1 shrink-0 text-muted tabular-nums">
           <time dateTime={post.date}>{post.date}</time>
           {post.draft && " · 草稿"}
         </p>
@@ -28,7 +28,7 @@ export function PostCard({ post }: { post: PostSummary }) {
           // Tags that don't fit wrap onto a second row, which the one-line height hides
           <ul
             aria-label="标签"
-            className="relative z-1 ml-auto flex h-[1.5em] min-w-0 flex-wrap justify-end gap-x-3.5 overflow-hidden text-ink-2"
+            className="relative z-1 ml-auto flex h-[1.5em] min-w-0 flex-wrap justify-end gap-x-3.5 overflow-hidden text-muted"
           >
             {post.tags.map((tag) => (
               <li key={tag}>#{tag}</li>

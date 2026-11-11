@@ -20,10 +20,10 @@ export default async function HomePage() {
         {posts.length > 0 ? (
           posts.map((post) => <PostCard key={post.slug} post={post} />)
         ) : (
-          <p className="text-ink-3">还没有文章。</p>
+          <p className="text-muted">还没有文章。</p>
         )}
         <p className="mt-2.75 text-right">
-          <Link href="/posts" className="inline-flex min-h-11 items-center gap-1.25 text-[13px] text-ink-2 hover:text-ink">
+          <Link href="/posts" className="inline-flex min-h-11 items-center gap-1.25 text-[13px] text-muted hover:text-ink">
             全部文章
             <svg
               viewBox="0 0 24 24"

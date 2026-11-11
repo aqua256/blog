@@ -46,7 +46,7 @@ export function CopyButton() {
       onClick={copy}
       aria-label="复制代码"
       title="复制代码"
-      className={`grid h-10 min-w-10 cursor-pointer place-items-center rounded-md text-ink-3 hover:bg-ink/5 hover:text-ink ${status === "failed" ? "px-3" : ""}`}
+      className={`grid h-10 min-w-10 cursor-pointer place-items-center rounded-md text-muted hover:bg-ink/5 hover:text-ink ${status === "failed" ? "px-3" : ""}`}
     >
       {status === "copied" ? (
         <svg {...icon}>

@@ -15,7 +15,7 @@ export function YearNav({ years }: { years: { year: string; count: number }[] })
 
   return (
     <nav aria-labelledby="year-nav-title" className="mt-5.5 flex flex-wrap items-baseline gap-x-5 gap-y-1.5">
-      <h2 id="year-nav-title" className="text-[13px] leading-[1.6] font-semibold text-ink-3">
+      <h2 id="year-nav-title" className="text-[13px] leading-[1.6] font-semibold text-muted">
         按年份
       </h2>
       <ul className="flex flex-wrap gap-x-4.5 gap-y-1.5">
@@ -26,10 +26,10 @@ export function YearNav({ years }: { years: { year: string; count: number }[] })
               <a
                 href={`#year-${year}`}
                 aria-current={current ? "location" : undefined}
-                className={`text-[14px] leading-[1.6] tabular-nums ${current ? "font-semibold text-ink" : "text-ink-3 hover:text-ink"}`}
+                className={`text-[14px] leading-[1.6] tabular-nums ${current ? "font-semibold text-ink" : "text-muted hover:text-ink"}`}
               >
                 {year}
-                <sup className="ml-0.5 text-[10px] font-normal text-ink-3">
+                <sup className="ml-0.5 text-[10px] font-normal text-muted">
                   {count}
                   <span className="sr-only"> 篇</span>
                 </sup>

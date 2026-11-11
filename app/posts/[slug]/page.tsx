@@ -63,11 +63,11 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
         <header>
           <PageTitle>{post.title}</PageTitle>
           <div className="mt-3.5 flex flex-wrap items-center gap-x-4.5 gap-y-1.75 text-[13px] leading-normal">
-            <time dateTime={post.date} className="text-ink-3 tabular-nums">
+            <time dateTime={post.date} className="text-muted tabular-nums">
               {post.date}
             </time>
             {post.tags && post.tags.length > 0 && (
-              <ul aria-label="标签" className="flex gap-3.5 text-ink-2">
+              <ul aria-label="标签" className="flex gap-3.5 text-muted">
                 {post.tags.map((tag) => (
                   <li key={tag}>#{tag}</li>
                 ))}
