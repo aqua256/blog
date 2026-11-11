@@ -18,19 +18,18 @@ function atBottom() {
 type Options = {
   /** The answer while no section has reached the line, and during server rendering */
   before: string | null;
-  /** How far down the viewport the line is, in px; 35% of the viewport if left out */
-  line?: number;
-  /** At the bottom of the page, the last section, which may never reach the line if it's short */
-  lastAtBottom?: boolean;
 };
 
-/** The id of the section being read: the last of `ids` whose element has scrolled above the line. */
-export function useActiveSection(ids: readonly string[], { before, line, lastAtBottom = true }: Options): string | null {
+/**
+ * The id of the section being read: the last of `ids` whose element has scrolled above a line 35% down the
+ * viewport. At the bottom of the page it is the last section, which may never reach the line if it's short.
+ */
+export function useActiveSection(ids: readonly string[], { before }: Options): string | null {
   return useSyncExternalStore(
     subscribe,
     () => {
-      if (lastAtBottom && ids.length > 0 && atBottom()) return ids[ids.length - 1];
-      const y = line ?? window.innerHeight * 0.35;
+      if (ids.length > 0 && atBottom()) return ids[ids.length - 1];
+      const y = window.innerHeight * 0.35;
       let active = before;
       for (const id of ids) {
         const el = document.getElementById(id);

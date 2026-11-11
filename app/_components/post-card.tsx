@@ -6,7 +6,7 @@ import type { PostSummary } from "@/lib/posts";
  * right. The description is cut off with an ellipsis after two lines, and tags that don't fit beside the
  * date are left off. The whole row opens the post: the title link stretches over it, and its keyboard focus
  * ring goes around the row too. Rows sit on the page without a card; the list's hover highlight and the
- * hairlines between rows set them apart (.post-list in globals.css).
+ * hairlines between rows set them apart (.row-rules in globals.css).
  */
 export function PostCard({ post }: { post: PostSummary }) {
   return (

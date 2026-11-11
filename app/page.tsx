@@ -18,7 +18,7 @@ export default async function HomePage() {
         <h1 className="sr-only">{site.name}</h1>
         <h2 className="sr-only">最新文章</h2>
         {posts.length > 0 ? (
-          <FluidHover item="article" className="post-list -mx-3">
+          <FluidHover item="article" className="row-rules -mx-3">
             {posts.map((post) => (
               <PostCard key={post.slug} post={post} />
             ))}

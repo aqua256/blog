@@ -254,8 +254,11 @@
     }
   }
 
-  /* Rows of posts on the home page: a hairline between rows, inset to the text */
-  .post-list > article + article::before {
+  /*
+   * Rows of posts (the home page, the archive): a hairline between rows, inset to the text. The first row
+   * follows a FluidHover group's highlight, so it gets none.
+   */
+  .row-rules > :not(.fluid-highlight) + *::before {
     content: "";
     position: absolute;
     inset: 0 12px auto;
