@@ -7,7 +7,7 @@ const year = new Date().getFullYear();
 export function SiteFooter() {
   return (
     <footer className="border-t border-line">
-      <p className="mx-auto max-w-264 px-6 py-5.5 text-[13px] leading-normal text-muted max-[640px]:px-4">
+      <p className="type-caption mx-auto max-w-252 px-6 py-5 text-muted max-[640px]:px-4">
         © {year} {site.name}
       </p>
     </footer>

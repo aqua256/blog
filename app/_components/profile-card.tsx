@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { site } from "@/lib/site";
+import { FluidHover } from "./fluid-hover";
 // The same picture as the Apple touch icon
 import avatar from "../apple-icon.png";
 
@@ -7,11 +8,10 @@ const icon = {
   viewBox: "0 0 24 24",
   fill: "none",
   stroke: "currentColor",
-  strokeWidth: 1.75,
   strokeLinecap: "round",
   strokeLinejoin: "round",
   "aria-hidden": true,
-  className: "size-4.5",
+  className: "size-4",
 } as const;
 
 const icons = {
@@ -36,19 +36,31 @@ const icons = {
   ),
 };
 
-/** Avatar, name, the one-line introduction and the links, at the top of the side column. */
+/**
+ * Avatar, name, the one-line introduction and the links, at the top of the side column. It sits on the page
+ * without a card: it only shows who writes here, so nothing but the links reacts to the pointer.
+ */
 export function ProfileCard() {
   return (
-    <section aria-label="关于作者" className="card flex flex-col items-center px-5.5 pt-7 pb-5.5 text-center">
-      <Image src={avatar} alt={`${site.name} 的头像`} width={112} height={112} className="avatar rounded-sm" />
-      <h2 className="mt-4 mb-1.25 text-[18px] leading-[1.2] font-semibold tracking-[-0.01em] text-ink">{site.name}</h2>
-      <p className="text-[13px] leading-[1.75] break-keep text-muted">{site.intro}</p>
-      <nav aria-label="外部链接" className="mt-3.5 flex justify-center gap-1.5">
-        {site.social.map(({ icon, label, title, href }) => (
-          <a key={href} href={href} aria-label={label} title={title} className="grid size-10 place-items-center text-muted hover:text-accent">
-            {icons[icon]}
-          </a>
-        ))}
+    <section aria-label="关于作者" className="flex flex-col items-center pt-2 text-center">
+      {/* A hairline drawn inside the picture's edge, so a light avatar keeps its outline on the light page */}
+      <Image
+        src={avatar}
+        alt={`${site.name} 的头像`}
+        width={112}
+        height={112}
+        className="rounded-xs outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
+      />
+      <h2 className="type-subtitle mt-4 text-ink">{site.name}</h2>
+      <p className="type-body mt-1 break-keep text-muted">{site.intro}</p>
+      <nav aria-label="外部链接" className="mt-3">
+        <FluidHover className="flex">
+          {site.social.map(({ icon, label, title, href }) => (
+            <a key={href} href={href} aria-label={label} title={title} className="icon-link grid size-9 place-items-center rounded-lg text-muted hover:text-ink">
+              {icons[icon]}
+            </a>
+          ))}
+        </FluidHover>
       </nav>
     </section>
   );

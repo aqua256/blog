@@ -5,16 +5,16 @@ const arrow = {
   viewBox: "0 0 24 24",
   fill: "none",
   stroke: "currentColor",
-  strokeWidth: 1.75,
   strokeLinecap: "round",
   strokeLinejoin: "round",
   "aria-hidden": true,
-  className: "size-3.5",
+  className: "size-3",
 } as const;
 
-const link = "flex max-w-[46%] flex-col gap-1.25 py-1 group";
-const label = "inline-flex items-center gap-1.25 text-[13px] leading-normal text-muted";
-const title = "text-[15px] leading-normal font-semibold text-muted group-hover:text-accent";
+// Each link fills on hover; the negative margin keeps its text on the column's edge
+const link = "flex max-w-[46%] flex-col gap-1 rounded-lg px-3 py-2 hover:bg-hover";
+const label = "type-caption inline-flex items-center gap-1 text-muted";
+const title = "type-subtitle text-ink";
 
 /**
  * The newer post on the left (上一篇) and the older one on the right (下一篇), the way the archive reads
@@ -24,9 +24,9 @@ export function PostPager({ older, newer }: { older?: PostSummary; newer?: PostS
   if (!older && !newer) return null;
 
   return (
-    <nav aria-label="相邻文章" className="mt-14.5 flex justify-between gap-5.5 border-t border-line pt-5.5">
+    <nav aria-label="相邻文章" className="mt-10 flex justify-between gap-4 pt-4 shadow-[inset_0_1px_0_var(--line)]">
       {newer && (
-        <Link href={`/posts/${newer.slug}`} className={link}>
+        <Link href={`/posts/${newer.slug}`} className={`${link} -ml-3`}>
           <span className={label}>
             <svg {...arrow}>
               <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -37,7 +37,7 @@ export function PostPager({ older, newer }: { older?: PostSummary; newer?: PostS
         </Link>
       )}
       {older && (
-        <Link href={`/posts/${older.slug}`} className={`${link} ml-auto items-end text-right`}>
+        <Link href={`/posts/${older.slug}`} className={`${link} -mr-3 ml-auto items-end text-right`}>
           <span className={label}>
             下一篇
             <svg {...arrow}>

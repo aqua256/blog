@@ -155,6 +155,7 @@
   --color-hover: var(--hover);
   --color-active: var(--active);
   --color-accent: var(--accent);
+  --color-ring: var(--ring);
   --color-selection: var(--selection);
 }
 
@@ -223,59 +224,99 @@
 }
 
 /*
- * Cards: the post cards and the side column's cards. On white they lift off the page with a faint
- * blue-gray shadow; in dark mode a shadow can't be seen, so a slightly lighter surface and a hairline
- * set them apart. A post card rises a little while its title is hovered.
+ * The highlight a FluidHover group (app/_components/fluid-hover.tsx) moves between its items: it fades in on
+ * the fast spring, glides between items on it, and fades out on the faster exit. Under reduced motion it
+ * only fades. It sits under the items' text, within the group's own stacking context.
  */
 @layer components {
-  .card {
-    border: 1px solid color-mix(in srgb, var(--ink) 8%, transparent);
-    border-radius: 6px;
-    background: var(--surface);
-    box-shadow:
-      0 1px 2px rgb(24 33 44 / 0.06),
-      0 10px 28px -14px rgb(24 33 44 / 0.22);
+  .fluid-highlight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    border-radius: 8px;
+    background: var(--hover);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--duration-fast-exit) ease-in;
   }
 
-  .post-card {
-    transition-property: border-color, box-shadow, transform;
-    transition-duration: 200ms;
+  .fluid-highlight[data-on] {
+    opacity: 1;
+    transition: opacity var(--duration-fast) ease-out;
   }
 
-  .post-card:has(h3 a:hover) {
-    border-color: color-mix(in srgb, var(--ink) 14%, transparent);
-    transform: translateY(-2px);
-    box-shadow:
-      0 1px 2px rgb(24 33 44 / 0.06),
-      0 16px 36px -16px rgb(24 33 44 / 0.3);
-  }
-
-  .avatar {
-    box-shadow:
-      0 0 0 1px rgb(24 33 44 / 0.08),
-      0 8px 18px -10px rgb(24 33 44 / 0.45);
-  }
-
-  :root[data-theme="dark"] {
-    .card {
-      border-color: rgb(255 255 255 / 0.07);
-      box-shadow: none;
-    }
-
-    .post-card:has(h3 a:hover) {
-      border-color: rgb(255 255 255 / 0.16);
-      box-shadow: none;
-    }
-
-    .avatar {
-      box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08);
+  @media (prefers-reduced-motion: no-preference) {
+    .fluid-highlight[data-on][data-glide] {
+      transition:
+        transform var(--duration-fast) var(--ease-spring),
+        width var(--duration-fast) var(--ease-spring),
+        height var(--duration-fast) var(--ease-spring),
+        opacity var(--duration-fast) ease-out;
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .post-card:has(h3 a:hover) {
-      transform: none;
-    }
+  /* Rows of posts on the home page: a hairline between rows, inset to the text */
+  .post-list > article + article::before {
+    content: "";
+    position: absolute;
+    inset: 0 12px auto;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /*
+   * A label that turns 550 when it is the current item (aria-current, or a pressed segment) without
+   * reflowing: a hidden copy at 550 below it holds the width it will need.
+   */
+  .steady {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .steady::after {
+    content: attr(data-text) / "";
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+    user-select: none;
+    pointer-events: none;
+    font-weight: 550;
+    --opsz: 18;
+  }
+
+  :is([aria-current], [aria-pressed="true"]) > .steady {
+    font-weight: 550;
+    --opsz: 18;
+  }
+
+  /*
+   * A tertiary button, such as 全部文章: a hairline ring outside it, which moves inside as it is pressed, so
+   * the button seems to sink with its fill.
+   */
+  .button-tertiary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    height: 36px;
+    padding: 0 12px 0 16px;
+    border-radius: 8px;
+    box-shadow: 0 0 0 1px var(--line);
+    color: var(--ink);
+    transition:
+      box-shadow 180ms cubic-bezier(0.23, 1, 0.32, 1),
+      background-color var(--duration-fast) ease;
+  }
+
+  .button-tertiary:hover {
+    background-color: var(--hover);
+  }
+
+  .button-tertiary:active {
+    background-color: var(--active);
+    box-shadow: inset 0 0 0 1px var(--line);
+    transition-duration: var(--duration-fast);
   }
 }
 
@@ -326,12 +367,13 @@
     position: relative;
   }
 
-  .icon-button svg {
+  /* Icon strokes thicken on hover, in icon buttons, icon links and buttons with an icon */
+  :is(.icon-button, .icon-link, .button-tertiary) svg {
     stroke-width: 1.5;
     transition: stroke-width var(--duration-fast) ease-out;
   }
 
-  .icon-button:hover svg {
+  :is(.icon-button, .icon-link, .button-tertiary):hover svg {
     stroke-width: 2;
   }
 

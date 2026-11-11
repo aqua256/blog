@@ -52,7 +52,7 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
         <>
           <ProfileCard />
           {headings.length > 0 && (
-            <div className="sticky top-21.5 mt-9 max-[869px]:hidden">
+            <div className="sticky top-21.5 mt-9 max-[839px]:hidden">
               <PostOutline headings={headings} />
             </div>
           )}
@@ -75,7 +75,7 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
             )}
           </div>
           {headings.length > 0 && (
-            <div className="min-[870px]:hidden">
+            <div className="min-[840px]:hidden">
               <PostOutlineFolded headings={headings} />
             </div>
           )}

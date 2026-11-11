@@ -12,8 +12,8 @@ import { ThemeToggle } from "./theme-toggle";
 export function SiteHeader() {
   return (
     <header className="site-header sticky top-0 z-10 border-b border-transparent">
-      <div className="mx-auto flex min-h-14 max-w-264 items-center gap-2 px-6 max-[640px]:px-4">
-        <Link href="/" className="text-[15px] font-semibold tracking-[-0.01em] text-ink">
+      <div className="mx-auto flex h-14 max-w-252 items-center gap-2 px-6 max-[640px]:px-4">
+        <Link href="/" className="type-subtitle text-ink">
           {site.name}
         </Link>
         <NavLinks />

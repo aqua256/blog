@@ -55,7 +55,7 @@ export function PostOutlineFolded({ headings }: { headings: Heading[] }) {
   }
 
   return (
-    <details ref={details} className="card group mt-5.5 px-4">
+    <details ref={details} className="group mt-4 rounded-xl px-3 shadow-[inset_0_0_0_1px_var(--line)]">
       <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between text-[15px] font-semibold tracking-[-0.01em] text-ink [&::-webkit-details-marker]:hidden">
         目录
         <svg
