@@ -35,8 +35,8 @@ export async function generateMetadata(props: PageProps<"/posts/[slug]">): Promi
 }
 
 /**
- * The post beside the profile card and, on wide screens, an outline card that stays in view. On narrow
- * screens the outline folds into a card under the title. The newer and older posts close the page.
+ * The post beside the profile card and, on wide screens, an outline that stays in view. On narrow
+ * screens the outline folds into a box under the title. The newer and older posts close the page.
  */
 export default async function PostPage(props: PageProps<"/posts/[slug]">) {
   const { slug } = await props.params;
@@ -52,7 +52,7 @@ export default async function PostPage(props: PageProps<"/posts/[slug]">) {
         <>
           <ProfileCard />
           {headings.length > 0 && (
-            <div className="sticky top-21.5 mt-9 max-[839px]:hidden">
+            <div className="sticky top-20 mt-10 max-[839px]:hidden">
               <PostOutline headings={headings} />
             </div>
           )}

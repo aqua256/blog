@@ -87,16 +87,14 @@
 }
 
 /*
- * Motion and type from Fluid Functionalism. Springs come in three speeds, each with a faster exit; the
- * spring itself is a linear() curve with a small overshoot (bounce .12).
+ * Motion from Fluid Functionalism: the fast and moderate springs this site uses, the fast one with its faster
+ * exit. The spring itself is a linear() curve with a small overshoot (bounce .12).
  */
 @theme {
   --ease-spring: linear(0, 0.2 6%, 0.5 15%, 0.75 27%, 0.9 42%, 0.97 60%, 1);
   --duration-fast: 80ms;
   --duration-fast-exit: 60ms;
   --duration-moderate: 160ms;
-  --duration-moderate-exit: 120ms;
-  --duration-slow: 240ms;
 }
 
 /* The five type roles. Nothing is set in capitals or letter-spaced. */
