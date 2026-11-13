@@ -5,7 +5,7 @@ export const metadata = {
   draft: false,
 };
 
-一台新的 Mac 从开箱到能顺手地写代码，中间要装的应用、要改的设置其实比想象中多，单靠记忆总会漏掉那么几项，所以我把它们整理成了这份清单。其中终端、Shell、编辑器和运行时这几部分，写的都是我自己实际在用的 kitty、zinit、Cursor、Zed 和 mise。
+换新电脑的时候，我没有用迁移助理把旧 Mac 整个搬过来，而是从一台干净的机器重新配起，因为这样正好能借机把攒下的应用和设置挨个过一遍，留下真正还在用的，其余的就让它们留在旧电脑上。这篇记下的就是这次配置的过程，按用途分成几组，每样东西后面跟一句为什么用它，再附上安装命令和配置。
 
 这份清单主要是写给 Agent 读的，所以每一步都尽量写成可以直接照做的命令和路径，少了些解释。如果是人自己照着配置，就不必全盘照搬，按自己的习惯挑着用就好。
 
@@ -16,98 +16,58 @@ export const metadata = {
 - Claude 桌面应用：从 [claude.ai/download](https://claude.ai/download) 下载，拖进「应用程序」后打开并登录
 - 旧电脑的文件用外置硬盘迁移，不走云端
 
-## 个人信息
+## macOS 设置
 
-后续命令里的个人信息全部来自 `$HOME/Library/Mobile Documents/com~apple~CloudDocs/mac-setup/setup.env`，这是用户 iCloud 云盘里的 `mac-setup/setup.env`。文件格式如下，四个变量都必须有值：
+System Settings 里按面板改，每行一个面板：
 
-```bash
-SETUP_NAME="<Git 提交用的名字>"
-SETUP_EMAIL="<Git 提交用的邮箱>"
-SETUP_WEBSITE="<个人网站>"
-SETUP_COMPUTER_NAME="<电脑名，只用字母、数字和连字符>"
-```
+- **Appearance**: Dark, Show scroll bars → Always
+- **Desktop & Dock**: smaller Size, Automatically hide and show the Dock, Show indicators for open applications on, Show suggested and recent apps in Dock off, Hot Corners all set to "–"
+- **Battery**: Show Percentage on
+- **Displays**: Night Shift on
+- **Touch ID & Password**: add fingerprint
+- **Notifications**: off for all apps except Calendar
+- **Siri**: off
+- **Trackpad**: Tracking speed fastest, Tap to click on, Look up & data detectors off, More Gestures → Notification Centre off
+- **Keyboard**: Press 🌐 key to → Do Nothing, Keyboard Shortcuts → Mission Control all off
+- **Keyboard → Text Input**: Capitalise words automatically off, Add full stop with double-space off, Use smart quotes and dashes off, double quotes `"`, single quotes `'`
+- **General**: Sharing → all services off, Storage → delete GarageBand, its sound library and iMovie
+- **Privacy & Security**: FileVault on
+- **Accessibility**: Pointer Control → Trackpad Options → Scrolling speed fastest
 
-开始执行任何一节之前，先运行下面的检查：
+Dock 和访达：
 
-```bash
-source "$HOME/Library/Mobile Documents/com~apple~CloudDocs/mac-setup/setup.env"
-: "${SETUP_NAME:?}" "${SETUP_EMAIL:?}" "${SETUP_WEBSITE:?}" "${SETUP_COMPUTER_NAME:?}"
-```
+- **Dock**: drag unused apps off the Dock
+- **Finder → Settings**: New Finder windows show Downloads, Show these items on the desktop all off, Sidebar → all Favourites on and add Library, Tags all off, Advanced → Show all filename extensions on, Remove items from the Bin after 30 days on
+- **Finder → View**: Show Preview
 
-规则：
-
-- 文件不存在时，可能是 iCloud 还没同步完。等待片刻后重试；仍然读不到，就停下来向用户询问，不要创建这个文件，也不要自行推断或编造任何一个值。
-- 检查报错说明缺了值。把缺的变量名告诉用户，由用户补上，不要用空值或默认值继续执行。
-- 每次在新的 shell 里执行用到 `$SETUP_*` 的命令前，都要先 `source` 这个文件，变量不会在 shell 之间保留。
-- 不要把这四个值写进任何仓库、日志或输出给第三方。
-
-## 系统设置
-
-- Appearance → Dark
-- Appearance → Show scroll bars → Always
-- Desktop & Dock → Automatically hide and show the Dock → on
-- Desktop & Dock → Size → smaller
-- Desktop & Dock → Show suggested and recent apps in Dock → off
-- Desktop & Dock → Show indicators for open applications → on
-- Battery → Show Percentage → on
-- Displays → Night Shift → on
-- Touch ID & Password → add fingerprint
-- Notifications → off for all apps except Calendar
-- Siri → off
-- Trackpad → Tap to click → on
-- Trackpad → Point & Click → Look up & data detectors → off
-- Trackpad → More Gestures → Notification Centre → off
-- Trackpad → Tracking speed → fastest
-- Keyboard → Text Input → Capitalise words automatically → off
-- Keyboard → Text Input → Add full stop with double-space → off
-- Keyboard → Text Input → Use smart quotes and dashes → off
-- Keyboard → Text Input → For double quotes → `"`
-- Keyboard → Text Input → For single quotes → `'`
-- Keyboard → Press 🌐 key to → Do Nothing
-- Keyboard → Keyboard Shortcuts → Mission Control → all off
-- Desktop & Dock → Hot Corners → all four set to "–"
-- General → Sharing → File Sharing and other services → all off
-- Privacy & Security → FileVault → on
-- Privacy & Security → Screen & System Audio Recording → add Google Chrome
-- General → Storage → delete GarageBand, its sound library and iMovie
-- Accessibility → Pointer Control → Trackpad Options → Scrolling speed → fastest
-
-## 系统设置（终端）
+界面里找不到的设置用 `defaults` 改：
 
 ```bash
 # 截图存成 JPG
 defaults write com.apple.screencapture type jpg
-
 # 预览不恢复上次打开的文件
 defaults write com.apple.Preview ApplePersistenceIgnoreState YES
-
 # 显示资源库
 chflags nohidden ~/Library
-
-# 访达显示隐藏文件
+# 访达显示隐藏文件、路径栏和状态栏
 defaults write com.apple.finder AppleShowAllFiles YES
-
-# 访达显示路径栏
 defaults write com.apple.finder ShowPathbar -bool true
-
-# 访达显示状态栏
 defaults write com.apple.finder ShowStatusBar -bool true
-
-# 重启访达生效
 killall Finder
 ```
 
+电脑名：
+
 ```bash
-source "$HOME/Library/Mobile Documents/com~apple~CloudDocs/mac-setup/setup.env"
-# 需要用户操作：输入 sudo 密码
-sudo scutil --set ComputerName "$SETUP_COMPUTER_NAME"
-sudo scutil --set LocalHostName "$SETUP_COMPUTER_NAME"
-sudo scutil --set HostName "$SETUP_COMPUTER_NAME"
+# 需要用户操作：提供电脑名（只用字母、数字和连字符），输入 sudo 密码
+sudo scutil --set ComputerName "<电脑名>"
+sudo scutil --set LocalHostName "<电脑名>"
+sudo scutil --set HostName "<电脑名>"
 ```
 
-## Xcode Command Line Tools
+## 基础开发工具
 
-命令执行后会弹出系统安装窗口，需要手动点「安装」并等它下载完：
+**Xcode Command Line Tools**：git、clang 这些编译工具都在里面，Homebrew 也依赖它。命令执行后会弹出系统安装窗口，需要手动点「安装」并等它下载完。
 
 ```bash
 # 已经装过的话会直接报错提示，可以跳过
@@ -116,7 +76,7 @@ xcode-select --install
 xcode-select -p
 ```
 
-## Homebrew
+**Homebrew**：后面几乎所有应用和命令行工具都用它来装。
 
 ```bash
 # 需要用户操作：输入 sudo 密码，按回车确认
@@ -127,85 +87,11 @@ eval "$(/opt/homebrew/bin/brew shellenv zsh)"
 brew update
 ```
 
-Cask 应用（`brew install --cask`）：
+**kitty**：终端，配置全写在一个文本文件里，分屏和快捷键都能自己定。字体用 JetBrains Mono 和它的 Nerd Font 版本，eza 和 starship 的图标要靠后者显示。
 
 ```bash
-brew install --cask \
-  google-chrome \
-  kitty \
-  cursor \
-  zed \
-  loop \
-  orbstack \
-  discord \
-  vlc \
-  calibre \
-  codex \
-  jetbrains-toolbox \
-  notion \
-  font-jetbrains-mono \
-  font-jetbrains-mono-nerd-font
+brew install --cask kitty font-jetbrains-mono font-jetbrains-mono-nerd-font
 ```
-
-命令行工具（`brew install`）：
-
-```bash
-brew install \
-  wget \
-  eza \
-  git \
-  gh \
-  jq \
-  starship \
-  bat \
-  fd \
-  ripgrep \
-  fzf \
-  zoxide \
-  neovim \
-  btop \
-  tlrc \
-  tokei \
-  ffmpeg \
-  herdr
-```
-
-## 图形应用
-
-- Google Chrome → Settings → Default browser → Make default
-- Google Chrome → Settings → Appearance → Mode → Dark
-- Google Chrome → Settings → Appearance → Show bookmarks bar → on
-- Google Chrome → Settings → Autofill and passwords → Google Password Manager → Settings → Offer to save passwords → off
-- Google Chrome → Settings → You and Google → Import bookmarks and settings
-- Google Chrome → Chrome Web Store → install uBlock Origin Lite, React Developer Tools, 7TV
-- Chrome DevTools → Settings → Preferences → Appearance → Theme → Dark
-- Chrome DevTools → Network → filter → Fetch/XHR
-- OrbStack → open once to finish setup
-- VLC → Finder → Get Info on a video file → Open with → VLC → Change All…
-
-## macOS 内置应用
-
-- Dock → drag unused apps off the Dock
-- Finder → Settings → General → New Finder windows show → Downloads
-- Finder → Settings → General → Show these items on the desktop → all off
-- Finder → Settings → Sidebar → Favourites → all on; add Library to Favourites
-- Finder → Settings → Sidebar → show Desktop, Downloads, Documents, home folder, Library
-- Finder → Settings → Tags → all off
-- Finder → Settings → Advanced → Show all filename extensions → on
-- Finder → Settings → Advanced → Remove items from the Bin after 30 days → on
-- Finder → View → Show Preview → on
-- Messages → Settings → iMessage → Enable Messages in iCloud → on, wait for sync, then off
-- System Settings → Apple Account → iCloud → Contacts → on
-- iPhone → Settings → Apps → Messages → Text Message Forwarding → this Mac → on
-- Pages → View → Show Word Count
-- Mail → Add Account → Fastmail
-- Mail → View → Sort By → Descending
-- Mail → Settings → Composing → Undo send delay → Off
-- Notes → Settings → New notes start with → Body
-- Notes → Settings → Group notes by date → off
-- QuickTime Player → New Screen Recording → Options → Save to → Desktop
-
-## kitty
 
 `~/.config/kitty/kitty.conf`：
 
@@ -247,7 +133,11 @@ editor nvim
 EOF
 ```
 
-## zinit
+**zinit 和 Shell 工具**：zinit 负责加载 zsh 插件，补全、自动建议和语法高亮都靠它，Oh My Zsh 里的 git 和 eza 插件也是单独引入的。eza 替代 ls，bat 替代 cat，fzf 用来搜历史命令，zoxide 按访问频率跳目录，starship 是提示符，neovim 当 vi 用。
+
+```bash
+brew install eza bat fzf zoxide starship neovim
+```
 
 `~/.zshrc`：
 
@@ -288,9 +178,82 @@ eval "$(starship init zsh)"
 EOF
 ```
 
-## Cursor
+**Git**：Homebrew 的版本比系统自带的新。
 
 ```bash
+brew install git
+# 需要用户操作：提供 Git 提交用的名字和邮箱
+git config --global user.name "<名字>"
+git config --global user.email "<邮箱>"
+git config --global init.defaultBranch main
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+git config --list
+```
+
+**SSH 和 GitHub CLI**：用 gh 登录 GitHub，顺便把新生成的公钥传上去。
+
+```bash
+brew install gh
+mkdir -p ~/.ssh
+# 需要用户操作：设置口令，口令存放在安全的地方
+ssh-keygen -t ed25519 -C "github" -f ~/.ssh/github
+# 需要用户操作：输入刚才的口令，之后由钥匙串保存
+ssh-add --apple-use-keychain ~/.ssh/github
+# 需要用户操作：在浏览器里完成 GitHub 授权
+gh auth login
+gh ssh-key add ~/.ssh/github.pub -t github
+```
+
+`~/.ssh/config`：
+
+```bash
+cat > ~/.ssh/config <<'EOF'
+Host github.com
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/github
+EOF
+```
+
+**mise**：一个工具管 Node、Go、Rust 和 pnpm 的版本。
+
+```bash
+# 装到 ~/.local/bin
+curl https://mise.run | sh
+
+# 当前 shell 里找到 mise 和它装的 node、go、cargo
+export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
+
+# 写进 ~/.config/mise/config.toml
+mise use -g node@lts
+mise use -g go@latest
+mise use -g rust@latest
+mise use -g pnpm@latest
+
+npm install -g npm@latest
+
+# 需要用户操作：登录 npm 账号，发布包时才用得上
+npm adduser
+```
+
+装完之后 `~/.config/mise/config.toml` 里会是这样：
+
+```toml
+[tools]
+node = "lts"
+go = "latest"
+rust = "latest"
+pnpm = "latest"
+```
+
+**mr boxington**：为我配置 [mr-boxington.jdx.dev](https://mr-boxington.jdx.dev)，让它接管所有的 Rust targets，根据过往的构建情况和机器配置，设置合适的缓存大小和 GC 时间。如果机器上已经配置了 mise，就使用 mise 集成；如果没有，就使用 rustup 的原生集成。
+
+## 编辑器与开发
+
+**Cursor**：写代码用的编辑器。它的扩展市场是 Open VSX，下面这些都能在上面找到。
+
+```bash
+brew install --cask cursor
 cursor --install-extension anysphere.remote-containers
 cursor --install-extension anysphere.remote-ssh
 cursor --install-extension astro-build.astro-vscode
@@ -327,7 +290,11 @@ cursor --install-extension wayou.vscode-todo-highlight
 
 - 需要用户操作：把搜索从活动栏移到面板
 
-## Zed
+**Zed**：另一个编辑器，扩展写在 `auto_install_extensions` 里，第一次打开时自动装好。
+
+```bash
+brew install --cask zed
+```
 
 `~/.config/zed/settings.json`：
 
@@ -374,82 +341,85 @@ cursor --install-extension wayou.vscode-todo-highlight
 }
 ```
 
-## Git
+**Google Chrome**：默认浏览器，调试也用它的 DevTools。
 
 ```bash
-source "$HOME/Library/Mobile Documents/com~apple~CloudDocs/mac-setup/setup.env"
-git config --global user.name "$SETUP_NAME"
-git config --global user.email "$SETUP_EMAIL"
-git config --global init.defaultBranch main
-git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-git config --list
+brew install --cask google-chrome
 ```
 
-## SSH
+- **Chrome → Settings**: Default browser → Make default, Appearance → Mode Dark and Show bookmarks bar on, Autofill and passwords → Google Password Manager → Settings → Offer to save passwords off, You and Google → Import bookmarks and settings
+- **Chrome Web Store**: install uBlock Origin Lite, React Developer Tools, 7TV
+- **Chrome DevTools**: Settings → Preferences → Appearance → Theme Dark, Network → filter Fetch/XHR
+- **System Settings → Privacy & Security**: Screen & System Audio Recording → add Google Chrome
+
+**OrbStack**：本地跑 Docker 容器，装完打开一次完成初始化。
 
 ```bash
-mkdir -p ~/.ssh
-# 需要用户操作：设置口令，口令存放在安全的地方
-ssh-keygen -t ed25519 -C "github" -f ~/.ssh/github
-# 需要用户操作：输入刚才的口令，之后由钥匙串保存
-ssh-add --apple-use-keychain ~/.ssh/github
-# 需要用户操作：在浏览器里完成 GitHub 授权
-gh auth login
-gh ssh-key add ~/.ssh/github.pub -t github
+brew install --cask orbstack
 ```
 
-`~/.ssh/config`：
+**Codex**：OpenAI 的编程 Agent。
 
 ```bash
-cat > ~/.ssh/config <<'EOF'
-Host github.com
-  AddKeysToAgent yes
-  UseKeychain yes
-  IdentityFile ~/.ssh/github
-EOF
+brew install --cask codex
 ```
 
-## mise（Node、Go 与 Rust）
+**JetBrains Toolbox**：安装和更新 JetBrains 的 IDE。
 
 ```bash
-# 装到 ~/.local/bin
-curl https://mise.run | sh
-
-# 当前 shell 里找到 mise 和它装的 node、go、cargo
-export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
-
-# 写进 ~/.config/mise/config.toml
-mise use -g node@lts
-mise use -g go@latest
-mise use -g rust@latest
-mise use -g pnpm@latest
-
-npm install -g npm@latest
-
-# npm init 默认作者信息
-source "$HOME/Library/Mobile Documents/com~apple~CloudDocs/mac-setup/setup.env"
-npm set init-author-name="$SETUP_NAME"
-npm set init-author-email="$SETUP_EMAIL"
-npm set init-author-url="$SETUP_WEBSITE"
-
-# 需要用户操作：登录 npm 账号，发布包时才用得上
-npm adduser
+brew install --cask jetbrains-toolbox
 ```
 
-装完之后 `~/.config/mise/config.toml` 里会是这样：
+**命令行工具**：fd 和 ripgrep 找文件、搜内容，jq 处理 JSON，btop 看系统资源，tlrc 查命令的常用例子，tokei 统计代码行数，ffmpeg 转音视频，wget 下载文件，herdr 在终端里同时跑多个 Agent。
 
-```toml
-[tools]
-node = "lts"
-go = "latest"
-rust = "latest"
-pnpm = "latest"
+```bash
+brew install fd ripgrep jq btop tlrc tokei ffmpeg wget herdr
 ```
 
-## mr boxington
+## 效率工具
 
-为我配置 [mr-boxington.jdx.dev](https://mr-boxington.jdx.dev)，让它接管所有的 Rust targets，根据过往的构建情况和机器配置，设置合适的缓存大小和 GC 时间。如果机器上已经配置了 mise，就使用 mise 集成；如果没有，就使用 rustup 的原生集成。
+**Loop**：用快捷键和手势管理窗口。
+
+```bash
+brew install --cask loop
+```
+
+**Notion**：
+
+```bash
+brew install --cask notion
+```
+
+系统自带的应用：
+
+- **Mail**: Add Account → Fastmail, View → Sort By → Descending, Settings → Composing → Undo send delay Off
+- **Notes**: Settings → New notes start with Body, Group notes by date off
+- **Pages**: View → Show Word Count
+- **QuickTime Player**: New Screen Recording → Options → Save to Desktop
+
+## 娱乐与通讯
+
+**VLC**：什么格式的视频都能放，设成默认播放器。
+
+```bash
+brew install --cask vlc
+```
+
+- **Finder**: Get Info on a video file → Open with VLC → Change All…
+
+**Discord**、**Calibre**：聊天，管理电子书。
+
+```bash
+brew install --cask discord calibre
+```
+
+系统自带的应用：
+
+- **Messages**: Settings → iMessage → Enable Messages in iCloud on, wait for sync, then off
+- **System Settings → Apple Account → iCloud**: Contacts on
+- **iPhone → Settings → Apps → Messages**: Text Message Forwarding → this Mac on
 
 ## 参考
 
+- Eugene Yan, [My Minimal MacBook Pro Setup Guide](https://eugeneyan.com/writing/mac-setup/)
 - Robin Wieruch, [Mac Setup for Web Development](https://www.robinwieruch.de/mac-setup-web-development/)
